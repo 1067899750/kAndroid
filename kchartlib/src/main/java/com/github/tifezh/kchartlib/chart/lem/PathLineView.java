@@ -11,8 +11,8 @@ import android.view.View;
 
 import com.github.tifezh.kchartlib.R;
 import com.github.tifezh.kchartlib.utils.CommonUtils;
+
 /**
- *
  * Description
  * Author puyantao
  * Email 1067899750@qq.com
@@ -29,7 +29,7 @@ public class PathLineView extends View {
     private int mViewWidth;
     private int mViewHeight;
 
-    public  PathLineView(Context context) {
+    public PathLineView(Context context) {
         this(context, null);
     }
 
@@ -67,35 +67,36 @@ public class PathLineView extends View {
         canvas.drawLine(0, 0, 0, mViewHeight, mPaint);
 
 
-        float startX = 150;
+        float startX = 0;
         float startY = 200;
         float topY = 150;
         float endX = 500;
         float endY = 150;
         mPath.reset();
-        mPath.moveTo(startX,startY);
-        mPath.lineTo(300,topY);
-        mPath.lineTo(endX,endY);
-        canvas.drawPath(mPath,mPaint);
+        mPath.moveTo(startX, startY);
+        mPath.lineTo(300, topY);
+        mPath.lineTo(endX, endY);
+        mPath.lineTo(mViewWidth, 500);
+        canvas.drawPath(mPath, mPaint);
         //绘制封闭Path用于切割
         mFillPath.reset();
         mFillPath.addPath(mPath);
-        mFillPath.lineTo(endX,mViewHeight);
-        mFillPath.lineTo(startX,mViewHeight);
+        mFillPath.lineTo(mViewWidth, mViewHeight);
+        mFillPath.lineTo(startX, mViewHeight);
         mFillPath.close();
 
         //默认开启硬件加速的情况下 clipPath 需要SDK >18
         //如果关闭硬件加速，则不需要SDK要求
-        if(clipPathSupported()) {
+        if (clipPathSupported()) {
             int save = canvas.save();
             //将画布切割成path的形状
             canvas.clipPath(mFillPath);
 
             Drawable drawable = getFillDrawable();
-            drawable.setBounds((int)startX,(int)topY,mViewWidth,mViewHeight);
+            drawable.setBounds((int) startX, (int) topY, mViewWidth, mViewHeight);
             drawable.draw(canvas);
             canvas.restoreToCount(save);
-        }else{
+        } else {
             canvas.drawPath(mPath, mPaint);
         }
 
@@ -111,7 +112,7 @@ public class PathLineView extends View {
         return CommonUtils.getSDKInt() >= 18;
     }
 
-    private Drawable getFillDrawable(){
+    private Drawable getFillDrawable() {
         return getResources().getDrawable(R.drawable.path_fill_red);
     }
 
