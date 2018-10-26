@@ -8,15 +8,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 
 import com.github.tifezh.kchartlib.R;
-import com.github.tifezh.kchartlib.chart.view.BaseKChartView;
 import com.github.tifezh.kchartlib.chart.base.IChartDraw;
 import com.github.tifezh.kchartlib.chart.base.IValueFormatter;
 import com.github.tifezh.kchartlib.chart.comInterface.IMACD;
 import com.github.tifezh.kchartlib.chart.formatter.ValueFormatter;
+import com.github.tifezh.kchartlib.chart.view.BaseKChartView;
 
 /**
  * macd实现类
- * Created by tifezh on 2016/6/19.
+ *
  */
 
 public class MACDDraw implements IChartDraw<IMACD> {
@@ -42,8 +42,8 @@ public class MACDDraw implements IChartDraw<IMACD> {
     @Override
     public void drawTranslated(@Nullable IMACD lastPoint, @NonNull IMACD curPoint, float lastX, float curX, @NonNull Canvas canvas, @NonNull BaseKChartView view, int position) {
         drawMACD(canvas, view, curX, curPoint.getMacd());
-        view.drawChildLine(canvas, mDIFPaint, lastX, lastPoint.getDea(), curX, curPoint.getDea());
-        view.drawChildLine(canvas, mDEAPaint, lastX, lastPoint.getDif(), curX, curPoint.getDif());
+        view.drawChildLine(canvas, mDEAPaint, lastX, lastPoint.getDea(), curX, curPoint.getDea());
+        view.drawChildLine(canvas, mDIFPaint, lastX, lastPoint.getDif(), curX, curPoint.getDif());
     }
 
     @Override
@@ -80,7 +80,7 @@ public class MACDDraw implements IChartDraw<IMACD> {
 
     @Override
     public float getMaxValue(IMACD point) {
-        return Math.max(point.getMacd(), Math.max(point.getDea(), point.getDif()));
+        return Math.max(Math.abs(point.getMacd()), Math.max(Math.abs(point.getDea()), Math.abs(point.getDif())));
     }
 
     @Override
@@ -91,7 +91,7 @@ public class MACDDraw implements IChartDraw<IMACD> {
 
     @Override
     public float getMinValue(IMACD point) {
-        return Math.min(point.getMacd(), Math.min(point.getDea(), point.getDif()));
+        return -Math.max(Math.abs(point.getMacd()), Math.max(Math.abs(point.getDea()), Math.abs(point.getDif())));
     }
 
 
