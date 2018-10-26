@@ -12,9 +12,13 @@ import com.github.tifezh.kchartlib.chart.comInterface.IBOLL;
 import com.github.tifezh.kchartlib.chart.formatter.ValueFormatter;
 
 /**
- * BOLL实现类
- * Created by tifezh on 2016/6/19.
+ *
+ * Description BOLL实现类
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:39
  */
+
 
 public class BOLLDraw  implements IChartDraw<IBOLL> {
 

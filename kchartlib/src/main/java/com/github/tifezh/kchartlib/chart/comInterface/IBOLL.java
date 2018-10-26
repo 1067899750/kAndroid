@@ -1,10 +1,13 @@
 package com.github.tifezh.kchartlib.chart.comInterface;
 
 /**
- * 布林线指标接口
- * @see <a href="https://baike.baidu.com/item/%E5%B8%83%E6%9E%97%E7%BA%BF%E6%8C%87%E6%A0%87/3325894"/>相关说明</a>
- * Created by tifezh on 2016/6/10.
+ *
+ * Description  布林线指标接口
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:39
  */
+
 
 public interface IBOLL {
 

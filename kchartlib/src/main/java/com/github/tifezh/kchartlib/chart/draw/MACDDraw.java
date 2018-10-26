@@ -15,9 +15,13 @@ import com.github.tifezh.kchartlib.chart.formatter.ValueFormatter;
 import com.github.tifezh.kchartlib.chart.view.BaseKChartView;
 
 /**
- * macd实现类
  *
+ * Description macd实现类
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:39
  */
+
 
 public class MACDDraw implements IChartDraw<IMACD> {
 

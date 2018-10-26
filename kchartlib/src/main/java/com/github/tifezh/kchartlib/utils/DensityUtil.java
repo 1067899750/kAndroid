@@ -2,6 +2,13 @@ package com.github.tifezh.kchartlib.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
+/**
+ *
+ * Description
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:36
+ */
 
 public class DensityUtil {
     public float density;

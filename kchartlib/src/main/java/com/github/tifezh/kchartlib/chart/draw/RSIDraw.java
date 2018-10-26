@@ -12,9 +12,13 @@ import com.github.tifezh.kchartlib.chart.comInterface.IRSI;
 import com.github.tifezh.kchartlib.chart.formatter.ValueFormatter;
 
 /**
- * RSI实现类
- * Created by tifezh on 2016/6/19.
+ *
+ * Description RSI实现类
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:38
  */
+
 
 public class RSIDraw implements IChartDraw<IRSI> {
 

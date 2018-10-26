@@ -5,9 +5,13 @@ import com.github.tifezh.kchartlib.chart.base.IValueFormatter;
 import java.util.Locale;
 
 /**
- * 对较大数据进行格式化
- * Created by tifezh on 2017/12/13.
+ *
+ * Description 对较大数据进行格式化
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:38
  */
+
 
 public class BigValueFormatter implements IValueFormatter{
 

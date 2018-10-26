@@ -5,6 +5,13 @@ import android.util.Log;
 import com.github.tifezh.kchart.model.Minute;
 
 import java.util.List;
+/**
+ *
+ * Description
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:43
+ */
 
 public class MinuteDataHelper {
 

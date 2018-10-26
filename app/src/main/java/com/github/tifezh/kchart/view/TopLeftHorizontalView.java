@@ -14,11 +14,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Description：k线横屏信息显示
- * Author: star
- * Email: guimingxing@163.com
- * Date: 2018-10-12 15:32
+ *
+ * Description k线横屏信息显示
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:42
  */
+
 
 public class TopLeftHorizontalView extends LinearLayout {
     @BindView(R.id.tvContractName)

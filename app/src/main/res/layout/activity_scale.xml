@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".activity.ScaleActivity">
 
-    <com.github.tifezh.kchart.view.ScaleView
-        android:layout_width="match_parent"
-        android:layout_height="300dp" />
+
 
 </android.support.constraint.ConstraintLayout>

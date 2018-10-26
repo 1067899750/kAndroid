@@ -5,7 +5,11 @@ import com.github.tifezh.kchart.model.KLine;
 import java.util.List;
 
 /**
- * 数据辅助类 计算macd rsi等
+ *
+ * Description  数据辅助类 计算macd rsi等
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:43
  */
 
 public class DataHelper {

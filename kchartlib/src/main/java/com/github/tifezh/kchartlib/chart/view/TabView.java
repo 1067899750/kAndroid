@@ -11,8 +11,13 @@ import android.widget.TextView;
 import com.github.tifezh.kchartlib.R;
 
 /**
- * Created by tifezh on 2017/6/30.
+ *
+ * Description
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:36
  */
+
 
 public class TabView extends RelativeLayout{
 

@@ -16,10 +16,11 @@ import com.github.tifezh.kchartlib.chart.formatter.BigValueFormatter;
 import com.github.tifezh.kchartlib.utils.DensityUtil;
 
 /**
- * Description：
- * Author: star
- * Email: guimingxing@163.com
- * Date: 2018-10-17 15:50
+ *
+ * Description
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:39
  */
 
 public class CJLDraw implements IChartDraw<IVolume> {

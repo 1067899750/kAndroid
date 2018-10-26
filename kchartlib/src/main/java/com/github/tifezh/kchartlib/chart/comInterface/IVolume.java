@@ -1,9 +1,13 @@
 package com.github.tifezh.kchartlib.chart.comInterface;
 
 /**
- * 成交量接口
- * Created by hjm on 2017/11/14 17:46.
+ *
+ * Description  成交量接口
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:41
  */
+
 
 public interface IVolume {
 

@@ -7,11 +7,13 @@ import java.math.RoundingMode;
 import java.util.List;
 
 /**
- * Description：数据检测类
- * Author: star
- * Email: guimingxing@163.com
- * Date: 2018-3-28  17:21
+ *
+ * Description 数据检测类
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:42
  */
+
 public class ValueUtil {
 
     public static boolean isListNotEmpty(List<?> noteList) {

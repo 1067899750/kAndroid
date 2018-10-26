@@ -4,10 +4,11 @@ import com.github.tifezh.kchartlib.chart.comInterface.IKLine;
 import com.github.tifezh.kchartlib.utils.DateUtil;
 
 /**
- * Description：K线图实体
- * Author: star
- * Email: guimingxing@163.com
- * Date: 2018-10-12 14:47
+ *
+ * Description K线图实体
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:43
  */
 
 public class KLine implements IKLine {

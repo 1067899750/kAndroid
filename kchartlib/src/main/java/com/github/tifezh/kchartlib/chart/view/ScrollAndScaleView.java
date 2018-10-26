@@ -11,9 +11,13 @@ import android.widget.OverScroller;
 import android.widget.RelativeLayout;
 
 /**
- * 可以滑动和放大的view
- * Created by tian on 2016/5/3.
+ *
+ * Description  可以滑动和放大的view
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:36
  */
+
 public abstract class ScrollAndScaleView extends RelativeLayout implements
         GestureDetector.OnGestureListener,
         ScaleGestureDetector.OnScaleGestureListener {

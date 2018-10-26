@@ -20,9 +20,13 @@ import com.github.tifezh.kchartlib.chart.draw.CJLDraw;
 import com.github.tifezh.kchartlib.utils.DensityUtil;
 
 /**
- * k线图
- * Created by tian on 2016/5/20.
+ *
+ * Description k线图
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:37
  */
+
 public class KChartView extends BaseKChartView implements BaseKChartView.CallOnClick{
     private ProgressBar mProgressBar;
     private boolean isRefreshing = false;

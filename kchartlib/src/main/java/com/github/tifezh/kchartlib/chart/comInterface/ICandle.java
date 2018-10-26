@@ -1,8 +1,11 @@
 package com.github.tifezh.kchartlib.chart.comInterface;
 
 /**
- * 蜡烛图实体接口
- * Created by tifezh on 2016/6/9.
+ *
+ * Description  蜡烛图实体接口
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:39
  */
 
 public interface ICandle {

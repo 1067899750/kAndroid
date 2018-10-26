@@ -27,11 +27,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Description：K线图
- * Author: star
- * Email: guimingxing@163.com
- * Date: 2018-10-23 11:08
+ *
+ * Description K线图
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:42
  */
+
 
 public class KlineActivity extends AppCompatActivity implements KChartView.KChartRefreshListener,View.OnClickListener {
     @BindView(R.id.tv_price)

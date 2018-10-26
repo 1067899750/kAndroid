@@ -6,9 +6,13 @@ import java.util.Date;
 
 
 /**
- * 数据适配器
- * Created by tifezh on 2016/6/14.
+ *
+ * Description 数据适配器
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:41
  */
+
 
 public interface IAdapter {
     /**

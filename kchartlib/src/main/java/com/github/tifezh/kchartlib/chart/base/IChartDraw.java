@@ -8,9 +8,13 @@ import com.github.tifezh.kchartlib.chart.view.BaseKChartView;
 
 
 /**
- * 画图的基类 根据实体来画图形
- * Created by tifezh on 2016/6/14.
+ *
+ * Description 画图的基类 根据实体来画图形
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:41
  */
+
 
 public interface IChartDraw<T> {
     /**

@@ -22,9 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 主图的实现类
- * Created by tifezh on 2016/6/14.
+ *
+ * Description 主图的实现类
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:38
  */
+
 
 public class MainDraw implements IChartDraw<ICandle> {
 

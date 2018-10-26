@@ -9,9 +9,13 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * 时间工具类
- * Created by tifezh on 2016/4/27.
+ *
+ * Description 时间工具类
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:36
  */
+
 public class DateUtil {
     public static SimpleDateFormat longTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     public static SimpleDateFormat shortTimeFormat = new SimpleDateFormat("HH:mm");

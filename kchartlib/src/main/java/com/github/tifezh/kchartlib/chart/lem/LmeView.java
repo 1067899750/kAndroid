@@ -17,6 +17,13 @@ import com.github.tifezh.kchartlib.utils.StrUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+/**
+ *
+ * Description
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:37
+ */
 
 public class LmeView extends BaseView {
     private Paint mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG); //文字

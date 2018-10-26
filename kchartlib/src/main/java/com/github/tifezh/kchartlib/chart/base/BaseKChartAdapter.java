@@ -6,9 +6,13 @@ import android.database.DataSetObserver;
 import com.github.tifezh.kchartlib.chart.base.IAdapter;
 
 /**
- * k线图的数据适配器
- * Created by tifezh on 2016/6/9.
+ *
+ * Description k线图的数据适配器
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:41
  */
+
 
 public abstract class BaseKChartAdapter implements IAdapter {
 

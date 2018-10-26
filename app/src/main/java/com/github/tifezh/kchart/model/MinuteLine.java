@@ -5,10 +5,11 @@ import com.github.tifezh.kchartlib.chart.comInterface.IMinuteLine;
 import java.util.Date;
 
 /**
- * Description：分时图实体
- * Author: star
- * Email: guimingxing@163.com
- * Date: 2018-10-12 14:48
+ *
+ * Description 分时图实体
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:43
  */
 
 public class MinuteLine implements IMinuteLine {

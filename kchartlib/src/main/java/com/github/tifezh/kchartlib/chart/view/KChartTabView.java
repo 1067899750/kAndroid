@@ -14,11 +14,14 @@ import android.widget.TextView;
 
 import com.github.tifezh.kchartlib.R;
 
-
 /**
- * K线图中间位置的TabBar
- * Created by tifezh on 2016/5/17.
+ *
+ * Description K线图中间位置的TabBar
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:37
  */
+
 public class KChartTabView extends RelativeLayout implements View.OnClickListener {
 
     LinearLayout mLlContainer;

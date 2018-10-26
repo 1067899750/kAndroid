@@ -3,9 +3,13 @@ package com.github.tifezh.kchartlib.chart.formatter;
 import com.github.tifezh.kchartlib.chart.base.IValueFormatter;
 
 /**
- * Value格式化类
- * Created by tifezh on 2016/6/21.
+ *
+ * Description Value格式化类
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:37
  */
+
 
 public class ValueFormatter implements IValueFormatter {
     @Override

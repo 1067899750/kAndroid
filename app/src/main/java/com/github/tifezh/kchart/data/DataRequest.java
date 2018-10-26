@@ -18,8 +18,13 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * 模拟网络请求
+ *
+ * Description 模拟网络请求
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:43
  */
+
 
 public class DataRequest {
 //    private static List<KLine> datas = null;

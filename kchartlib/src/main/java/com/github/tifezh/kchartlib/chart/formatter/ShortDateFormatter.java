@@ -6,9 +6,13 @@ import com.github.tifezh.kchartlib.utils.DateUtil;
 import java.util.Date;
 
 /**
- * 时间格式化器
- * Created by tifezh on 2016/6/21.
+ *
+ * Description 时间格式化器
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:38
  */
+
 
 public class ShortDateFormatter implements IDateTimeFormatter {
     @Override

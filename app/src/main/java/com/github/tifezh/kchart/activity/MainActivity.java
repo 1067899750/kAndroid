@@ -7,7 +7,35 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.github.tifezh.kchart.R;
-
+/**
+ *
+ *
+ *   Description
+ *   Author puyantao
+ *   Email 1067899750@qq.com
+ *   Date 2018-10-26 17:42
+ *
+ *
+ *                        .::::.
+ *                     .::::::::.
+ *                    :::::::::::
+ *                 ..:::::::::::'
+ *               '::::::::::::'
+ *                 .::::::::::
+ *            '::::::::::::::..
+ *               ..::::::::::::.
+ *             ``::::::::::::::::  <- touch me
+ *               ::::``:::::::::'        .:::.
+ *             ::::'   ':::::'       .::::::::.
+ *           .::::'      ::::     .:::::::'::::.
+ *            .:::'       :::::  .:::::::::' ':::::.
+ *          .::'        :::::.:::::::::'      ':::::.
+ *         .::'         ::::::::::::::'         ``::::.
+ *      ...:::           ::::::::::::'              ``::.
+ *     ```` ':.          ':::::::::'                  ::::..
+ *                        '.:::::'                    ':'````..
+ *
+*/
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
