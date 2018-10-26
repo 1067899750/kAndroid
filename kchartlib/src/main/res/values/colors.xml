@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="chart_red">#F27A68</color>
+    <color name="chart_green">#3EB86A</color>
+
+    <color name="chart_ma5">#E7EDF5</color>
+    <color name="chart_ma10">#EFD521</color>
+    <color name="chart_ma20">#6774FF</color>
+    <color name="chart_ma40">#67D9FF</color>
+    <color name="chart_ma60">#EFAC21</color>
+    <color name="chart_white">#fff</color>
+
+    <color name="chart_background">#2A2D4F</color>
+    <color name="chart_grid_line">#353945</color>
+    <color name="chart_text">#FFFFFF</color>
+    <color name="chart_selector">#c830343C</color>
+    <color name="chart_tab_background">#30343C</color>
+    <color name="chart_tab_indicator">#FF6601</color>
+    <color name="chart_press_xian">#6774FF</color>
+
+
+    <color name="chart_FFFFFF">#FFFFFF</color>
+    <color name="chart_FF6600">#FF6600</color>
+    <color name="chart_90A901">#90A901</color>
+    <color name="chart_dialog_bg">#4F5490</color>
+    <color name="chart_time">#6A798E</color>
+
+    <color name="color_positive_value">#F27A68</color>
+    <color name="color_negative_value">#3EB86A</color>
+    <color name="color_central_paint">#9EB2CD</color>
+    <color name="color_candle_paint">#6A798E</color>
+    <color name="color_text_paint">#6774FF</color>
+    <color name="color_text_positive_paint">#E7EDF5</color>
+    <color name="color_cjl_line_paint">#EFD521</color>
+    <color name="color_text_hint_1">#9EB2CD</color>
+    <color name="color_child_text">#D4975C</color>
+
+    <color name="color_macd_text">#EFAC21</color>
+    <color name="color_diff_text">#E7EDF5</color>
+    <color name="color_dea_text">#EFD521</color>
+    <color name="color_skick_text">#E7EDF5</color>
+
+    <!--lem-->
+    <color name="cF27A68">#F27A68</color>
+    <color name="c67D9FF">#67D9FF</color>
+    <color name="c6774FF">#6774FF</color>
+    <color name="c9EB2CD">#9EB2CD</color>
+    <color name="c3EB86A">#3EB86A</color>
+    <color name="cffffff">#ffffff</color>
+    <color name="c6A798E">#6A798E</color>
+
+
+</resources>

@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/title_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/chart_background"
+        android:visibility="gone"
+        android:fitsSystemWindows="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minHeight="40dp"
+            android:text="@string/app_name"
+            android:textColor="@color/chart_white"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/verticalView"
+        layout="@layout/layout_minute_vertical" />
+
+    <com.github.tifezh.kchartlib.chart.minute.MinuteChartView
+        android:id="@+id/minuteChartView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <include
+        android:id="@+id/verticalView"
+        layout="@layout/layout_minute_vertical"
+      />
+</LinearLayout>

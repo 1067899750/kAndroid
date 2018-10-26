@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/chart_background</color>
+    <color name="colorPrimaryDark">@color/chart_background</color>
+    <color name="colorAccent">#FF4081</color>
+
+
+    <!--项目颜色-->
+    <color name="c2A2D4F">#2A2D4F</color>
+    <color name="cE7EDF5">#E7EDF5</color>
+    <color name="cFF353858">#FF353858</color>
+    <color name="c3EB86A">#3EB86A</color>
+    <color name="c6A798E">#6A798E</color>
+    <color name="c9EB2CD">#9EB2CD</color>
+    <color name="c4F5490">#4F5490</color>
+    <color name="cD4975C">#D4975C</color>
+    <color name="cFF333556">#FF333556</color>
+    <color name="c67D9FF">#67D9FF</color>
+    <color name="cEFD521">#EFD521</color>
+    <color name="cEFAC21">#EFAC21</color>
+    <color name="c6774FF">#6774FF</color>
+
+
+
+</resources>
+
+

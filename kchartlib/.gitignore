@@ -1,0 +1,10 @@
+.gradle/
+.idea/
+app/build/
+mvp/build/
+*.iml
+build/intermediates/Mob/assets/ShareSDK.xml
+build/
+app/gjapp/release/output.json
+!.gitignore
+/local.properties

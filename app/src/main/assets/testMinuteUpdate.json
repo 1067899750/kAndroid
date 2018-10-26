@@ -1,0 +1,20 @@
+//分时图每秒请求数据
+{
+    "code":"000000",
+    "message":"SUCCESS",
+    "data":{
+        "name":null,
+        "last":"50830",
+        "updown":"320",
+        "percent":"0.63%",
+        "ask1p":"50880",//卖
+        "ask1v":"5",
+        "bid1p":"50760",//买
+        "bid1v":"25",
+        "volume":"42850",
+        "interest":"40340",
+        "chgInterest":"-15230",
+        "highest":null,
+        "lowest":null
+    }
+}

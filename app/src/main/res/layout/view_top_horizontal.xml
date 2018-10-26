@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@color/c2A2D4F"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/d8">
+
+    <TextView
+        android:id="@+id/tvContractName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="@dimen/d40"
+        android:text="沪铜1801"
+        android:textColor="@color/cE7EDF5"
+        android:textSize="@dimen/f16" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d1"
+        android:background="@color/cFF353858" />
+
+    <TextView
+        android:id="@+id/tvLastValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="565222.3"
+        android:layout_marginRight="@dimen/d10"
+        android:textColor="@color/c3EB86A"
+        android:textSize="@dimen/f30" />
+
+    <TextView
+        android:id="@+id/tvPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-56577"
+        android:textColor="@color/c3EB86A"
+        android:textSize="@dimen/f18" />
+
+    <TextView
+        android:id="@+id/tvPercentValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-15%"
+        android:textColor="@color/c3EB86A"
+        android:textSize="@dimen/f18" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d6"
+        android:layout_marginTop="@dimen/d5"
+        android:layout_marginRight="@dimen/d10"
+        android:background="@color/cFF353858" />
+
+    <!--卖-->
+    <RelativeLayout
+        android:id="@+id/rlSell"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/d10"
+        android:paddingTop="@dimen/d5">
+
+        <TextView
+            android:id="@+id/txtSell"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_sell"
+            android:textColor="@color/c6A798E"
+            android:textSize="@dimen/f17" />
+
+        <TextView
+            android:id="@+id/tvSellValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtSell"
+            android:layout_alignLeft="@+id/txtSell"
+            android:text="4155.9"
+            android:textColor="@color/c9EB2CD"
+            android:layout_toLeftOf="@+id/tvSellCount"
+            android:layout_marginRight="@dimen/d10"
+            android:gravity="center|left"
+            android:textSize="@dimen/f16" />
+
+        <TextView
+            android:id="@+id/tvSellCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tvSellValue"
+            android:layout_alignParentRight="true"
+            android:text="3"
+            android:textColor="@color/c9EB2CD"
+            android:textSize="@dimen/f16" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d1"
+        android:layout_marginTop="@dimen/d5"
+        android:background="@color/cFF353858" />
+
+
+    <!--买-->
+    <RelativeLayout
+        android:id="@+id/rlBuy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/d10"
+        android:paddingTop="@dimen/d5">
+
+        <TextView
+            android:id="@+id/txtBuy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_buy"
+            android:textColor="@color/c6A798E"
+            android:textSize="@dimen/f17" />
+
+        <TextView
+            android:id="@+id/tvBuyValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtBuy"
+            android:layout_alignLeft="@+id/txtBuy"
+            android:text="3655.3"
+            android:textColor="@color/c9EB2CD"
+            android:layout_toLeftOf="@+id/tvBuyCount"
+            android:layout_marginRight="@dimen/d10"
+            android:gravity="center|left"
+            android:textSize="@dimen/f16" />
+
+        <TextView
+            android:id="@+id/tvBuyCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tvBuyValue"
+            android:layout_alignParentRight="true"
+            android:text="6"
+            android:textColor="@color/c9EB2CD"
+            android:textSize="@dimen/f16" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d1"
+        android:layout_marginTop="@dimen/d5"
+        android:background="@color/cFF353858" />
+
+
+
+    <!--持仓量-->
+    <RelativeLayout
+        android:id="@+id/rlInventory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/d10"
+        android:paddingTop="@dimen/d5">
+
+        <TextView
+            android:id="@+id/txtInventory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_Inventory"
+            android:textColor="@color/c6A798E"
+            android:textSize="@dimen/f17" />
+
+        <TextView
+            android:id="@+id/tvInventoryValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtInventory"
+            android:layout_alignLeft="@+id/txtInventory"
+            android:text="3845"
+            android:textColor="@color/c9EB2CD"
+            android:textSize="@dimen/f16" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d1"
+        android:layout_marginTop="@dimen/d5"
+        android:background="@color/cFF353858" />
+
+    <!--成交量-->
+    <RelativeLayout
+        android:id="@+id/rlVolume"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/d10"
+        android:paddingTop="@dimen/d5">
+
+        <TextView
+            android:id="@+id/txtVolume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_Volume"
+            android:textColor="@color/c6A798E"
+            android:textSize="@dimen/f17" />
+
+        <TextView
+            android:id="@+id/tvVolumeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtVolume"
+            android:layout_alignLeft="@+id/txtVolume"
+            android:text="545"
+            android:textColor="@color/c9EB2CD"
+            android:textSize="@dimen/f16" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d1"
+        android:layout_marginTop="@dimen/d5"
+        android:background="@color/cFF353858" />
+</LinearLayout>

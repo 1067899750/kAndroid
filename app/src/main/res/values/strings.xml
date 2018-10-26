@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">KChartViewDemo</string>
+    <string name="txt_sell">卖</string>
+    <string name="txt_buy">买</string>
+    <string name="txt_Inventory">持仓量</string>
+    <string name="txt_Volume">成交量</string>
+</resources>

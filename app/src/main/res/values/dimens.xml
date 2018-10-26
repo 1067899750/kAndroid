@@ -1,0 +1,67 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="chart_text_size">10sp</dimen>
+
+
+
+    <!--字体-->
+    <dimen name="f30">30dp</dimen>
+    <dimen name="f24">24dp</dimen>
+    <dimen name="f23">23dp</dimen>
+    <dimen name="f22">22dp</dimen>
+    <dimen name="f21">21dp</dimen>
+    <dimen name="f20">20dp</dimen>
+    <dimen name="f18">18dp</dimen>
+    <dimen name="f17">17dp</dimen>
+    <dimen name="f16">16dp</dimen>
+    <dimen name="f15">15dp</dimen>
+    <dimen name="f14">14dp</dimen>
+    <dimen name="f13">13dp</dimen>
+    <dimen name="f12">12dp</dimen>
+    <dimen name="f10">10dp</dimen>
+    <dimen name="f11">11dp</dimen>
+    <dimen name="f9">9dp</dimen>
+    <dimen name="f8">8dp</dimen>
+    <dimen name="f6">6dp</dimen>
+    <dimen name="f4">4dp</dimen>
+    <dimen name="f2">2dp</dimen>
+
+    <!--间距-->
+    <dimen name="line">0.5dp</dimen>
+    <dimen name="d1">1dp</dimen>
+    <dimen name="d2">2dp</dimen>
+    <dimen name="d3">3dp</dimen>
+    <dimen name="d4">4dp</dimen>
+    <dimen name="d6">6dp</dimen>
+    <dimen name="d7">7dp</dimen>
+    <dimen name="d12">12dp</dimen>
+    <dimen name="d15">15dp</dimen>
+    <dimen name="d20">20dp</dimen>
+    <dimen name="d25">25dp</dimen>
+    <dimen name="d5">5dp</dimen>
+    <dimen name="d8">8dp</dimen>
+    <dimen name="d18">18dp</dimen>
+    <dimen name="d50">50dp</dimen>
+    <dimen name="d80">80dp</dimen>
+    <dimen name="d100">100dp</dimen>
+    <dimen name="d110">110dp</dimen>
+    <dimen name="d120">120dp</dimen>
+    <dimen name="d60">60dp</dimen>
+    <dimen name="d70">70dp</dimen>
+    <dimen name="d40">40dp</dimen>
+    <dimen name="d30">30dp</dimen>
+    <dimen name="d36">36dp</dimen>
+    <dimen name="d38">38dp</dimen>
+    <dimen name="d10">10dp</dimen>
+    <dimen name="d45">45dp</dimen>
+    <dimen name="d130">130dp</dimen>
+    <dimen name="d140">140dp</dimen>
+    <dimen name="d150">150dp</dimen>
+    <dimen name="d160">160dp</dimen>
+    <dimen name="d180">180dp</dimen>
+    <dimen name="d197">197dp</dimen>
+
+</resources>
