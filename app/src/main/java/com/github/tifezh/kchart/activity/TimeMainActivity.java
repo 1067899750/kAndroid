@@ -13,17 +13,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.tifezh.kchart.R;
-
 import com.github.tifezh.kchart.data.DataRequest;
 import com.github.tifezh.kchart.data.MinuteDataHelper;
-import com.github.tifezh.kchart.model.MinuteParent;
 import com.github.tifezh.kchart.model.Minute;
+import com.github.tifezh.kchart.model.MinuteParent;
 import com.github.tifezh.kchart.model.MinuteTime;
 import com.github.tifezh.kchart.utils.ValueUtil;
 import com.github.tifezh.kchart.view.TopLeftHorizontalView;
 import com.github.tifezh.kchartlib.chart.minute.BaseMinuteView;
 import com.github.tifezh.kchartlib.chart.minute.MinuteTimeView;
-
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -122,7 +120,6 @@ public class TimeMainActivity extends AppCompatActivity {
                 List<MinuteParent.DataBeanX.DataBean> data = minuteData.getData();
                 List<MinuteParent.DataBeanX.TradeRangesBean> tradeRanges = minuteData.getTradeRanges();
 
-//                data = data.subList(0, 200);
 
                 for (int i = 1; i < data.size(); i++) {
                     Minute minuteDataMadel = new Minute();
@@ -203,36 +200,27 @@ public class TimeMainActivity extends AppCompatActivity {
                         minuteDataMadel.turnover = data.get(i).getTurnover();
                     }
 
-
-
-                    if (i % 1 == 0) {
-                        mMinuteDataMadels1.add(minuteDataMadel);
-                    }
-
-                    if (i % 2 == 0) {
-                        mMinuteDataMadels2.add(minuteDataMadel);
-                    }
-
-                    if (i % 3 == 0) {
-                        mMinuteDataMadels3.add(minuteDataMadel);
-                    }
-
-                    if (i % 4 == 0) {
-                        mMinuteDataMadels4.add(minuteDataMadel);
-                    }
-
-                    if (i % 5 == 0) {
-                        mMinuteDataMadels5.add(minuteDataMadel);
-                    }
-
-
+                    mMinuteDataMadels1.add(minuteDataMadel);
+                    MinuteDataHelper.calculateMACD(mMinuteDataMadels1);
                 }
 
-                MinuteDataHelper.calculateMACD(mMinuteDataMadels1);
-                MinuteDataHelper.calculateMACD(mMinuteDataMadels2);
-                MinuteDataHelper.calculateMACD(mMinuteDataMadels3);
-                MinuteDataHelper.calculateMACD(mMinuteDataMadels4);
-                MinuteDataHelper.calculateMACD(mMinuteDataMadels5);
+                for (int j = 1; j < mMinuteDataMadels1.size(); j++) {
+                    if (j % 2 == 0) {
+                        mMinuteDataMadels2.add(mMinuteDataMadels1.get(j));
+                    }
+
+                    if (j % 3 == 0) {
+                        mMinuteDataMadels3.add(mMinuteDataMadels1.get(j));
+                    }
+
+                    if (j % 4 == 0) {
+                        mMinuteDataMadels4.add(mMinuteDataMadels1.get(j));
+                    }
+
+                    if (j % 5 == 0) {
+                        mMinuteDataMadels5.add(mMinuteDataMadels1.get(j));
+                    }
+                }
 
                 for (int i = 0; i < tradeRanges.size(); i++) {
                     MinuteTime minuteTimeModel = new MinuteTime();
