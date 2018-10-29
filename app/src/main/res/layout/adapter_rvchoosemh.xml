@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/d40"
+    android:background="@color/c2A2D4F">
+
+    <TextView
+        android:id="@+id/tvValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="3m"
+        android:textColor="@color/c9EB2CD"
+        android:textSize="@dimen/f15" />
+
+    <TextView
+        android:id="@+id/tvTab"
+        android:layout_width="14dp"
+        android:layout_height="@dimen/d3"
+        android:layout_below="@+id/tvValue"
+        android:layout_centerHorizontal="true"
+        android:background="@color/cD4975C" />
+
+    <ImageView
+        android:id="@+id/ivopen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/tvValue"
+        android:src="@mipmap/iv_chart_date_down"
+        android:textColor="@color/c9EB2CD"
+        android:visibility="gone" />
+</RelativeLayout>

@@ -3,6 +3,10 @@
     <color name="colorPrimary">@color/chart_background</color>
     <color name="colorPrimaryDark">@color/chart_background</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="cFFFFFF">#FFFFFF</color>
+    <color name="c000000">#000000</color>
+
+
 
 
     <!--项目颜色-->
@@ -19,9 +23,15 @@
     <color name="cEFD521">#EFD521</color>
     <color name="cEFAC21">#EFAC21</color>
     <color name="c6774FF">#6774FF</color>
+    <color name="cFFFFFFFF">#FFFFFFFF</color>
+    <!--透明-->
+    <color name="transparent">#00000000</color>
 
-
-
+    <color name="c23">#337e90a7</color>
+    <color name="c20">#333333</color>
+    <color name="c21">#999999</color>
+    <color name="c22">#E8E8E8</color>
+    <color name="cFAFAFA">#FAFAFA</color>
 </resources>
 
 

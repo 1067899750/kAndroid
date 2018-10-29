@@ -1,5 +1,6 @@
 package com.github.tifezh.kchart.utils;
 
+import com.github.tifezh.kchart.App;
 
 
 import java.math.BigDecimal;
@@ -7,13 +8,11 @@ import java.math.RoundingMode;
 import java.util.List;
 
 /**
- *
- * Description 数据检测类
- * Author puyantao
- * Email 1067899750@qq.com
- * Date 2018-10-26 17:42
+ * Description：数据检测类
+ * Author: star
+ * Email: guimingxing@163.com
+ * Date: 2018-3-28  17:21
  */
-
 public class ValueUtil {
 
     public static boolean isListNotEmpty(List<?> noteList) {
@@ -57,7 +56,12 @@ public class ValueUtil {
         }
         return true;
     }
-
+    public static String getString(int resId) {
+        if (null != App.getContext()) {
+            return App.getContext().getString(resId);
+        }
+        return "";
+    }
 
     //Double保留两位小数
     public static String doubleFormat(double value) {

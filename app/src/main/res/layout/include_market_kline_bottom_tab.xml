@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:background="@drawable/shap_tab_chaar"
+    android:orientation="horizontal"
+    tools:ignore="MissingDefaultResource">
+
+    <LinearLayout
+        android:id="@+id/llPlus"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/d50"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/iv_chart_add_plus" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/d2"
+            android:gravity="center"
+            android:text="@string/txt_chart_plus"
+            android:textColor="@color/c9EB2CD"
+            android:textSize="@dimen/f12" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/llSpecs"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/d50"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/iv_chart_specs" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/d2"
+            android:gravity="center"
+            android:text="@string/txt_chart_speces"
+            android:textColor="@color/c9EB2CD"
+            android:textSize="@dimen/f12" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/llWarn"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/d50"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/iv_chart_warn" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/d2"
+            android:gravity="center"
+            android:text="@string/txt_chart_warn"
+            android:textColor="@color/c9EB2CD"
+            android:textSize="@dimen/f12" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/llShare"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/d50"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/iv_chart_share" />
+
+        <TextView
+            android:id="@+id/tvShare"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/d2"
+            android:gravity="center"
+            android:text="@string/txt_chart_share"
+            android:textColor="@color/c9EB2CD"
+            android:textSize="@dimen/f12" />
+    </LinearLayout>
+
+</LinearLayout>

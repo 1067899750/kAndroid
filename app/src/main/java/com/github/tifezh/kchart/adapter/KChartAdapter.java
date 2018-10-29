@@ -4,17 +4,11 @@ import com.github.tifezh.kchart.model.KLine;
 import com.github.tifezh.kchartlib.chart.base.BaseKChartAdapter;
 import com.github.tifezh.kchartlib.utils.DateUtil;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- *
- * Description
- * Author puyantao
- * Email 1067899750@qq.com
- * Date 2018-10-26 17:42
- */
 
 public class KChartAdapter extends BaseKChartAdapter {
 

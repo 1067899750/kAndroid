@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:ignore="MissingDefaultResource">
+
+    <!--横屏显示信息-->
+    <com.github.tifezh.kchart.view.TopLeftHorizontalView
+        android:id="@+id/viewMinuteLeftMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/lineMinuteView"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/cFF353858"
+        android:visibility="gone" />
+
+    <com.github.tifezh.kchartlib.chart.minute.MinuteTimeView
+        android:id="@+id/minuteChartView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+</LinearLayout>
