@@ -152,10 +152,10 @@ public class MinuteTimeView extends BaseMinuteView {
      */
     private float getX(int position) {
         mCount = 0;
-        float dateTime = mPoints.get(position).getDate().getTime();
+        Long dateTime = mPoints.get(position).getDate().getTime();
         for (int i = 0; i < mTimes.size(); i++) {
-            float startTime = mTimes.get(i).getStartDate().getTime();
-            float endTime = mTimes.get(i).getEndDate().getTime();
+            Long startTime = mTimes.get(i).getStartDate().getTime();
+            Long endTime = mTimes.get(i).getEndDate().getTime();
             if (dateTime >= startTime && dateTime <= endTime) {
                 mCount += (dateTime - startTime) / ONE_MINUTE;
                 break;
