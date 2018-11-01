@@ -10,15 +10,15 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v4.view.ViewConfigurationCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewConfiguration;
 
 import com.github.tifezh.kchartlib.R;
-import com.github.tifezh.kchartlib.chart.formatter.BigValueFormatter;
 
 import static android.view.View.MeasureSpec.AT_MOST;
 
@@ -70,6 +70,18 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
     protected boolean isClosePress = true; //关闭长按时间
     private Bitmap mBitmapLogo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_app_logo);
 
+
+    private float mXDown;
+    private float mYDown;
+
+    private float mXMove;
+    private float mYMove;
+
+    /**
+     * 判定为拖动的最小移动像素数
+     */
+    private int mTouchSlop;
+
     public BaseView(Context context) {
         this(context, null);
         init();
@@ -90,10 +102,14 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
     protected void init() {
         mDetector = new GestureDetectorCompat(getContext(), this);
 
-        mBackgroundColor = Color.parseColor("#2A2D4F");
+        ViewConfiguration configuration = ViewConfiguration.get(getContext());
+        // 获取TouchSlop值
+        mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
+
+        mBackgroundColor = Color.parseColor("#101114");
         mBackgroundPaint.setColor(mBackgroundColor);
 
-        mGridPaint.setColor(Color.parseColor("#09FFFFFF")); //网格线颜色
+        mGridPaint.setColor(Color.parseColor("#20FFFFFF")); //网格线颜色
         mGridPaint.setStrokeWidth(dp2px(1));
 
     }
@@ -168,16 +184,30 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
+                mXDown = event.getX();
+                mYDown = event.getY();
                 break;
 
             case MotionEvent.ACTION_MOVE:
+                final float curX = event.getX();
+                final float curY = event.getY();
+                mXMove += Math.abs(curX - mXDown);
+                mYMove += Math.abs(curY - mYDown);
+
+                mXDown = curX;
+                mYDown = curY;
+
+                if (mYMove > mXMove){
+                    return false;
+                }
+
                 //一个点的时候滑动
                 if (event.getPointerCount() == 1) {
                     //长按之后移动
-                    if (isLongPress || !isClosePress) {
+//                    if (isLongPress || !isClosePress) {
                         calculateSelectedX(event.getX());
                         invalidate();
-                    }
+//                    }
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -196,6 +226,7 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
         this.mDetector.onTouchEvent(event);
         return true;
     }
+
 
     protected abstract void notifyChanged();
     protected abstract void calculateSelectedX(float x);

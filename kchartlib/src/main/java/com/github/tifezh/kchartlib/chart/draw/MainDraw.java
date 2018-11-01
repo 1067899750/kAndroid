@@ -294,27 +294,27 @@ public class MainDraw implements IChartDraw<ICandle> {
         ICandle point = (ICandle) view.getItem(index);
         List<String> strings = new ArrayList<>();
         strings.add(view.formatShortDate(view.getAdapter().getDate(index)));
-        strings.add("开盘价:");
+        strings.add("开盘价");
         strings.add(String.valueOf(point.getOpenPrice()));
-        strings.add("最高:");
+        strings.add("最高");
         strings.add(String.valueOf(point.getHighPrice()));
-        strings.add("最低:");
+        strings.add("最低");
         strings.add(String.valueOf(point.getLowPrice()));
 
-        strings.add("收盘价:");
+        strings.add("收盘价");
         strings.add(String.valueOf(point.getClosePrice()));
         strings.add(String.valueOf(point.getUpDown()));
         strings.add(String.valueOf(point.getPercent()));
 
-        strings.add("持仓量:");
+        strings.add("持仓量");
         strings.add(String.valueOf(point.getInterest()));
         strings.add(String.valueOf(point.getChgInterest()));
 
-        strings.add("成交量:");
+        strings.add("成交量");
         strings.add(String.valueOf(point.getVolume()));
         strings.add(String.valueOf(point.getChgVolume()));
 
-        strings.add("结算价:");
+        strings.add("结算价");
         strings.add(String.valueOf(point.getPreClose()));
 
         float height = paddingText * strings.size() + textHeight * (strings.size());
@@ -330,6 +330,14 @@ public class MainDraw implements IChartDraw<ICandle> {
         }
         RectF r = new RectF(left, top, left + width, height+(2*top));
         canvas.drawRoundRect(r, bgCircle, bgCircle, mSelectorBackgroundPaint);//画背景
+
+        if (x > view.getChartWidth() / 2) {
+            left = margin + bgPaddingLeft;
+            mSelectorTextPaint.setTextAlign(Paint.Align.LEFT);
+        } else {
+            left = view.getChartWidth() - margin - bgPaddingLeft;
+            mSelectorTextPaint.setTextAlign(Paint.Align.RIGHT);
+        }
 
         float y = top + (textHeight- metrics.bottom - metrics.top) / 2;
         for (int i = 0; i < strings.size(); i++) {
@@ -347,7 +355,7 @@ public class MainDraw implements IChartDraw<ICandle> {
             if(i==0){//第一条跟顶部间距
                 y=y+bgPaddingTop;
             }
-            canvas.drawText(strings.get(i), left +bgPaddingLeft, y, mSelectorTextPaint);
+            canvas.drawText(strings.get(i), left, y, mSelectorTextPaint);
             y += textHeight + paddingText;
         }
     }

@@ -3,31 +3,10 @@ package com.github.tifezh.kchart.model;
 import com.github.tifezh.kchartlib.chart.comInterface.ILem;
 
 import java.util.Date;
-/**
- *
- * Description
- * Author puyantao
- * Email 1067899750@qq.com
- * Date 2018-10-26 17:43
- */
 
 public class Lem implements ILem {
-
-    public String chgInterest;
-    public String chgVolume;
-    public String close;
-    public String contract;
-    public String highest;
-    public String interest;
-    public String lowest;
-    public String open;
-    public String percent;
-    public String preClose;
-    public String preSettle;
     public long ruleAt;
-    public String settle;
-    public Object source;
-    public String updown;
+    public String curve;
     public String volume;
 
     @Override
@@ -36,13 +15,13 @@ public class Lem implements ILem {
     }
 
     @Override
-    public float getValue() {
-        return Float.valueOf(highest);
+    public Float getCurve() {
+        return Float.valueOf(curve);
     }
 
     @Override
-    public float getPrice() {
-        return Float.valueOf(settle);
+    public Float getVolume() {
+        return Float.valueOf(volume);
     }
 
 

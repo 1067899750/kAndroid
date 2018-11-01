@@ -197,7 +197,7 @@ public class DataRequest {
      * @return
      */
     public static  List<Lem>  getLmeData(Context context) {
-        List<Lem> lemModels = new Gson().fromJson(getStringFromAssert(context, "kline_3m.json"),
+        List<Lem> lemModels = new Gson().fromJson(getStringFromAssert(context, "lem.json"),
                 new TypeToken<List<Lem>>() {}.getType());
 
         return lemModels;

@@ -16,8 +16,8 @@ import com.github.tifezh.kchartlib.utils.StrUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
- *
  * Description
  * Author puyantao
  * Email 1067899750@qq.com
@@ -239,6 +239,9 @@ public class MinuteView extends BaseMinuteView {
 
         //画指示线
         if (isLongPress || !isClosePress) {
+            if (selectedIndex >= mPoints.size() || selectedIndex < 0 || mPoints.size() == 0) {
+                return;
+            }
             IMinuteLine point = mPoints.get(selectedIndex);
             float x = getX(selectedIndex);
             //轴线
@@ -290,21 +293,31 @@ public class MinuteView extends BaseMinuteView {
 
         float y = top + padding * 2 + (textHeight - metrics.bottom - metrics.top) / 2;
 
+        if (x > mWidth / 2) {
+            left = margin + padding;
+            mSelectorTextPaint.setTextAlign(Paint.Align.LEFT);
+            mSelectorTitlePaint.setTextAlign(Paint.Align.LEFT);
+        } else {
+            left = mWidth - margin - padding;
+            mSelectorTextPaint.setTextAlign(Paint.Align.RIGHT);
+            mSelectorTitlePaint.setTextAlign(Paint.Align.RIGHT);
+        }
+
         for (String s : strings) {
             if (StrUtil.isTimeText(s)) {
                 mSelectorTextPaint.setColor(getResources().getColor(R.color.color_text_positive_paint));
-                canvas.drawText(s, left + padding, y, mSelectorTextPaint);
+                canvas.drawText(s, left, y, mSelectorTextPaint);
 
             } else if (StrUtil.isChinaText(s)) {
-                canvas.drawText(s, left + padding, y, mSelectorTitlePaint);
+                canvas.drawText(s, left, y, mSelectorTitlePaint);
 
             } else {
                 if (StrUtil.isPositiveOrNagativeNumberText(s)) {
                     mSelectorTextPaint.setColor(getResources().getColor(R.color.color_negative_value));
-                    canvas.drawText(s, left + padding, y, mSelectorTextPaint);
+                    canvas.drawText(s, left, y, mSelectorTextPaint);
                 } else {
                     mSelectorTextPaint.setColor(getResources().getColor(R.color.color_text_positive_paint));
-                    canvas.drawText(s, left + padding, y, mSelectorTextPaint);
+                    canvas.drawText(s, left, y, mSelectorTextPaint);
                 }
             }
 
