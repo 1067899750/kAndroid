@@ -90,7 +90,7 @@ public abstract class BaseMinuteView extends View implements GestureDetector.OnG
     protected Date mEndTime;
 
     protected int mMACDClickPoint; //MACD选择点
-    private Bitmap mBitmapLogo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_app_logo);
+    private Bitmap mBitmapLogo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.app_bg_logo);
 
     private IValueFormatter mVolumeFormatter;
 

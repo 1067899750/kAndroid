@@ -68,7 +68,7 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
     protected GestureDetectorCompat mDetector;
     protected boolean isLongPress = false; //是否长按事件
     protected boolean isClosePress = true; //关闭长按时间
-    private Bitmap mBitmapLogo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_app_logo);
+    private Bitmap mBitmapLogo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.app_bg_logo);
 
 
     private float mXDown;
