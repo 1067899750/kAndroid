@@ -3,21 +3,16 @@ package com.github.tifezh.kchartlib.chart.view;
 import android.content.Context;
 import android.support.v4.view.GestureDetectorCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
-import android.view.View;
 import android.widget.OverScroller;
 import android.widget.RelativeLayout;
 
 /**
- *
- * Description  可以滑动和放大的view
- * Author puyantao
- * Email 1067899750@qq.com
- * Date 2018-10-26 17:36
+ * 可以滑动和放大的view
  */
-
 public abstract class ScrollAndScaleView extends RelativeLayout implements
         GestureDetector.OnGestureListener,
         ScaleGestureDetector.OnScaleGestureListener {
@@ -45,6 +40,8 @@ public abstract class ScrollAndScaleView extends RelativeLayout implements
     private boolean mScaleEnable = true;
 
     protected boolean isOnClick = false;
+
+    private boolean isScale = false;
 
     public ScrollAndScaleView(Context context) {
         super(context);
@@ -85,7 +82,7 @@ public abstract class ScrollAndScaleView extends RelativeLayout implements
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        if (!isLongPress && !isMultipleTouch()) {
+        if (!isScale && !isLongPress && !isMultipleTouch()) {
             scrollBy(Math.round(distanceX), 0);
             return true;
         }
@@ -102,7 +99,7 @@ public abstract class ScrollAndScaleView extends RelativeLayout implements
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         if (isClosePress) {
-            if (!isTouch() && isScrollEnable()) {
+            if (!isScale && !isTouch() && isScrollEnable()) {
                 mScroller.fling(mScrollX, 0
                         , Math.round(velocityX / mScaleX), 0,
                         Integer.MIN_VALUE, Integer.MAX_VALUE,
@@ -171,22 +168,29 @@ public abstract class ScrollAndScaleView extends RelativeLayout implements
             } else {
                 onScaleChanged(mScaleX, oldScale);
             }
+
+            Log.i("22222222222222", mScaleX + "");
+            if (mScaleX >= 2.0f || mScaleX <= 0.5f) {
+                isScale = true;
+            }
         }
         return true;
     }
 
     protected void onScaleChanged(float scale, float oldScale) {
+        isScale = true;
         invalidate();
     }
 
     @Override
     public boolean onScaleBegin(ScaleGestureDetector detector) {
+        isScale = true;
         return true;
     }
 
     @Override
     public void onScaleEnd(ScaleGestureDetector detector) {
-
+        isScale = false;
     }
 
 
@@ -344,7 +348,7 @@ public abstract class ScrollAndScaleView extends RelativeLayout implements
         isLongPress = longPress;
     }
 
-    public void setClosePress(boolean closePress){
+    public void setClosePress(boolean closePress) {
         isClosePress = closePress;
     }
 }

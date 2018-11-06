@@ -2,32 +2,29 @@ package com.github.tifezh.kchartlib.chart.view;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.github.tifezh.kchartlib.R;
 import com.github.tifezh.kchartlib.chart.draw.BOLLDraw;
+import com.github.tifezh.kchartlib.chart.draw.CJLDraw;
 import com.github.tifezh.kchartlib.chart.draw.KDJDraw;
 import com.github.tifezh.kchartlib.chart.draw.MACDDraw;
 import com.github.tifezh.kchartlib.chart.draw.MainDraw;
 import com.github.tifezh.kchartlib.chart.draw.RSIDraw;
-import com.github.tifezh.kchartlib.chart.draw.CJLDraw;
 import com.github.tifezh.kchartlib.utils.DensityUtil;
 
 /**
- *
- * Description k线图
- * Author puyantao
- * Email 1067899750@qq.com
- * Date 2018-10-26 17:37
+ * k线图
  */
-
-public class KChartView extends BaseKChartView implements BaseKChartView.CallOnClick{
+public class KChartView extends BaseKChartView implements BaseKChartView.CallOnClick {
     private ProgressBar mProgressBar;
     private boolean isRefreshing = false;
     private boolean isLoadMoreEnd = false;
@@ -41,6 +38,10 @@ public class KChartView extends BaseKChartView implements BaseKChartView.CallOnC
     private KDJDraw mKDJDraw;
     private CJLDraw mVolumeDraw;
     private int index = mKChartTabView.getTabSelectedIndex();
+    private boolean portraitScreen = true;//默认竖屏
+    private boolean mShowMA = true;//默认显示MA
+    private int paddingTopMA = DensityUtil.dp2px(30);//ma距顶部距离
+    private int paddingTopBoll = DensityUtil.dp2px(20);//boll距顶部距离
 
     public KChartView(Context context) {
         this(context, null);
@@ -79,6 +80,7 @@ public class KChartView extends BaseKChartView implements BaseKChartView.CallOnC
             public void onMainViewClick() {
                 setShowMA(!getShowMA());
             }
+
             @Override
             public void onChildViewClick() {
                 index = index + 1;
@@ -133,7 +135,7 @@ public class KChartView extends BaseKChartView implements BaseKChartView.CallOnC
 
                 //持仓量
                 setInterestPaintColor(array.getColor(R.styleable.KChartView_kc_ma10_color, getColor(R.color.chart_ma10)));
-                setTargetColor(ContextCompat.getColor(getContext(),R.color.color_child_text),ContextCompat.getColor(getContext(),R.color.color_macd_text));//指标名、指标
+                setTargetColor(ContextCompat.getColor(getContext(), R.color.color_child_text), ContextCompat.getColor(getContext(), R.color.color_macd_text));//指标名、指标
                 //mainboll by star
                 setMainMbColor(array.getColor(R.styleable.KChartView_kc_dif_color, getColor(R.color.chart_ma5)));
                 setMainUpColor(array.getColor(R.styleable.KChartView_kc_dea_color, getColor(R.color.chart_ma10)));
@@ -178,6 +180,26 @@ public class KChartView extends BaseKChartView implements BaseKChartView.CallOnC
     @Override
     public void onRightSide() {
     }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {//横屏
+            portraitScreen = false;
+            mMainDraw.setScreenStatus(false);
+            paddingTopMA = mMainDraw.getLineFeed() ? DensityUtil.dp2px(30) : paddingTopBoll;
+            Log.e("横屏：---------------", "" + mMainDraw.getLineFeed() + paddingTopMA);
+            setTopPadding(mShowMA ? paddingTopMA : paddingTopBoll);
+        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {//竖屏
+            portraitScreen = true;
+            mMainDraw.setScreenStatus(true);
+            paddingTopMA = DensityUtil.dp2px(30);
+            Log.e("横屏：---------------", "" + paddingTopMA);
+            setTopPadding(mShowMA ? paddingTopMA : paddingTopBoll);
+        }
+        invalidate();
+    }
+
 
     public void showLoading() {
         if (!isLoadMoreEnd && !isRefreshing) {
@@ -272,10 +294,9 @@ public class KChartView extends BaseKChartView implements BaseKChartView.CallOnC
      * @param showMA
      */
     public void setShowMA(boolean showMA) {
-        int paddingTopMA=DensityUtil.dp2px(30);//ma距顶部距离
-        int paddingTopBoll=DensityUtil.dp2px(20);//boll距顶部距离
+        mShowMA = showMA;
         mMainDraw.setShowMA(showMA);
-        setTopPadding(showMA?paddingTopMA:paddingTopBoll);
+        setTopPadding(showMA ? paddingTopMA : paddingTopBoll);
         invalidate();
     }
 
@@ -374,10 +395,11 @@ public class KChartView extends BaseKChartView implements BaseKChartView.CallOnC
 
     /**
      * 设置指标文字颜色
+     *
      * @param color
      */
-    public void setTargetColor(int ...color){
-        if(color.length>0){
+    public void setTargetColor(int... color) {
+        if (color.length > 0) {
             mMainDraw.setTargetColor(color);
             mVolumeDraw.setTargetColor(color);
             mKDJDraw.setTargetColor(color);
@@ -401,9 +423,10 @@ public class KChartView extends BaseKChartView implements BaseKChartView.CallOnC
 
     /**
      * 设置持仓量颜色
+     *
      * @param color
      */
-    public void setInterestPaintColor(int color){
+    public void setInterestPaintColor(int color) {
         mVolumeDraw.setInterestPaintColor(color);
     }
 

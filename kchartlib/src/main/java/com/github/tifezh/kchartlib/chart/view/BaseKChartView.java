@@ -2,6 +2,7 @@ package com.github.tifezh.kchartlib.chart.view;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -33,12 +34,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Description：K线图基类
- * Author: star
- * Email: guimingxing@163.com
- * Date: 2018-10-25 11:24
+ * k线图
+ *
  */
-
 public abstract class BaseKChartView extends ScrollAndScaleView {
     private float mTranslateX = Float.MIN_VALUE;
     private float mMainScaleY = 1;
@@ -197,6 +195,8 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
         mKChartTabView.setTranslationY(mMainRect.bottom);
         setTranslateXFromScrollX(mScrollX);
     }
+
+
     //抬起, 手指离开触摸屏时触发(长按、滚动、滑动时，不会触发这个手势)
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
@@ -208,12 +208,11 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
                     if (System.currentTimeMillis() - mClickTime < 500) {
                         downX = e.getX();
                         downY = e.getY();
-                        Log.e("downY", downY + "/" + mBottomPadding);
                         if (downX > 0 && downX < mWidth) {
-                            if (downY > (mMainHeight + mMainChildSpace) && downY <= (mMainHeight + mChildHeight + mMainChildSpace - mBottomPadding)) {
-                                mCallOnClick.onChildViewClick();
-                            } else if (downY <= mMainHeight) {
+                            if (downY <= mMainHeight) {
                                 mCallOnClick.onMainViewClick();
+                            }else {
+                                mCallOnClick.onChildViewClick();
                             }
                         }
                     }
@@ -227,6 +226,16 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
         }
         return false;
     }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {//横竖屏切换
+        super.onConfigurationChanged(newConfig);
+        this.h = h;
+        displayHeight = h - mTopPadding - mBottomPadding - mMainChildSpace;
+        mMainHeight = (int) (displayHeight * 0.75f);
+        mChildHeight = (int) (displayHeight * 0.25f);
+    }
+
 
     private void initRect(int w, int h) {
         this.h = h;
@@ -368,11 +377,10 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
             }
 
         }
-
         if (mMainDraw != null && mMinPoint != null && mMaxPoint != null) {
             mMainDraw.drawMaxAndMin(this, canvas, mMaxX, mMinX, mMaxPoint, mMinPoint);
         }
-        Log.i("---> isClosePress :", isClosePress + "");
+
         //画选择线
         if (isLongPress || !isClosePress) {
             IKLine point = (IKLine) getItem(mSelectedIndex);
@@ -399,21 +407,22 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
         Paint.FontMetrics fm = mTextPaint.getFontMetrics();
         float textHeight = fm.descent - fm.ascent;
         float baseLine = (textHeight - fm.bottom - fm.top) / 2;
+        float paddingLeft=20;
         //--------------画上方k线图的值-------------
         if (mMainDraw != null) {
-            canvas.drawText(formatValue(mMainMaxValue), 0, baseLine + mMainRect.top, mTextPaint);
-            canvas.drawText(formatValue(mMainMinValue), 0, mMainRect.bottom - textHeight + baseLine, mTextPaint);
+            canvas.drawText(formatValue(mMainMaxValue), paddingLeft, baseLine + mMainRect.top, mTextPaint);
+            canvas.drawText(formatValue(mMainMinValue), paddingLeft, mMainRect.bottom - textHeight + baseLine, mTextPaint);
             float rowValue = (mMainMaxValue - mMainMinValue) / mGridRows;
             float rowSpace = mMainRect.height() / mGridRows;
             for (int i = 1; i < mGridRows; i++) {
                 String text = formatValue(rowValue * (mGridRows - i) + mMainMinValue);
-                canvas.drawText(text, 0, fixTextY(rowSpace * i + mMainRect.top), mTextPaint);
+                canvas.drawText(text, paddingLeft, fixTextY(rowSpace * i + mMainRect.top), mTextPaint);
             }
         }
         //--------------画下方子图的值-------------
         if (mChildDraw != null) {
-            canvas.drawText(mChildDraw.getValueFormatter().format(mChildMaxValue), 0, mChildRect.top + baseLine, mTextPaint);
-            canvas.drawText(mChildDraw.getValueFormatter().format(mChildMinValue), 0, mChildRect.bottom, mTextPaint);
+            canvas.drawText(mChildDraw.getValueFormatter().format(mChildMaxValue), paddingLeft, mChildRect.top + baseLine, mTextPaint);
+            canvas.drawText(mChildDraw.getValueFormatter().format(mChildMinValue), paddingLeft, mChildRect.bottom, mTextPaint);
 
             //add by star
             float rowValue = (mChildMaxValue - mChildMinValue) / mChildGridRows;
@@ -421,7 +430,7 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
             for (int i = 1; i < mChildGridRows; i++) {
                 if (i == 2 || i == 4) {
                     String text = formatValue(rowValue * (mChildGridRows - i) + mChildMinValue);
-                    canvas.drawText(text, 0, fixTextY(rowSpace * i + mChildRect.top), mTextPaint);
+                    canvas.drawText(text, paddingLeft, fixTextY(rowSpace * i + mChildRect.top), mTextPaint);
                 }
             }
         }
@@ -534,12 +543,15 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
 
     private void calculateSelectedX(float x) {
         mSelectedIndex = indexOfTranslateX(xToTranslateX(x));
+        Log.e("move mSelectedIndex:",""+mSelectedIndex+"/mStartIndex:"+mStartIndex);
         if (mSelectedIndex < mStartIndex) {
             mSelectedIndex = mStartIndex;
+            //Log.e("move mSelectedIndex:",""+mSelectedIndex);
         }
         if (mSelectedIndex > mStopIndex) {
             mSelectedIndex = mStopIndex;
         }
+
     }
 
     @Override
@@ -558,6 +570,7 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
         setTranslateXFromScrollX(mScrollX);
+        Log.e("scroll-change",""+mScrollX);
     }
 
     @Override

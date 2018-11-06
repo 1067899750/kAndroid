@@ -8,14 +8,16 @@ import android.graphics.RectF;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 import com.github.tifezh.kchartlib.R;
-import com.github.tifezh.kchartlib.chart.view.BaseKChartView;
 import com.github.tifezh.kchartlib.chart.base.IChartDraw;
 import com.github.tifezh.kchartlib.chart.base.IValueFormatter;
 import com.github.tifezh.kchartlib.chart.comInterface.ICandle;
 import com.github.tifezh.kchartlib.chart.comInterface.IKLine;
 import com.github.tifezh.kchartlib.chart.formatter.ValueFormatter;
+import com.github.tifezh.kchartlib.chart.view.BaseKChartView;
 import com.github.tifezh.kchartlib.utils.DensityUtil;
 
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import java.util.List;
  * Description 主图的实现类
  * Author puyantao
  * Email 1067899750@qq.com
- * Date 2018-10-26 17:38
+ * Date 2018-11-6 11:31
  */
 
 
@@ -56,12 +58,23 @@ public class MainDraw implements IChartDraw<ICandle> {
 
     private boolean mCandleSolid = true;
     private boolean mShowMA = true;//显示boll
+    private int screenWidth=0;
+    private int screenHeight=0;
+    private boolean portraitScreen = true;//默认竖屏
+    private boolean mLineFeed=false;//ma 换行显示
+    private float y3=0;
 
     public MainDraw(BaseKChartView view) {
         Context context = view.getContext();
         mContext = context;
         mRedPaint.setColor(ContextCompat.getColor(context, R.color.chart_red));
         mGreenPaint.setColor(ContextCompat.getColor(context, R.color.chart_green));
+
+        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics dm = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(dm);
+        screenWidth = dm.widthPixels;
+        screenHeight=dm.heightPixels;
     }
 
     @Override
@@ -104,43 +117,77 @@ public class MainDraw implements IChartDraw<ICandle> {
 
     }
 
-
     @Override
     public void drawText(@NonNull Canvas canvas, @NonNull BaseKChartView view, int position, float x, float y) {
         float x2 = BaseKChartView.mChildTextPaddingX;
+        float y2=0;
         x = BaseKChartView.mChildTextPaddingX;
         ICandle point = (IKLine) view.getItem(position);
+        float textX;
         if (mShowMA) {
             y = y - BaseKChartView.mChildTextPaddingY;
+            if(portraitScreen){//竖屏
+                y3=y;
+            }
             //ma
             String text = "MA";
-            canvas.drawText(text, x, y, mTargetPaint);
-            //x += mTargetPaint.measureText(text);
+            canvas.drawText(text, x, y3, mTargetPaint);
 
             x += DensityUtil.dp2px(35);//适配不同机型间距
             text = "MA5:" + view.formatValue(point.getMA5Price());
-            canvas.drawText(text, x, y, ma5Paint);
+            canvas.drawText(text, x, y3, ma5Paint);
             x += ma5Paint.measureText(text);
 
             x += BaseKChartView.mTextPaddingLeft;
             text = "MA10:" + view.formatValue(point.getMA10Price());
-            canvas.drawText(text, x, y, ma10Paint);
+            canvas.drawText(text, x, y3, ma10Paint);
             x += ma10Paint.measureText(text);
 
             x += BaseKChartView.mTextPaddingLeft;
             text = "MA20:" + view.formatValue(point.getMA20Price());
-            canvas.drawText(text, x, y, ma20Paint);
+            canvas.drawText(text, x, y3, ma20Paint);
 
-            //第二行
-            x2 += DensityUtil.dp2px(35);
-            y = y + BaseKChartView.mChildTextPaddingY - DensityUtil.dp2px(5);
-            text = "MA40:" + view.formatValue(point.getMA40Price());
-            canvas.drawText(text, x2, y, ma40Paint);
-            x2 += ma40Paint.measureText(text);
+            textX=2*x;
+            if(textX>=screenHeight){
+                mLineFeed=true;
+            }else {
+                mLineFeed=false;
+            }
+            if(portraitScreen){//竖屏
+                //第二行
+                x2 += DensityUtil.dp2px(35);
+                y2 = y + BaseKChartView.mChildTextPaddingY - DensityUtil.dp2px(4);
+                text = "MA40:" + view.formatValue(point.getMA40Price());
+                canvas.drawText(text, x2, y2, ma40Paint);
+                x2 += ma40Paint.measureText(text);
 
-            x2 += BaseKChartView.mTextPaddingLeft;
-            text = "MA60:" + view.formatValue(point.getMA60Price());
-            canvas.drawText(text, x2, y, ma60Paint);
+                x2 += BaseKChartView.mTextPaddingLeft;
+                text = "MA60:" + view.formatValue(point.getMA60Price());
+                canvas.drawText(text, x2, y2, ma60Paint);
+            }else {
+                if(textX>=screenHeight){//超过屏幕宽度自动换行
+                    //第二行
+                    x2 += DensityUtil.dp2px(35);
+                    y = y + BaseKChartView.mChildTextPaddingY - DensityUtil.dp2px(4);
+                    text = "MA40:" + view.formatValue(point.getMA40Price());
+                    canvas.drawText(text, x2, y, ma40Paint);
+                    x2 += ma40Paint.measureText(text);
+
+                    x2 += BaseKChartView.mTextPaddingLeft;
+                    text = "MA60:" + view.formatValue(point.getMA60Price());
+                    canvas.drawText(text, x2, y, ma60Paint);
+                }else {
+                    x += ma20Paint.measureText(text);
+                    x += BaseKChartView.mTextPaddingLeft;
+                    text = "MA40:" + view.formatValue(point.getMA40Price());
+                    canvas.drawText(text, x, y3, ma40Paint);
+                    x += ma40Paint.measureText(text);
+
+                    x += BaseKChartView.mTextPaddingLeft;
+                    text = "MA60:" + view.formatValue(point.getMA60Price());
+                    canvas.drawText(text, x, y3, ma60Paint);
+                }
+            }
 
         } else {
             //boll
@@ -176,7 +223,7 @@ public class MainDraw implements IChartDraw<ICandle> {
     @Override
     public float getMaxValue(ICandle point) {
         float bollMax = Float.isNaN(point.getUp()) ? point.getMb() : point.getUp();
-        float maMax = Math.max(point.getHighPrice(), point.getMA20Price());
+        float maMax = Math.max(point.getMA60Price(),Math.max(point.getHighPrice(),point.getClosePrice()));
         return Math.max(bollMax, maMax);
     }
 
@@ -201,14 +248,15 @@ public class MainDraw implements IChartDraw<ICandle> {
         Paint.FontMetrics fm = paint.getFontMetrics();
         float textHeight = fm.descent - fm.ascent;
         float baseLine = (textHeight - fm.bottom - fm.top) / 2;
-
-        canvas.drawText(maxPoint.getHighPrice() + "", maxX, high - baseLine, paint);
-        canvas.drawText(minPoint.getLowPrice() + "", minX, low + baseLine, paint);
+        float paddingTop = DensityUtil.dp2px( 8);//距顶
+        float paddingBottom = DensityUtil.dp2px( 1);//距底
+        canvas.drawText(maxPoint.getHighPrice() + "", maxX, high - baseLine+paddingTop, paint);
+        canvas.drawText(minPoint.getLowPrice() + "", minX, low + baseLine-paddingBottom, paint);
     }
 
     @Override
     public float getMinValue(ICandle point) {
-        float maMin = Math.min(point.getMA20Price(), point.getLowPrice());
+        float maMin = Math.min(point.getMA5Price(), point.getLowPrice());
         float bollMin = Float.isNaN(point.getDn()) ? point.getMb() : point.getDn();
         return Math.min(maMin, bollMin);
     }
@@ -331,13 +379,13 @@ public class MainDraw implements IChartDraw<ICandle> {
         RectF r = new RectF(left, top, left + width, height+(2*top));
         canvas.drawRoundRect(r, bgCircle, bgCircle, mSelectorBackgroundPaint);//画背景
 
-        if (x > view.getChartWidth() / 2) {
-            left = margin + bgPaddingLeft;
-            mSelectorTextPaint.setTextAlign(Paint.Align.LEFT);
-        } else {
-            left = view.getChartWidth() - margin - bgPaddingLeft;
-            mSelectorTextPaint.setTextAlign(Paint.Align.RIGHT);
-        }
+//        if (x > view.getChartWidth() / 2) {
+//            left = margin + bgPaddingLeft;
+//            mSelectorTextPaint.setTextAlign(Paint.Align.LEFT);
+//        } else {
+//            left = view.getChartWidth() - margin - bgPaddingLeft;
+//            mSelectorTextPaint.setTextAlign(Paint.Align.RIGHT);
+//        }
 
         float y = top + (textHeight- metrics.bottom - metrics.top) / 2;
         for (int i = 0; i < strings.size(); i++) {
@@ -355,9 +403,27 @@ public class MainDraw implements IChartDraw<ICandle> {
             if(i==0){//第一条跟顶部间距
                 y=y+bgPaddingTop;
             }
-            canvas.drawText(strings.get(i), left, y, mSelectorTextPaint);
+            canvas.drawText(strings.get(i), left+ bgPaddingLeft, y, mSelectorTextPaint);
             y += textHeight + paddingText;
         }
+    }
+
+
+    /**
+     * ma 是否需换行
+     * @return
+     */
+    public boolean getLineFeed(){
+        return mLineFeed;
+    }
+
+
+    /**
+     * 是否是竖屏
+     * @param status
+     */
+    public void setScreenStatus(boolean status){
+        this.portraitScreen=status;
     }
 
     /**
