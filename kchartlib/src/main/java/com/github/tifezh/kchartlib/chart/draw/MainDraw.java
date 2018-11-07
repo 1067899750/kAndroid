@@ -78,7 +78,8 @@ public class MainDraw implements IChartDraw<ICandle> {
     }
 
     @Override
-    public void drawTranslated(@Nullable ICandle lastPoint, @NonNull ICandle curPoint, float lastX, float curX, @NonNull Canvas canvas, @NonNull BaseKChartView view, int position) {
+    public void drawTranslated(@Nullable ICandle lastPoint, @NonNull ICandle curPoint, float lastX, float curX,
+                               @NonNull Canvas canvas, @NonNull BaseKChartView view, int position) {
         //绘制柱体
         drawCandle(view, canvas, curPoint, curX, curPoint.getHighPrice(), curPoint.getLowPrice(), curPoint.getOpenPrice(), curPoint.getClosePrice());
         if (mShowMA) {

@@ -39,8 +39,6 @@ public abstract class ScrollAndScaleView extends RelativeLayout implements
 
     private boolean mScaleEnable = true;
 
-    protected boolean isOnClick = false;
-
     private boolean isScale = false;
 
     public ScrollAndScaleView(Context context) {
@@ -114,7 +112,8 @@ public abstract class ScrollAndScaleView extends RelativeLayout implements
         if (isClosePress) {
             if (mScroller.computeScrollOffset()) {
                 if (!isTouch()) {
-                    scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
+                  //  scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
+                    scrollTo(mScroller.getCurrX(), 0);
                 } else {
                     mScroller.forceFinished(true);
                 }

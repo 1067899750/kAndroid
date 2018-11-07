@@ -61,11 +61,11 @@ public class KChartAdapter extends BaseKChartAdapter {
 
     /**
      * 改变某个点的值
+     *
      * @param position 索引值
      */
-    public void changeItem(int position,KLine data)
-    {
-        datas.set(position,data);
+    public void changeItem(int position, KLine data) {
+        datas.set(position, data);
         notifyDataSetChanged();
     }
 
