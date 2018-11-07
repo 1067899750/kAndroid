@@ -7,6 +7,8 @@ import android.util.Log;
 import com.github.tifezh.kchart.R;
 import com.github.tifezh.kchart.data.DataRequest;
 import com.github.tifezh.kchart.model.Lem;
+import com.github.tifezh.kchart.utils.ValueUtil;
+import com.github.tifezh.kchartlib.chart.comInterface.ILem;
 import com.github.tifezh.kchartlib.chart.lem.LmeView;
 
 import java.util.ArrayList;
@@ -42,7 +44,17 @@ public class LmeActivity extends AppCompatActivity {
         mLemData.addAll(mLemModels.subList(0, 20));
         Log.d("-->", mLemModels.size() + "");
 
+        lmeView.setDateStr("月差价");
+        lmeView.setSelectedIndex(0);
         lmeView.initData(mLemData);
+        lmeView.setOnClickPointListener(new LmeView.ClickLmePointListener() {
+            @Override
+            public void onClickPointListener(int postion, ILem iLem) {
+                if (ValueUtil.isEmpty(iLem) || postion == -1) {
+                }
+            }
+        });
+
 
     }
 

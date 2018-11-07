@@ -47,10 +47,11 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
     protected Paint mGridPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     protected Paint mBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     protected int mBackgroundColor;
-    protected int GridColumns = 5; //列数
-    protected int mGridRows = 5; //行数
+    protected int GridColumns = 0; //列数
+    protected int mGridRows = 0; //  行数
+    protected int mGridLeftRows = 5; //  行数
 
-    protected int mTopPadding = 100; //据顶部
+    protected int mTopPadding = 90; //据顶部
     protected int mBottomPadding = 150;//距底部
 
     protected float mScaleY = 1; //Y轴单位量
@@ -109,7 +110,7 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
         mBackgroundColor = Color.parseColor("#101114");
         mBackgroundPaint.setColor(mBackgroundColor);
 
-        mGridPaint.setColor(Color.parseColor("#20FFFFFF")); //网格线颜色
+        mGridPaint.setColor(Color.parseColor("#15FFFFFF")); //网格线颜色
         mGridPaint.setStrokeWidth(dp2px(1));
 
     }

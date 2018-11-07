@@ -8,7 +8,6 @@ import android.graphics.Path;
 import android.graphics.PointF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import com.github.tifezh.kchartlib.R;
 import com.github.tifezh.kchartlib.chart.comInterface.ILem;
@@ -21,6 +20,8 @@ import java.util.List;
 public class LmeView extends BaseView {
     private Paint mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG); //文字
     private Paint mDotPaint = new Paint(Paint.ANTI_ALIAS_FLAG); //圆点
+    private Paint mDotLeftPaint = new Paint(Paint.ANTI_ALIAS_FLAG); //圆点
+    private Paint mDotRingPaint = new Paint(Paint.ANTI_ALIAS_FLAG); //圆点
     private Paint mLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG); //线
     private Paint mImaginaryLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG); //虚线
     private Paint mColumnPaint = new Paint(Paint.ANTI_ALIAS_FLAG); //柱子
@@ -39,8 +40,15 @@ public class LmeView extends BaseView {
 
     private float mColumnPadding = 10;
     private float mColumnWidth; //单位宽度
+    private String dateStr = "月差价";
 
-    private int selectedIndex;
+
+    private ClickLmePointListener mClickLmePointListener;
+
+    private int selectedIndex = 0;
+
+
+    int[] volume;
 
     public LmeView(Context context) {
         super(context);
@@ -60,9 +68,16 @@ public class LmeView extends BaseView {
     private void initView() {
         mDotPaint.setStyle(Paint.Style.FILL);   //圆点
 
-        mTextPaint.setTextSize(sp2px(11)); //文字
+        mDotLeftPaint.setStyle(Paint.Style.FILL);
+        mDotLeftPaint.setStrokeWidth(dp2px(4));
+
+        mTextPaint.setTextSize(sp2px(10)); //文字
 
         mLinePaint.setStrokeWidth(dp2px(1)); //线
+
+        mDotRingPaint.setStrokeWidth(dp2px(2)); //圆弧
+        mDotRingPaint.setStyle(Paint.Style.STROKE);
+        mDotRingPaint.setColor(getColor(R.color.c6774FF));
 
         mImaginaryLinePaint.setColor(getColor(R.color.c67D9FF)); //虚线
         mImaginaryLinePaint.setStrokeWidth(dp2px(2));
@@ -74,8 +89,8 @@ public class LmeView extends BaseView {
     }
 
     public void initData(Collection<? extends ILem> datas) {
+        mPoints.clear();
         if (datas != null) {
-            mPoints.clear();
             this.mPoints.addAll(datas);
             mPointCount = mPoints.size();
         }
@@ -83,10 +98,12 @@ public class LmeView extends BaseView {
     }
 
 
-
-
     @Override
     protected void notifyChanged() {
+        if (mPoints.size() <= 0) {
+            invalidate();
+            return;
+        }
         if (mPoints.size() > 0) {
             mCurveMax = mPoints.get(0).getCurve();
             mCurveMin = mPoints.get(0).getCurve();
@@ -108,29 +125,22 @@ public class LmeView extends BaseView {
         if (mCurveMax > -100 && mCurveMax < 0) {
             mCurveMax = 0;
         } else {
-            mCurveMax = StrUtil.getMillionMultipleMinimum((long) mCurveMax);
+            mCurveMax = StrUtil.getLemMultipleMinimum((long) mCurveMax, mGridLeftRows);
         }
 
         if (mCurveMin < 100 && mCurveMin > 0) {
             mCurveMin = 0;
         } else {
-            mCurveMin = StrUtil.getMillionMultipleMinimum((long) mCurveMin);
+            mCurveMin = StrUtil.getLemMultipleMinimum((long) mCurveMin, mGridLeftRows);
         }
-        mCurveScaleY = mBaseHeight /  Math.abs(mCurveMax - mCurveMin);
+        mCurveScaleY = mBaseHeight / Math.abs(mCurveMax - mCurveMin);
 
         //y Volume 轴的缩放值
-        if (mVolumeMax > -5 && mVolumeMax < 0) {
-            mVolumeMax = 0;
-        } else {
-            mVolumeMax = StrUtil.getZeroMultipleMinimum((long) mVolumeMax);
-        }
-
-        if (mVolumeMin < 5 && mVolumeMin > 0) {
-            mVolumeMin = 0;
-        } else {
-            mVolumeMin = StrUtil.getZeroMultipleMinimum((long) mVolumeMin);
-        }
-        mVolumeScaleY = mBaseHeight /  Math.abs(mVolumeMax - mVolumeMin);
+        volume = StrUtil.getLemRightValue(mVolumeMax, mVolumeMin);
+        mVolumeMax = volume[0];
+        mVolumeMin = volume[1];
+        mGridRows = volume[2];
+        mVolumeScaleY = mBaseHeight / Math.abs(mVolumeMax - mVolumeMin);
 
         //x轴的缩放值
         mScaleX = (mBaseWidth - mBasePaddingRight - mBasePaddingLeft - 2 * mColumnPadding) / mPointCount;
@@ -142,7 +152,7 @@ public class LmeView extends BaseView {
 
     @Override
     protected void calculateSelectedX(float x) {
-        Log.i("---> ； x ：", x + "");
+//        Log.i("---> ； x ：", x + "");
         selectedIndex = (int) (x * 1f / getX(mPoints.size() - 1) * (mPoints.size() - 1) + 0.5f);
         if (selectedIndex < 0) {
             selectedIndex = 0;
@@ -158,33 +168,46 @@ public class LmeView extends BaseView {
 
         drawGird(canvas); //绘制网格
         drawDefTopTxtpaint(canvas); //画上面的小圆点
+        if (mPoints.size() <= 0 || mWidth == 0 || mHeight == 0) {
+            if (mClickLmePointListener != null) {
+                mClickLmePointListener.onClickPointListener(-1, null);
+            }
+            return;
+        }
         drawColumn(canvas);  //绘制柱子
         drawLine(canvas); //绘制线
         drawText(canvas); //绘制文字
 
-
         drawLongClickLine(canvas); //长按指示线
-
     }
-
 
     //绘制网格线
     private void drawGird(Canvas canvas) {
-        canvas.drawLine(0, 0, mWidth, 0, mGridPaint); //顶部线
-        canvas.drawLine(0, mHeight, mWidth, mHeight, mGridPaint);//底部线
+//        canvas.drawLine(0, 0, mWidth, 0, mGridPaint); //顶部线
+//        canvas.drawLine(0, mHeight, mWidth, mHeight, mGridPaint);//底部线
 
         //横向的grid
-        float rowSpace = mBaseHeight / mGridRows;
-        for (int i = 0; i <= mGridRows; i++) {
-            canvas.drawLine(0, mTopPadding + rowSpace * i, mBaseWidth,
-                    mTopPadding + rowSpace * i, mGridPaint);
+        if (mGridRows != 0) {
+            float rowSpace = mBaseHeight / mGridRows;
+            for (int i = 0; i <= mGridRows; i++) {
+                if ((volume[0] - volume[3] * i) == 0 || i == 0 || i == volume[2]) {
+                    canvas.drawLine(0, mTopPadding + rowSpace * i, mBaseWidth,
+                            mTopPadding + rowSpace * i, mGridPaint);
+                }
+            }
+        } else {
+            canvas.drawLine(0, mTopPadding, mBaseWidth, mTopPadding, mGridPaint);
+            canvas.drawLine(0, mTopPadding + mBaseHeight, mBaseWidth,
+                    mTopPadding + mBaseHeight, mGridPaint);
         }
 
         //纵向的grid
-        float columnSpace = (mBaseWidth - mBasePaddingLeft - mBasePaddingRight) / GridColumns;
-        for (int i = 0; i <= GridColumns; i++) {
-            canvas.drawLine(columnSpace * i + mBasePaddingLeft, mTopPadding,
-                    columnSpace * i + mBasePaddingLeft, mHeight - mBottomPadding, mGridPaint);
+        if (GridColumns != 0) {
+            float columnSpace = (mBaseWidth - mBasePaddingLeft - mBasePaddingRight) / GridColumns;
+            for (int i = 0; i <= GridColumns; i++) {
+                canvas.drawLine(columnSpace * i + mBasePaddingLeft, mTopPadding,
+                        columnSpace * i + mBasePaddingLeft, mHeight - mBottomPadding, mGridPaint);
+            }
         }
 
     }
@@ -192,26 +215,31 @@ public class LmeView extends BaseView {
 
     private void drawDefTopTxtpaint(Canvas canvas) {
         //红色小圆点
-        mDotPaint.setColor(getColor(R.color.cF27A68));
-        float r = 8;
-        canvas.drawCircle(mBasePaddingLeft + r / 2, mTopPadding / 2 + r, r, mDotPaint);
+        int w = dp2px(8);
+        mDotLeftPaint.setColor(getColor(R.color.cF27A68));
+        canvas.drawLine(mBasePaddingLeft, mTopPadding / 2, mBasePaddingLeft + w,
+                mTopPadding / 2, mDotLeftPaint);
+        mDotLeftPaint.setColor(getColor(R.color.c3EB86A));
+        canvas.drawLine(mBasePaddingLeft, mTopPadding / 2 + w/2, mBasePaddingLeft + w,
+                mTopPadding / 2 + w/2, mDotLeftPaint);
 
 
         //先画文字
         mTextPaint.setTextAlign(Paint.Align.LEFT);
         mTextPaint.setColor(getColor(R.color.c9EB2CD));
-        String hintTxt = "变动量";
-        canvas.drawText(hintTxt, mBasePaddingLeft + r + 10,
+
+        canvas.drawText(dateStr, mBasePaddingLeft + w + 10,
                 mTopPadding / 2 + getFontBaseLineHeight(mTextPaint) / 2, mTextPaint);
 
-        float mWidth = mTextPaint.measureText(hintTxt) + mBasePaddingLeft + dp2px(20);
+        float r = dp2px(4);
+        float mWidth = mTextPaint.measureText(dateStr) + mBasePaddingLeft + dp2px(20);
         mDotPaint.setColor(getColor(R.color.c67D9FF));
-        canvas.drawCircle(mWidth + r / 2, mTopPadding / 2 + r, r, mDotPaint);
+        canvas.drawCircle(mWidth + r / 2, mTopPadding / 2 + r/2, r, mDotPaint);
 
         //先画文字
         mTextPaint.setTextAlign(Paint.Align.LEFT);
         mTextPaint.setColor(getColor(R.color.c9EB2CD));
-        hintTxt = "报价";
+        String hintTxt = "最新报价";
         canvas.drawText(hintTxt, r + mWidth + 10,
                 mTopPadding / 2 + getFontBaseLineHeight(mTextPaint) / 2, mTextPaint);
 
@@ -221,73 +249,67 @@ public class LmeView extends BaseView {
         float baseLine = getFontBaseLineHeight(mTextPaint);
         float textHeight = getFontHeight(mTextPaint);
 
-        float rowValue = (mCurveMax - mCurveMin) / (mGridRows - 1);
-        float rowSpace = mBaseHeight / mGridRows;
+        float rowValue = (float) StrUtil.getAndOnePositiveNumber((mCurveMax - mCurveMin) / (mGridLeftRows - 1));
+        float rowSpace = mBaseHeight / mGridLeftRows;
 
         //画左边的值
         mTextPaint.setTextAlign(Paint.Align.LEFT);
         mTextPaint.setColor(getResources().getColor(R.color.c9EB2CD));
-//        canvas.drawText(mCurveMax + "", mBaseTextPaddingLeft, baseLine + mTopPadding, mTextPaint); //绘制最大值
-//
-//        canvas.drawText(mCurveMin + "", mBaseTextPaddingLeft,
-//                mHeight - mBottomPadding - textHeight + baseLine, mTextPaint); //绘制最小值
-
-        for (int i = 0; i < mGridRows; i++) {
-            String text = StrUtil.getPositiveNumber(mCurveMax - rowValue * i);
-            if (i < mGridRows / 2) {
+        canvas.drawText(StrUtil.getPositiveNumber(mCurveMax), mBaseTextPaddingLeft, baseLine + mTopPadding, mTextPaint);
+        canvas.drawText(StrUtil.getPositiveNumber(mCurveMin), mBaseTextPaddingLeft,
+                mHeight - mBottomPadding - textHeight + baseLine, mTextPaint);
+        for (int i = 1; i < mGridLeftRows - 1; i++) {
+            String text = null;
+            if (mCurveMin >= 0) {
+                text = StrUtil.getPositiveNumber(mCurveMin + rowValue * (mGridLeftRows - 1 - i));
+            } else if(mCurveMax <= 0){
+                text = StrUtil.getPositiveNumber(mCurveMax - rowValue * i);
+            } else if(Math.abs(mCurveMin - 0) < Math.abs(mCurveMax -0)){
+                text = StrUtil.getPositiveNumber(mCurveMin + rowValue * (mGridLeftRows - 1 - i));
+            }else if(Math.abs(mCurveMin - 0) > Math.abs(mCurveMax -0)){
+                text = StrUtil.getPositiveNumber(mCurveMax - rowValue * i);
+            }else {
+                text = StrUtil.getPositiveNumber(mCurveMin + rowValue * (mGridLeftRows - 1 - i));
+            }
+            if (i < mGridLeftRows / 2) {
                 canvas.drawText(text, mBaseTextPaddingLeft,
                         rowSpace * i + baseLine + mTopPadding, mTextPaint);
 
-            } else if (i == mGridRows / 2) {
+            } else if (i == mGridLeftRows / 2) {
                 canvas.drawText(text, mBaseTextPaddingLeft,
                         rowSpace * i + rowSpace / 2 + baseLine / 2 + mTopPadding, mTextPaint);
 
-            } else if (i > mGridRows / 2) {
+            } else if (i > mGridLeftRows / 2) {
                 canvas.drawText(text, mBaseTextPaddingLeft,
-                        mHeight - mBottomPadding - textHeight + baseLine - rowSpace * (mGridRows - i - 1), mTextPaint);
+                        mHeight - mBottomPadding - textHeight + baseLine - rowSpace * (mGridLeftRows - i - 1), mTextPaint);
 
             }
-
-
         }
 
 
         //画右边的值
-        float rowVolume = (mVolumeMax - mVolumeMin) / (mGridRows - 1);
+        int count = volume[2];
+        float rowVolume = volume[3];
+        float rowVolumeSpace = (mBaseHeight - baseLine) / count;
         mTextPaint.setTextAlign(Paint.Align.RIGHT);
         mTextPaint.setColor(getResources().getColor(R.color.c9EB2CD));
-//        canvas.drawText(mVolumeMax + "", mBaseWidth - mBaseTextPaddingRight, baseLine + mTopPadding, mTextPaint); //绘制最大值
-//
-//        canvas.drawText(mVolumeMin + "", mBaseWidth - mBaseTextPaddingRight,
-//                mHeight - mBottomPadding - textHeight + baseLine, mTextPaint); //绘制最小值
-
-        for (int i = 0; i < mGridRows; i++) {
+        canvas.drawText(StrUtil.getPositiveNumber(mVolumeMin), mBaseWidth - mBaseTextPaddingRight,
+                mBaseHeight + mTopPadding, mTextPaint);
+        for (int i = 0; i < count; i++) {
             String text = StrUtil.getPositiveNumber(mVolumeMax - rowVolume * i);
-            if (i < mGridRows / 2) {
-                canvas.drawText(text, mBaseWidth - mBaseTextPaddingRight,
-                        rowSpace * i + baseLine + mTopPadding, mTextPaint);
-
-            } else if (i == mGridRows / 2) {
-                canvas.drawText(text, mBaseWidth - mBaseTextPaddingRight,
-                        rowSpace * i + rowSpace / 2 + baseLine / 2 + mTopPadding, mTextPaint);
-
-            } else if (i > mGridRows / 2) {
-                canvas.drawText(text, mBaseWidth - mBaseTextPaddingRight,
-                        mHeight - mBottomPadding - textHeight + baseLine - rowSpace * (mGridRows - i - 1), mTextPaint);
-
-            }
+            canvas.drawText(text, mBaseWidth - mBaseTextPaddingRight,
+                    rowVolumeSpace * i + baseLine + mTopPadding, mTextPaint);
         }
 
         //画时间
-        mTextPaint.setTextAlign(Paint.Align.RIGHT);
         mTextPaint.setColor(getResources().getColor(R.color.c6A798E));
-        float y = mBaseHeight + mTopPadding + mTextPaint.measureText(StrUtil.getLEMDataStr(mPoints.get(0).getDate().getTime()));
-        mTextPaint.setTextAlign(Paint.Align.LEFT);
+        float y = mBaseHeight + mTopPadding;
+        mTextPaint.setTextAlign(Paint.Align.RIGHT);
         for (int i = 0; i < mPoints.size(); i++) {
             canvas.save();
             canvas.rotate(270, getX(i) + baseLine / 2, y); //默认以原点旋转，所以的设置旋转点
             canvas.drawText(StrUtil.getLEMDataStr(mPoints.get(i).getDate().getTime()),
-                    getX(i), y - 5, mTextPaint); //时间 ?? 存在和柱子对齐的问题
+                    getX(i), y, mTextPaint); //时间 ?? 存在和柱子对齐的问题
             canvas.restore();
         }
 
@@ -313,16 +335,6 @@ public class LmeView extends BaseView {
     }
 
     private void drawLine(Canvas canvas) {
-        //小圆点线
-        mDotPaint.setColor(getColor(R.color.c67D9FF));
-        float r = mColumnWidth * 0.5f / 2;
-        for (int i = 0; i < mPoints.size(); i++) {
-            canvas.drawCircle(getX(i),
-                    getCurveY(mPoints.get(i).getCurve()),
-                    r, mDotPaint);
-        }
-
-
         //虚线
         Path path = new Path();
         path.reset();
@@ -332,6 +344,20 @@ public class LmeView extends BaseView {
 //            canvas.drawPath(path, mImaginaryLinePaint);
 //        }
         drawScrollLine(canvas, path);
+
+        //小圆点线
+        mDotPaint.setColor(getColor(R.color.c67D9FF));
+        float r = mColumnWidth * 0.5f / 2;
+        for (int i = 0; i < mPoints.size(); i++) {
+            canvas.drawCircle(getX(i),
+                    getCurveY(mPoints.get(i).getCurve()),
+                    r, mDotPaint);
+
+            if (i == selectedIndex) {
+                canvas.drawCircle(getX(i), getCurveY(mPoints.get(i).getCurve()),
+                        r, mDotRingPaint);
+            }
+        }
 
     }
 
@@ -356,13 +382,24 @@ public class LmeView extends BaseView {
     private void drawLongClickLine(Canvas canvas) {
         //画指示线
 //        if (isLongPress || !isClosePress) {
+        if (selectedIndex < 0) return;
         mLinePaint.setColor(getColor(R.color.c6774FF));
         mLinePaint.setStrokeWidth(dp2px(1));
         ILem point = mPoints.get(selectedIndex);
-        Log.i("---> ； selectedIndex ：", selectedIndex + "");
+//        Log.i("---> ； selectedIndex ：", selectedIndex + "");
         float x = getX(selectedIndex);
         //轴线
-        canvas.drawLine(x, mTopPadding, x, mHeight - mBottomPadding, mLinePaint);//Y
+
+//        canvas.drawLine(x, mTopPadding, x, mHeight - mBottomPadding, mLinePaint);//Y
+        if (mTopPadding < (getCurveY(mPoints.get(selectedIndex).getCurve()) - mColumnWidth * 0.25f)) {
+            canvas.drawLine(x, mTopPadding, x,
+                    getCurveY(mPoints.get(selectedIndex).getCurve()) - mColumnWidth * 0.25f,
+                    mLinePaint);
+        }
+        if ((getCurveY(mPoints.get(selectedIndex).getCurve()) + mColumnWidth * 0.25f) < (mHeight - mBottomPadding)) {
+            canvas.drawLine(x, getCurveY(mPoints.get(selectedIndex).getCurve()) + mColumnWidth * 0.25f,
+                    x, mHeight - mBottomPadding, mLinePaint);
+        }
 
         drawSelector(selectedIndex, point, canvas);
 //        }
@@ -374,7 +411,12 @@ public class LmeView extends BaseView {
      * @param canvas
      */
     private void drawSelector(int selectedIndex, ILem point, Canvas canvas) {
-
+        if (mClickLmePointListener != null) {
+            mClickLmePointListener.onClickPointListener(selectedIndex, mPoints.get(selectedIndex));
+        }
+        /**
+         *  以后添加弹框（待开发）
+         */
     }
 
     private float getColumeHeight(float value) {
@@ -404,7 +446,24 @@ public class LmeView extends BaseView {
         return mPoints.size();
     }
 
+    //设置指示线的位置
+    public void setSelectedIndex(int selectedIndex) {
+        this.selectedIndex = selectedIndex;
+    }
 
+    public void setDateStr(String dateStr) {
+        this.dateStr = dateStr;
+    }
+
+    public void setOnClickPointListener(ClickLmePointListener listener) {
+        if (listener != null) {
+            mClickLmePointListener = listener;
+        }
+    }
+
+    public interface ClickLmePointListener {
+        void onClickPointListener(int postion, ILem iLem);
+    }
 }
 
 

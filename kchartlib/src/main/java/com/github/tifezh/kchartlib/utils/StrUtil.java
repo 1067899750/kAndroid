@@ -1,22 +1,12 @@
 package com.github.tifezh.kchartlib.utils;
 
 import android.os.Build;
-import android.util.Log;
 
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-/**
- *
- * Description
- * Author puyantao
- * Email 1067899750@qq.com
- * Date 2018-10-26 17:36
- */
 
 public class StrUtil {
 
@@ -72,10 +62,30 @@ public class StrUtil {
     }
 
 
-    //保留正数
+    //四舍五入保留正数
     public static String getPositiveNumber(double d) {
         NumberFormat nf = new DecimalFormat("#");
         return nf.format(d);
+    }
+
+    //进一法保留正数
+    public static double getAndOnePositiveNumber(double d) {
+        if (d > 0){
+            if (d > Double.valueOf(getPositiveNumber(d))){
+                return Double.valueOf(getPositiveNumber(d)) + 1;
+            } else {
+                return Double.valueOf(getPositiveNumber(d));
+            }
+
+        } else if (d < 0){
+            if (d < Double.valueOf(getPositiveNumber(d))){
+                return Double.valueOf(getPositiveNumber(d)) - 1;
+            } else {
+                return Double.valueOf(getPositiveNumber(d));
+            }
+        } else {
+            return d;
+        }
     }
 
     /**
@@ -87,7 +97,7 @@ public class StrUtil {
      * @return
      */
     public static String getPercentFormat(double d, int integerDigits, int fractionDigits) {
-        NumberFormat nf = java.text.NumberFormat.getPercentInstance();
+        NumberFormat nf = NumberFormat.getPercentInstance();
         if (integerDigits > 0) {
             nf.setMaximumIntegerDigits(integerDigits);//小数点前保留几位
         }
@@ -104,6 +114,7 @@ public class StrUtil {
         }
     }
 
+    //截取数字的前两位，小于两位直接返回
     public static int getNumberFrontTwoNumber(long l) {
         String str = String.valueOf(l);
         if (str.length() > 2) {
@@ -121,14 +132,18 @@ public class StrUtil {
     }
 
 
-    //取5的倍数
+    //前两位取5的倍数(CJL, MACD)
     public static long getFaveMultipleMinimum(long text) {
         if (text > 0) {
             long a = getNumberFrontTwoNumber(text);
-            if (getNumberDigit(text) < 2){
-                a = (long) ((a / 5 * 5 + 5));
+            if (a < 10) {
+                a = (a / 5 * 5 + 5);
             } else {
-                a = (long) ((a / 5 * 5 + 5) * Math.pow(10, getNumberDigit(text) - 2));
+                if (a % 5 == 0) {
+                    a = (long) ((a / 5 * 5) * Math.pow(10, getNumberDigit(text) - 2));
+                } else {
+                    a = (long) ((a / 5 * 5 + 5) * Math.pow(10, getNumberDigit(text) - 2));
+                }
             }
             return a;
         } else if (text == 0) {
@@ -136,16 +151,20 @@ public class StrUtil {
         } else {
             long aa = Math.abs(text);
             long a = getNumberFrontTwoNumber(aa);
-            if (getNumberDigit(text) < 2){
-                a = (long) ((a / 5 * 5 + 5));
+            if (a < 10) {
+                a = (a / 5 * 5 + 5);
             } else {
-                a = (long) ((a / 5 * 5 + 5) * Math.pow(10, getNumberDigit(text) - 2));
+                if (a % 5 == 0) {
+                    a = (long) ((a / 5 * 5) * Math.pow(10, getNumberDigit(aa) - 2));
+                } else {
+                    a = (long) ((a / 5 * 5 + 5) * Math.pow(10, getNumberDigit(aa) - 2));
+                }
             }
             return -a;
         }
     }
 
-    //取10的倍数
+    //取10的倍数(LME)
     public static long getZeroMultipleMinimum(long text) {
         if (text > 0) {
             text /= 10;
@@ -160,7 +179,34 @@ public class StrUtil {
         }
     }
 
-    //取100的倍数
+    /**
+     *  取n的倍数(LEM)
+     * @param text 原数
+     * @param n 倍数
+     * @return n的被数
+     */
+    public static int getLemMultipleMinimum(long text, int n) {
+        if (text > 0) {
+            if (text % n == 0) {
+                text = text / n * n;
+            } else {
+                text = text / n * n + n;
+            }
+            return (int) text;
+        } else if (text == 0) {
+            return 0;
+        } else {
+            int aa = (int) Math.abs(text);
+            if (text % n == 0) {
+                aa = aa / n * n;
+            } else {
+                aa = aa / n * n + n;
+            }
+            return -aa;
+        }
+    }
+
+    //取100的倍数(LEM)
     public static long getMillionMultipleMinimum(long text) {
         if (text > 0) {
             text /= 100;
@@ -185,7 +231,7 @@ public class StrUtil {
             String year = String.valueOf(new Date(l).getYear() + 1900);
             year = year.substring(year.length() - 2, year.length());
             String month = String.valueOf(new Date(l).getMonth());
-            if (month.length() == 1){
+            if (month.length() == 1) {
                 month = 0 + month;
             }
             format = year + month;
@@ -193,12 +239,84 @@ public class StrUtil {
         return format + "-3M";
     }
 
-    public static void main(String[] argc) {
-        System.out.println(StrUtil.getLEMDataStr(Long.parseLong("1539932400000")));
+    /**
+     *  LEM 右边轴的计算 aa[0] 最大值， aa[1] 最小值， aa[2] 等分个数, aa[3] 缩放量
+     * @param height 传最大值
+     * @param low 传最小值
+     * @return 返回数组， aa[0] 最大值， aa[1] 最小值， aa[2] 等分个数, aa[3] 缩放量
+     */
+    public static int[] getLemRightValue(float height, float low) {
+        int[] aa = new int[4];
+        int count = 3;
+        int c = 0;
+        int scale = 0;
+        int n = 3;
+        int h = (int) Math.abs(getAndOnePositiveNumber(height));
+        int l = (int) Math.abs(getAndOnePositiveNumber(low));
+        if (height > 0 && low < 0) {
+            if (Math.abs(height) > Math.abs(low)) {
+                h = getLemMultipleMinimum(h, n);
+                aa[0] = h;
+                scale = h / n;
+                aa[3] = scale;
+                if (l % scale == 0) {
+                    c = l / scale;
+                } else {
+                    c = l / scale + 1;
+                }
+                count += c;
+                aa[2] = count;
+                aa[1] = -scale * c;
 
-        System.out.println(StrUtil.getFaveMultipleMinimum(-2));
+            } else if (Math.abs(height) < Math.abs(low)) {
+                l = getLemMultipleMinimum(l, n);
+                aa[1] = -l;
+                scale = l / n;
+                aa[3] = scale;
+                if (h % scale == 0) {
+                    c = h / scale;
+                } else {
+                    c = h / scale + 1;
+                }
+                count += c;
+                aa[2] = count;
+                aa[0] = scale * c;
 
+            } else if (Math.abs(height) == Math.abs(low)) {
+                aa[0] = getLemMultipleMinimum(h, n);
+                aa[1] = -getLemMultipleMinimum(l, n);
+                aa[2] = count * 2;
+                aa[3] = getLemMultipleMinimum(h, n) / n;
+            }
+
+        } else if (height > low && low >= 0) {
+            aa[1] = 0;
+            aa[0] = getLemMultipleMinimum(h, n);
+            aa[2] = count;
+            aa[3] = getLemMultipleMinimum(h, n) / n;
+
+        } else if (height > low && height <= 0) {
+            aa[0] = 0;
+            aa[1] = -getLemMultipleMinimum(l, n);
+            aa[2] = count;
+            aa[3] = getLemMultipleMinimum(l, n) / n;
+        }
+        return aa;
     }
+
+
+    public static void main(String[] argc) {
+        System.out.println(StrUtil.getAndOnePositiveNumber(-3.1));
+
+        System.out.println(StrUtil.getPositiveNumber(-0.1));
+
+        System.out.println(StrUtil.getLemMultipleMinimum(33, 5));
+
+        int[] aa = getLemRightValue(4.5f, -0.1f);
+
+        System.out.println(aa[0] + ":" + aa[1] + ";" + aa[2] + ":" + aa[3]);
+    }
+
 
 
 }
