@@ -11,7 +11,7 @@ import android.content.res.Resources;
  */
 
 public class DensityUtil {
-    public float density;
+    public static float density;
 
     public DensityUtil() {
         density = Resources.getSystem().getDisplayMetrics().density;
@@ -43,7 +43,7 @@ public class DensityUtil {
      * @param dpValue 虚拟像素
      * @return 像素
      */
-    public int dip2px(float dpValue) {
+    public static int dip2px(float dpValue) {
         return (int) (0.5f + dpValue * density);
     }
 
@@ -53,7 +53,9 @@ public class DensityUtil {
      * @param pxValue 像素
      * @return 虚拟像素
      */
-    public float px2dip(int pxValue) {
+    public static float px2dip(int pxValue) {
         return (pxValue / density);
     }
+
+
 }

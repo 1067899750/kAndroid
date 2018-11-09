@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        startActivity(new Intent(MainActivity.this, KlineActivity.class));
+        startActivity(new Intent(MainActivity.this, GroupActivity.class));
 
     }
 
@@ -57,6 +57,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_minute2:
                 intent.setClass(this, LmeActivity.class);//月间价差图
+                break;
+            case R.id.btn_group_view:
+                intent.setClass(this, GroupActivity.class);
                 break;
             case R.id.btn_scale:
                 intent.setClass(this, ScaleActivity.class);//缩放

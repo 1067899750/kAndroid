@@ -23,7 +23,8 @@
             android:name=".activity.TimeMainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity android:name=".activity.ScaleActivity" />
-        <activity android:name=".activity.LmeActivity"></activity>
+        <activity android:name=".activity.LmeActivity" />
+        <activity android:name=".activity.GroupActivity"></activity>
     </application>
 
 </manifest>

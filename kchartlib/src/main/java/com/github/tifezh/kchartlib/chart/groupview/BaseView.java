@@ -1,4 +1,4 @@
-package com.github.tifezh.kchartlib.chart.lem;
+package com.github.tifezh.kchartlib.chart.groupview;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -6,9 +6,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.os.Build;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DimenRes;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.ViewConfigurationCompat;
 import android.util.AttributeSet;
@@ -19,22 +22,14 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.github.tifezh.kchartlib.R;
+import com.github.tifezh.kchartlib.chart.base.IGroupDraw;
+import com.github.tifezh.kchartlib.chart.comInterface.ILem;
+import com.github.tifezh.kchartlib.utils.DisplayUtil;
 
 import static android.view.View.MeasureSpec.AT_MOST;
 
-/**
- * Description 自定义view最基础的类
- * Author puyantao
- * Email 1067899750@qq.com
- * Date 2018-10-19 11:22
- */
-
 public abstract class BaseView extends View  implements GestureDetector.OnGestureListener{
-
-    protected String TAG;
-
-    protected Context mContext;
-
+    private Context mContext;
     protected final float DEF_WIDTH = 650;
     protected final float DEF_HIGHT = 400;
 
@@ -44,20 +39,17 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
     protected int mHeight; //试图高度
     protected int mWidth;  //试图宽度
 
-    protected Paint mGridPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    protected Paint mBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    protected int mBackgroundColor;
-    protected int GridColumns = 0; //列数
-    protected int mGridRows = 0; //  行数
-    protected int mGridLeftRows = 5; //  行数
+    protected int mTopPadding = 30; //据顶部
+    protected int mBottomPadding = 57;//距底部
+    protected int mPadding = 10;
 
-    protected int mTopPadding = 90; //据顶部
-    protected int mBottomPadding = 150;//距底部
+    protected ILem mMaxPoint; //最大值
+    protected ILem mMinPoint;//最小值
 
-    protected float mScaleY = 1; //Y轴单位量
-    protected float mScaleX = 1; //x轴的单位量
-    protected long mTotalTime; //总时间
-    protected long mPointCount = 0; //点的个数
+    protected int mGridRows = 6;//主视图网格数
+    protected int mGridColumns = 0;
+    protected int mChildGridRows = 4;//子图横向网格数
+    protected int mChildGridColumns = 5;
 
     //左右padding,允许修改
     protected int mBasePaddingLeft = 50;
@@ -66,75 +58,57 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
     protected float mBaseTextPaddingRight = 15;//字体据右侧的距离
     protected int mBaseTimePadding = 5; //下方文字
 
+    protected Paint mGridPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+    private Bitmap mBitmapLogo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_app_logo);
+
     protected GestureDetectorCompat mDetector;
     protected boolean isLongPress = false; //是否长按事件
     protected boolean isClosePress = true; //关闭长按时间
-    private Bitmap mBitmapLogo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_app_logo);
-
 
     private float mXDown;
     private float mYDown;
 
     private float mXMove;
     private float mYMove;
-
-    /**
-     * 判定为拖动的最小移动像素数
-     */
+    //判定为拖动的最小移动像素数
     private int mTouchSlop;
 
+
     public BaseView(Context context) {
-        this(context, null);
-        init();
+        super(context);
+        initView(context);
     }
 
     public BaseView(Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
-        init();
+        super(context, attrs);
+        initView(context);
     }
 
     public BaseView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
-        TAG = this.getClass().getSimpleName();
-        mContext = context;
+        initView(context);
     }
 
-    protected void init() {
+    private void initView(Context context) {
+        this.mContext = context;
+
+        setWillNotDraw(false);
+        ;
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
+            this.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+
         mDetector = new GestureDetectorCompat(getContext(), this);
 
         ViewConfiguration configuration = ViewConfiguration.get(getContext());
         // 获取TouchSlop值
         mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
 
-        mBackgroundColor = Color.parseColor("#101114");
-        mBackgroundPaint.setColor(mBackgroundColor);
-
-        mGridPaint.setColor(Color.parseColor("#15FFFFFF")); //网格线颜色
-        mGridPaint.setStrokeWidth(dp2px(1));
-
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        //绘制背景颜色
-        canvas.drawColor(mBackgroundColor);
-        //绘制水印
-        drawMainViewLogo(canvas);
-    }
-
-    /**
-     * 添加视图水印
-     *
-     * @param canvas
-     */
-    public void drawMainViewLogo(Canvas canvas) {
-        if (mBitmapLogo != null) {
-            int mLeft = getWidth() / 2 - mBitmapLogo.getWidth() / 2;
-            int mTop = mBaseHeight / 2 - mBitmapLogo.getHeight() / 2 + mTopPadding;
-            canvas.drawBitmap(mBitmapLogo, mLeft, mTop, null);
-        }
+        mTopPadding = DisplayUtil.dip2px(mContext, mTopPadding);
+        mBottomPadding = DisplayUtil.dip2px(mContext, mBottomPadding);
+        mPadding = DisplayUtil.dip2px(mContext, mPadding);
     }
 
 
@@ -154,24 +128,45 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
         } else {
             setMeasuredDimension(widthSpecSize, heightSpecSize);
         }
-        mBaseWidth = mWidth = getMeasuredWidth();
-        mHeight = getMeasuredHeight();
-        mBaseHeight = mHeight - mTopPadding - mBottomPadding;
+        this.mWidth = getMeasuredWidth();
+        this.mBaseWidth = mWidth;
+        this.mHeight = getMeasuredHeight();
+        this.mBaseHeight = mHeight - mTopPadding - mBottomPadding;
         notifyChanged();
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        this.mHeight = h;
+        this.mWidth = getMeasuredWidth();
+        this.mBaseWidth = mWidth;
+        this.mHeight = getMeasuredHeight();
         this.mBaseHeight = mHeight - mTopPadding - mBottomPadding;
-        this.mWidth = this.mBaseWidth = w;
         notifyChanged();
     }
 
+
     @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
+        //绘制水印
+        drawMainViewLogo(canvas);
+
+    }
+
+
+    /**
+     * 添加视图水印
+     *
+     * @param canvas
+     */
+    public void drawMainViewLogo(Canvas canvas) {
+        if (mBitmapLogo != null) {
+            int mLeft = getWidth() / 2 - mBitmapLogo.getWidth() / 2;
+            int mTop = mBaseHeight / 2 - mBitmapLogo.getHeight() / 2 + mTopPadding;
+            canvas.drawBitmap(mBitmapLogo, mLeft, mTop, null);
+        }
     }
 
 
@@ -206,8 +201,9 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
                 if (event.getPointerCount() == 1) {
                     //长按之后移动
 //                    if (isLongPress || !isClosePress) {
-                        calculateSelectedX(event.getX());
-                        invalidate();
+                    Log.i("---> : ", "onTouchEvent");
+                    calculateSelectedX(event.getX());
+//                    invalidate();
 //                    }
                 }
                 break;
@@ -215,13 +211,13 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
                 if (!isClosePress) {
                     isLongPress = false;
                 }
-                invalidate();
+//                invalidate();
                 break;
             case MotionEvent.ACTION_CANCEL:
                 if (!isClosePress) {
                     isLongPress = false;
                 }
-                invalidate();
+//                invalidate();
                 break;
         }
         this.mDetector.onTouchEvent(event);
@@ -231,12 +227,6 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
 
     protected abstract void notifyChanged();
     protected abstract void calculateSelectedX(float x);
-
-
-    protected String getString(@StringRes int stringId) {
-        return getResources().getString(stringId);
-    }
-
 
     //高度
     protected float getFontBaseLineHeight(Paint paint) {
@@ -253,16 +243,23 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
         return textHeight;
     }
 
-    /**
-     * 根据颜色id获取颜色
-     *
-     * @param colorId
-     * @return
-     */
-    protected int getColor(@ColorRes int colorId) {
-        return getResources().getColor(colorId);
+    //设置表格线宽度
+    public void setGridLineWidth(float width) {
+        mGridPaint.setStrokeWidth(width);
     }
 
+    //设置表格线颜色
+    public void setGridLineColor(int color) {
+        mGridPaint.setColor(color);
+    }
+
+    public float getDimension(@DimenRes int resId) {
+        return getResources().getDimension(resId);
+    }
+
+    public int getColor(@ColorRes int resId) {
+        return ContextCompat.getColor(getContext(), resId);
+    }
 
     protected int dp2px(float dp) {
         final float scale = getContext().getResources().getDisplayMetrics().density;
@@ -272,62 +269,6 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
     protected int sp2px(float spValue) {
         final float fontScale = getContext().getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
-    }
-
-
-    //----------------------对用户暴露可以修改的参数------------------
-
-
-    public float getDEF_WIDTH() {
-        return DEF_WIDTH;
-    }
-
-    public float getDEF_HIGHT() {
-        return DEF_HIGHT;
-    }
-
-    public void getBaseHeight(int height) {
-        mHeight = height;
-    }
-
-    public void setBaseWidth(int baseWidth) {
-        mBaseWidth = baseWidth;
-    }
-
-    public void getBaseTopPadding(int top) {
-        mTopPadding = top;
-    }
-
-    public void setBaseBottomPadding(int bottom) {
-        mBottomPadding = bottom;
-    }
-
-    public void setLongPress(boolean longPress) {
-        isLongPress = longPress;
-    }
-
-    public void setClosePress(boolean closePress){
-        isClosePress = closePress;
-    }
-
-    /**
-     * 设置表格行数
-     */
-    public void setGridRows(int gridRows) {
-        if (gridRows < 1) {
-            gridRows = 1;
-        }
-        mGridRows = gridRows;
-    }
-
-    /**
-     * 设置表格列数
-     */
-    public void setGridColumns(int gridColumns) {
-        if (gridColumns < 1) {
-            gridColumns = 1;
-        }
-        GridColumns = gridColumns;
     }
 
     /******************************长按事件*****************************************/
@@ -373,7 +314,7 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
         isLongPress = true;
         isClosePress = false;
         calculateSelectedX(e.getX());
-        invalidate();
+//        invalidate();
     }
 
 
@@ -381,5 +322,7 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         return false;
     }
+
+
 
 }

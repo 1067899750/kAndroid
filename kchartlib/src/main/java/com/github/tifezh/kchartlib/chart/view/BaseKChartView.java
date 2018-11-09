@@ -317,12 +317,12 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
         return (y + (fontMetrics.descent - fontMetrics.ascent) / 2 - fontMetrics.descent);
     }
 
-    /**
-     * 画表格
-     *
-     * @param canvas
-     */
-    private void drawGird(Canvas canvas) {
+        /**
+         * 画表格
+         *
+         * @param canvas
+         */
+        private void drawGird(Canvas canvas) {
         //-----------------------上方k线图横向网格------------------------
         //横向的grid
         float rowSpace = mMainRect.height() / mGridRows;
