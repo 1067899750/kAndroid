@@ -104,6 +104,7 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
 
         ViewConfiguration configuration = ViewConfiguration.get(getContext());
         // 获取TouchSlop值
+//        mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
         mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
 
         mTopPadding = DisplayUtil.dip2px(mContext, mTopPadding);
