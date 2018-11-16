@@ -202,6 +202,13 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
                     return false;
                 }
 
+                //请求父类是否进行拦截
+//                if (!isLongPress || isClosePress) {
+//                    getParent().requestDisallowInterceptTouchEvent(false);
+//                } else {
+//                    getParent().requestDisallowInterceptTouchEvent(true);
+//                }
+
                 //一个点的时候滑动
                 if (event.getPointerCount() == 1) {
                     //长按之后移动
