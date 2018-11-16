@@ -220,12 +220,14 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
                 break;
             case MotionEvent.ACTION_UP:
                 if (!isClosePress) {
+                    isClosePress = true;
                     isLongPress = false;
                 }
                 invalidate();
                 break;
             case MotionEvent.ACTION_CANCEL:
                 if (!isClosePress) {
+                    isClosePress = true;
                     isLongPress = false;
                 }
                 invalidate();
