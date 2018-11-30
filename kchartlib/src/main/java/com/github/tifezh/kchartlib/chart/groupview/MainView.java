@@ -171,6 +171,11 @@ public class MainView extends BaseView implements IGroupDraw<ILem> {
 
         mColumnWidth = mWidth / getMaxPointCount();
         mColumnPaint.setStrokeWidth(mColumnWidth * 0.5f); //柱子
+
+        if (mPoints.size() > 0 && selectedIndex > -1 && selectedIndex < mPoints.size()) {
+            mChildView.initData(selectedIndex, mColumnWidth, mCurveMax, mScaleX, mCurveScaleY, mPoints.get(selectedIndex));
+        }
+
         invalidate();
     }
 
@@ -183,7 +188,9 @@ public class MainView extends BaseView implements IGroupDraw<ILem> {
         if (selectedIndex > mPoints.size() - 1) {
             selectedIndex = mPoints.size() - 1;
         }
-        mChildView.initData(selectedIndex, mColumnWidth, mCurveMax, mScaleX, mCurveScaleY, mPoints.get(selectedIndex));
+        if (mPoints.size() > 0 && selectedIndex > -1 && selectedIndex < mPoints.size()) {
+            mChildView.initData(selectedIndex, mColumnWidth, mCurveMax, mScaleX, mCurveScaleY, mPoints.get(selectedIndex));
+        }
     }
 
     @Override
@@ -194,6 +201,7 @@ public class MainView extends BaseView implements IGroupDraw<ILem> {
         drawGird(canvas); //画表格
         drawDefTopTxtpaint(canvas); //画上面的小圆点
         if (mPoints.size() <= 0 || mWidth == 0 || mHeight == 0) {
+            mChildView.initData(-1, mColumnWidth, mCurveMax, mScaleX, mCurveScaleY, null);
             return;
         }
         mChildView.initData(0, mColumnWidth, mCurveMax, mScaleX, mCurveScaleY, mPoints.get(0));
