@@ -579,7 +579,7 @@ public class KlineActivity extends AppCompatActivity implements KChartView.KChar
                 });
             }
         }).start();
-        minuteChartView.setDrawChildView(true); //是否绘制子试图
+
         minuteChartView.setScaleEnable(true); //是否可以缩放
         minuteChartView.setGridRows(6);
         minuteChartView.setGridColumns(5);

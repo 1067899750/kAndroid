@@ -21,6 +21,8 @@ import com.github.tifezh.kchart.model.MinuteTime;
 import com.github.tifezh.kchart.utils.ValueUtil;
 import com.github.tifezh.kchart.view.TopLeftHorizontalView;
 import com.github.tifezh.kchartlib.chart.minute.BaseMinuteView;
+import com.github.tifezh.kchartlib.chart.minute.MinuteMainView;
+import com.github.tifezh.kchartlib.chart.minute.MinuteRateView;
 import com.github.tifezh.kchartlib.chart.minute.MinuteTimeView;
 
 import java.util.ArrayList;
@@ -88,8 +90,6 @@ public class TimeMainActivity extends AppCompatActivity {
             minuteChartView.setGridRows(6);
             minuteChartView.setGridColumns(5);
             minuteChartView.setGridChildRows(4);
-            minuteChartView.setVolumeHeight(80);
-            minuteChartView.setVolumeTextHeight(20);
             viewLeftMessage.setVisibility(View.VISIBLE);
             lineView.setVisibility(View.VISIBLE);
 
@@ -98,8 +98,6 @@ public class TimeMainActivity extends AppCompatActivity {
             minuteChartView.setGridRows(6);
             minuteChartView.setGridColumns(5);
             minuteChartView.setGridChildRows(4);
-            minuteChartView.setVolumeHeight(100);
-            minuteChartView.setVolumeTextHeight(20);
             viewLeftMessage.setVisibility(View.GONE);
             lineView.setVisibility(View.GONE);
         }
@@ -248,13 +246,10 @@ public class TimeMainActivity extends AppCompatActivity {
             }
         }).start();
 
-        minuteChartView.setDrawChildView(true); //是否绘制子试图
         minuteChartView.setScaleEnable(true); //是否可以缩放
         minuteChartView.setGridRows(6);
         minuteChartView.setGridColumns(5);
         minuteChartView.setGridChildRows(4);
-        minuteChartView.setVolumeHeight(100);
-        minuteChartView.setVolumeTextHeight(20);
 
         minuteChartView.setViewScaleGestureListener(new BaseMinuteView.OnScaleGestureListener() {
             @Override
@@ -326,8 +321,6 @@ public class TimeMainActivity extends AppCompatActivity {
             minuteChartView.setGridRows(6);
             minuteChartView.setGridColumns(5);
             minuteChartView.setGridChildRows(4);
-            minuteChartView.setVolumeHeight(80);
-            minuteChartView.setVolumeTextHeight(20);
             viewLeftMessage.setVisibility(View.VISIBLE);
             lineView.setVisibility(View.VISIBLE);
 
@@ -335,9 +328,7 @@ public class TimeMainActivity extends AppCompatActivity {
             llStatus.setVisibility(View.VISIBLE);
             minuteChartView.setGridRows(6);
             minuteChartView.setGridColumns(5);
-            minuteChartView.setGridChildRows(4);
-            minuteChartView.setVolumeHeight(100);
-            minuteChartView.setVolumeTextHeight(20);
+            minuteChartView.setGridChildRows(4);;
             viewLeftMessage.setVisibility(View.GONE);
             lineView.setVisibility(View.GONE);
         }

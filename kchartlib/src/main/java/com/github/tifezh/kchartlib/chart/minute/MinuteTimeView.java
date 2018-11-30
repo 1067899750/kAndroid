@@ -82,6 +82,7 @@ public class MinuteTimeView extends BaseMinuteView {
 
 
     private void initData() {
+        setDrawChildView(true);
         mTopPadding = dp2px(mTopPadding);
         mBottomPadding = dp2px(mBottomPadding);
 
@@ -263,7 +264,7 @@ public class MinuteTimeView extends BaseMinuteView {
 
         //设置主状图的宽度
         mPointWidth = (float) (mWidth - mBaseTimePadding * 2) / getMaxPointCount(1);
-        mVolumePaint.setStrokeWidth(mPointWidth * 0.8f);
+        mVolumePaint.setStrokeWidth(dp2px((float) 0.5));
 
         invalidate();
     }
@@ -303,9 +304,9 @@ public class MinuteTimeView extends BaseMinuteView {
                             mVolumePaint.setColor(getResources().getColor(R.color.chart_text));
                         }
 
-                        canvas.drawLine(curX + mBaseTimePadding - mPointWidth * 0.9f,
+                        canvas.drawLine(curX + mBaseTimePadding - mPointWidth * 0.5f,
                                 mMainHeight + mVolumeTextHeight + mVolumeHeight,
-                                curX + mBaseTimePadding  - mPointWidth * 0.9f,
+                                curX + mBaseTimePadding  - mPointWidth * 0.5f,
                                 getVolumeCJLY(curPoint.getVolume()),
                                 mVolumePaint);
 
@@ -313,17 +314,17 @@ public class MinuteTimeView extends BaseMinuteView {
                         //MACD成交量(柱状图)
                         if (curPoint.getMacd() > 0) {
                             mVolumePaint.setColor(getResources().getColor(R.color.color_positive_value));
-                            canvas.drawLine(curX + mBaseTimePadding  - mPointWidth * 0.9f,
+                            canvas.drawLine(curX + mBaseTimePadding  - mPointWidth * 0.5f,
                                     getMACDLineY(0),
-                                    curX + mBaseTimePadding  - mPointWidth * 0.9f,
+                                    curX + mBaseTimePadding  - mPointWidth * 0.5f,
                                     getMACDLineY(curPoint.getMacd()),
                                     mVolumePaint);
 
                         } else if (curPoint.getMacd() < 0) {
                             mVolumePaint.setColor(getResources().getColor(R.color.color_negative_value));
-                            canvas.drawLine(curX + mBaseTimePadding  - mPointWidth * 0.9f,
+                            canvas.drawLine(curX + mBaseTimePadding  - mPointWidth * 0.5f,
                                     getMACDLineY(0),
-                                    curX + mBaseTimePadding  - mPointWidth * 0.9f,
+                                    curX + mBaseTimePadding  - mPointWidth * 0.5f,
                                     getMACDLineY(curPoint.getMacd()),
                                     mVolumePaint);
 
@@ -347,12 +348,14 @@ public class MinuteTimeView extends BaseMinuteView {
                 return;
             }
             IMinuteLine point = mPoints.get(selectedIndex);
-            float x = getX(selectedIndex) + mBaseTimePadding  - mPointWidth * 0.9f;
+            float x = getX(selectedIndex) + mBaseTimePadding  - mPointWidth * 0.5f;
             //轴线
             canvas.drawLine(x, 0, x, mMainHeight + mVolumeHeight + mVolumeTextHeight, mLinePaint);//Y
-            canvas.drawLine(0, getY(point.getLast()), mWidth, getY(point.getLast()), mLinePaint);//X
+//            canvas.drawLine(0, getY(point.getLast()), mWidth, getY(point.getLast()), mLinePaint);//X
 
-            drawSelector(selectedIndex, point, canvas);
+
+                drawMainSelector(selectedIndex, point, canvas);
+
         }
     }
 
@@ -362,7 +365,8 @@ public class MinuteTimeView extends BaseMinuteView {
      *
      * @param canvas
      */
-    private void drawSelector(int selectedIndex, IMinuteLine point, Canvas canvas) {
+
+    private void drawMainSelector(int selectedIndex, IMinuteLine point, Canvas canvas) {
         Paint.FontMetrics metrics = mTextLeftPaint.getFontMetrics();
         float textHeight = metrics.descent - metrics.ascent;
 
@@ -410,30 +414,30 @@ public class MinuteTimeView extends BaseMinuteView {
 
         float y = top + padding * 2 + (textHeight - metrics.bottom - metrics.top) / 2;
 
-        if (x > mWidth / 2) {
-            left = margin + padding;
-            mSelectorTextPaint.setTextAlign(Paint.Align.LEFT);
-            mSelectorTitlePaint.setTextAlign(Paint.Align.LEFT);
-        } else {
-            left = mWidth - margin - padding;
-            mSelectorTextPaint.setTextAlign(Paint.Align.RIGHT);
-            mSelectorTitlePaint.setTextAlign(Paint.Align.RIGHT);
-        }
+//        if (x > mWidth / 2) {
+//            left = margin + padding;
+//            mSelectorTextPaint.setTextAlign(Paint.Align.LEFT);
+//            mSelectorTitlePaint.setTextAlign(Paint.Align.LEFT);
+//        } else {
+//            left = mWidth - margin - padding;
+//            mSelectorTextPaint.setTextAlign(Paint.Align.RIGHT);
+//            mSelectorTitlePaint.setTextAlign(Paint.Align.RIGHT);
+//        }
         for (String s : strings) {
             if (StrUtil.isTimeText(s)) {
                 mSelectorTextPaint.setColor(getResources().getColor(R.color.color_text_positive_paint));
-                canvas.drawText(s, left, y, mSelectorTextPaint);
+                canvas.drawText(s, left + padding, y, mSelectorTextPaint);
 
             } else if (StrUtil.isChinaText(s)) {
-                canvas.drawText(s, left, y, mSelectorTitlePaint);
+                canvas.drawText(s, left + padding, y, mSelectorTitlePaint);
 
             } else {
                 if (StrUtil.isPositiveOrNagativeNumberText(s)) {
                     mSelectorTextPaint.setColor(getResources().getColor(R.color.color_negative_value));
-                    canvas.drawText(s, left , y, mSelectorTextPaint);
+                    canvas.drawText(s, left + padding, y, mSelectorTextPaint);
                 } else {
                     mSelectorTextPaint.setColor(getResources().getColor(R.color.color_text_positive_paint));
-                    canvas.drawText(s, left, y, mSelectorTextPaint);
+                    canvas.drawText(s, left + padding, y, mSelectorTextPaint);
                 }
             }
 
@@ -584,7 +588,7 @@ public class MinuteTimeView extends BaseMinuteView {
                 IMinuteLine curPoint = mPoints.get(i);
                 float curX = getX(i);
 
-                Log.i("diff --> :" , curPoint.getDiff() + "");
+//                Log.i("diff --> :" , curPoint.getDiff() + "");
                 canvas.drawLine(lastX + mBaseTimePadding - mScaleX / 2,
                         getMACDLineY(lastPoint.getDiff()),
                         curX + mBaseTimePadding  - mScaleX / 2,
@@ -606,7 +610,7 @@ public class MinuteTimeView extends BaseMinuteView {
                 IMinuteLine curPoint = mPoints.get(i);
                 float curX = getX(i);
 
-                Log.i("dea --> :" , curPoint.getDea() + "");
+//                Log.i("dea --> :" , curPoint.getDea() + "");
                 canvas.drawLine(lastX + mBaseTimePadding  - mScaleX / 2,
                         getMACDLineY(lastPoint.getDea()),
                         curX + mBaseTimePadding  - mScaleX / 2,

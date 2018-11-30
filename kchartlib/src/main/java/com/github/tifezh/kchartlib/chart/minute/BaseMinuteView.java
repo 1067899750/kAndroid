@@ -1,6 +1,7 @@
 package com.github.tifezh.kchartlib.chart.minute;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -37,10 +38,10 @@ public abstract class BaseMinuteView extends View implements GestureDetector.OnG
         ScaleGestureDetector.OnScaleGestureListener {
     protected int ONE_MINUTE = 60000;
 
-    protected int mMainHeight = 0; //主视图
-    protected int mWidth = 0; //试图宽度
+    protected int mMainHeight; //主视图
+    protected int mWidth; //试图宽度
     //可修改
-    protected int mVolumeHeight = 100; //子试图高度
+    protected int mVolumeHeight; //子试图高度
     protected int mVolumeTextHeight = 20; //CJL高度
 
     protected int mTopPadding = 1; //据顶部
@@ -134,7 +135,7 @@ public abstract class BaseMinuteView extends View implements GestureDetector.OnG
      */
     public void initData(Collection<? extends IMinuteLine> data, Date startTime, Date endTime,
                          Collection<? extends IMinuteTime> times, float yesClosePrice) {
-        if ((data == null && data.isEmpty()) || (times == null && times.isEmpty()) ) {
+        if ((data == null && data.isEmpty()) || (times == null && times.isEmpty())) {
             return;
         }
         if (times != null) {
@@ -225,26 +226,56 @@ public abstract class BaseMinuteView extends View implements GestureDetector.OnG
         return true;
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
+        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
+        int height = heightSpecSize - mTopPadding - mBottomPadding - mVolumeTextHeight;
+        if (isDrawChildView) {
+            this.mMainHeight = (int) (height * 0.75f);
+            this.mVolumeHeight = (int) (height * 0.25f);
+        }else {
+            this.mMainHeight = (int) (height * 1f);
+            this.mVolumeHeight = (int) (height * 0f);
+        }
+        this.mWidth = getMeasuredWidth();
+        notifyChanged();
+    }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        int height = h - mTopPadding - mBottomPadding;
-        this.mMainHeight = height - mVolumeHeight - mVolumeTextHeight;
+        int height = h - mTopPadding - mBottomPadding - mVolumeTextHeight;
+        if (isDrawChildView) {
+            this.mMainHeight = (int) (height * 0.75f);
+            this.mVolumeHeight = (int) (height * 0.25f);
+        } else {
+            this.mMainHeight = (int) (height * 1f);
+            this.mVolumeHeight = (int) (height * 0f);
+        }
         this.mWidth = w;
         notifyChanged();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {//横竖屏切换
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         //绘制背景颜色
         canvas.drawColor(mBackgroundColor);
+        if (mWidth == 0 || mMainHeight == 0) {
+            return;
+        }
         drawMainViewLogo(canvas);
         if (isDrawChildView) {
             drawChildViewLogo(canvas);
         }
         drawGird(canvas); //绘制网格
-        if (mWidth == 0 || mMainHeight == 0 || mPoints == null || mPoints.size() == 0) {
+        if (mPoints == null || mPoints.size() == 0) {
             return;
         }
         super.onDraw(canvas);
@@ -284,7 +315,7 @@ public abstract class BaseMinuteView extends View implements GestureDetector.OnG
         canvas.scale(1, 1);
         //主视图横向的grid
         float rowSpace = mMainHeight / mGridRows;
-        for (int i = 0; i <= mGridRows; i++) {
+        for (int i = 1; i <= mGridRows; i++) {
             canvas.drawLine(0, rowSpace * i, mWidth, rowSpace * i, mGridPaint);
         }
 
@@ -397,7 +428,7 @@ public abstract class BaseMinuteView extends View implements GestureDetector.OnG
 
     //设置主试图高度
     public void setMainHeight(int height) {
-        mMainHeight =  dp2px(height);
+        mMainHeight = dp2px(height);
     }
 
     /**
@@ -472,7 +503,7 @@ public abstract class BaseMinuteView extends View implements GestureDetector.OnG
         isLongPress = longPress;
     }
 
-    public void setClosePress(boolean closePress){
+    public void setClosePress(boolean closePress) {
         isClosePress = closePress;
     }
 
@@ -493,7 +524,7 @@ public abstract class BaseMinuteView extends View implements GestureDetector.OnG
     //抬起, 手指离开触摸屏时触发(长按、滚动、滑动时，不会触发这个手势)
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        switch (e.getAction()){
+        switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 Log.i("--->", "ACTION_DOWN");
                 break;

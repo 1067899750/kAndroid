@@ -17,15 +17,7 @@ import com.github.tifezh.kchartlib.utils.StrUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * Description 利率
- * Author puyantao
- * Email 1067899750@qq.com
- * Date 2018-11-22 15:28
- */
-
-public class MinuteRateView extends BaseMinuteView {
+public class MinuteMainView extends BaseMinuteView {
     private Paint mAvgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     private Paint mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG); //文字
@@ -51,17 +43,17 @@ public class MinuteRateView extends BaseMinuteView {
     private int selectedIndex;
 
 
-    public MinuteRateView(Context context) {
+    public MinuteMainView(Context context) {
         super(context);
         initData();
     }
 
-    public MinuteRateView(Context context, AttributeSet attrs) {
+    public MinuteMainView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initData();
     }
 
-    public MinuteRateView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public MinuteMainView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initData();
     }
@@ -84,7 +76,7 @@ public class MinuteRateView extends BaseMinuteView {
         mTextMACDPaint.setTextSize(sp2px(10));
         mTextMACDPaint.setStrokeWidth(dp2px(0.5f));
 
-        mTextLeftPaint.setColor(Color.parseColor("#6A798E"));
+        mTextLeftPaint.setColor(Color.parseColor("#B1B2B6"));
         mTextLeftPaint.setTextSize(mTextSize);
         mTextLeftPaint.setStrokeWidth(dp2px(0.5f));
 
@@ -272,8 +264,8 @@ public class MinuteRateView extends BaseMinuteView {
         float bottom = 10;
 
         List<String> strings = new ArrayList<>();
-        strings.add(DateUtil.getStringDateByLong(point.getDate().getTime(), 2));
-        strings.add("数值");
+        strings.add(DateUtil.shortTimeFormat.format(point.getDate().getTime()));
+        strings.add("比值");
         strings.add(point.getLast() + "");
 
         strings.add("涨跌");
@@ -294,6 +286,15 @@ public class MinuteRateView extends BaseMinuteView {
         canvas.drawRoundRect(r, padding, padding, mSelectorBackgroundPaint);
 
         float y = top + padding * 2 + (textHeight - metrics.bottom - metrics.top) / 2;
+//        if (x > mWidth / 2) {
+//            left = margin + padding;
+//            mSelectorTextPaint.setTextAlign(Paint.Align.LEFT);
+//            mSelectorTitlePaint.setTextAlign(Paint.Align.LEFT);
+//        } else {
+//            left = mWidth - margin - padding;
+//            mSelectorTextPaint.setTextAlign(Paint.Align.RIGHT);
+//            mSelectorTitlePaint.setTextAlign(Paint.Align.RIGHT);
+//        }
         for (String s : strings) {
             if (StrUtil.isTimeText(s)) {
                 mSelectorTextPaint.setColor(getResources().getColor(R.color.color_text_positive_paint));
@@ -325,25 +326,62 @@ public class MinuteRateView extends BaseMinuteView {
         float rowValue = (mValueMax - mValueMin) / mGridRows;
         float rowSpace = mMainHeight / mGridRows;
         //画左边的值
+        mTextLeftPaint.setColor(getResources().getColor(R.color.color_positive_value));
         canvas.drawText(StrUtil.getOneDecimals(mValueStart + rowValue * 3), mBaseTextPaddingLeft, baseLine, mTextLeftPaint); //绘制最大值
 
+        mTextLeftPaint.setColor(getResources().getColor(R.color.color_negative_value));
         canvas.drawText(StrUtil.getOneDecimals(mValueStart - rowValue * 3), mBaseTextPaddingLeft, mMainHeight - textHeight + baseLine, mTextLeftPaint); //绘制最小值
 
         for (int i = 0; i < 3; i++) {
 
             if (i == 0) {
                 String text = StrUtil.getOneDecimals(mValueStart + rowValue * 1.5);
+                mTextLeftPaint.setColor(getResources().getColor(R.color.color_positive_value));
                 canvas.drawText(text, mBaseTextPaddingLeft, (float) (rowSpace * 1.5 + baseLine / 2), mTextLeftPaint);
 
             } else if (i == 1) {
                 String text = StrUtil.getOneDecimals(mValueStart);
+                mTextLeftPaint.setColor(getResources().getColor(R.color.color_central_paint));
                 canvas.drawText(text, mBaseTextPaddingLeft, fixTextY(rowSpace * 3), mTextLeftPaint);
 
             } else if (i == 2) {
                 String text = StrUtil.getOneDecimals(mValueStart - rowValue * 1.5);
+                mTextLeftPaint.setColor(getResources().getColor(R.color.color_negative_value));
                 canvas.drawText(text, mBaseTextPaddingLeft,
                         (float) (mMainHeight - textHeight / 2 - rowSpace * 1.5 + baseLine / 2), mTextLeftPaint);
 
+            }
+        }
+
+        //画右边的值
+        mTextReightPaint.setTextAlign(Paint.Align.RIGHT);
+        mTextReightPaint.setColor(getResources().getColor(R.color.color_positive_value));
+        String text = StrUtil.floatToString((mValueMax - mValueStart) * 100f / mValueStart) + "%";
+        canvas.drawText("+" + text, mWidth - mBaseTextPaddingRight, baseLine, mTextReightPaint);
+
+        mTextReightPaint.setColor(getResources().getColor(R.color.color_negative_value));
+        text = StrUtil.floatToString(Math.abs(mValueMin - mValueStart) * 100f / mValueStart) + "%";
+        canvas.drawText("-" + text, mWidth - mBaseTextPaddingRight,
+                mMainHeight - textHeight + baseLine, mTextReightPaint);
+
+        for (int i = 0; i < 3; i++) {
+            if (i == 0) {
+                text = StrUtil.floatToString((rowValue * 1.5f) * 100f / mValueStart) + "%";
+                mTextReightPaint.setColor(getResources().getColor(R.color.color_positive_value));
+                canvas.drawText("+" + text, mWidth - mBaseTextPaddingRight,
+                        (float) (rowSpace * 1.5 + baseLine / 2), mTextReightPaint);
+
+            } else if (i == 1) {
+                text = "0";
+                mTextReightPaint.setColor(getResources().getColor(R.color.color_central_paint));
+                canvas.drawText(text, mWidth - mBaseTextPaddingRight,
+                        fixTextY(rowSpace * 3), mTextReightPaint);
+
+            } else if (i == 2) {
+                text = StrUtil.floatToString((rowValue * 1.5f) * 100f / mValueStart) + "%";
+                mTextReightPaint.setColor(getResources().getColor(R.color.color_negative_value));
+                canvas.drawText("-" + text, mWidth - mBaseTextPaddingRight,
+                        (float) (mMainHeight - textHeight / 2 - rowSpace * 1.5 + baseLine / 2), mTextReightPaint);
             }
         }
 
@@ -385,4 +423,5 @@ public class MinuteRateView extends BaseMinuteView {
 
 
 }
+
 
