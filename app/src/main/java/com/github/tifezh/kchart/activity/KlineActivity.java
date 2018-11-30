@@ -57,6 +57,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+/**
+ *
+ * Description K线图
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-11-30 10:27
+ */
 
 
 public class KlineActivity extends AppCompatActivity implements KChartView.KChartRefreshListener {

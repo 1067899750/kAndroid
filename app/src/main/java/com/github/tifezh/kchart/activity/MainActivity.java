@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        startActivity(new Intent(MainActivity.this, GroupActivity.class));
+        startActivity(new Intent(MainActivity.this, GroupMinuteActivity.class));
 
     }
 
@@ -52,15 +52,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_loadmore:
                 intent.setClass(this, KlineActivity.class);//k线图，支持加载更多
                 break;
+
             case R.id.btn_minute:
                 intent.setClass(this, TimeMainActivity.class);//分时图
                 break;
+
             case R.id.btn_minute2:
                 intent.setClass(this, LmeActivity.class);//月间价差图
                 break;
+
             case R.id.btn_group_view:
                 intent.setClass(this, GroupActivity.class);
                 break;
+
+            case R.id.btn_group_minute_view:
+                intent.setClass(this, GroupMinuteActivity.class);
+                break;
+
             case R.id.btn_scale:
                 intent.setClass(this, ScaleActivity.class);//缩放
                 break;

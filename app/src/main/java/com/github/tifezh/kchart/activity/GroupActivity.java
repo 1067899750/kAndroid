@@ -14,6 +14,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+/**
+ *
+ * Description LME 组合试图
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-11-30 10:25
+ */
 
 public class GroupActivity extends AppCompatActivity {
     @BindView(R.id.group_view)
