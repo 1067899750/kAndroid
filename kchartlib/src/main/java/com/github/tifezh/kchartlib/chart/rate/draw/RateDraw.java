@@ -57,7 +57,7 @@ public class RateDraw implements IRateDraw<IRate> {
 
 
         mTextRactPaint.setColor(Color.parseColor("#6A798E"));
-        mTextRactPaint.setTextSize(DisplayUtil.sp2px(mContext, mTextSize));
+        mTextRactPaint.setTextSize(sp2px(mTextSize));
         mTextRactPaint.setStrokeWidth(dp2px(0.5f));
 
         mSelectorTextPaint.setColor(Color.parseColor("#E7EDF5"));
@@ -115,13 +115,16 @@ public class RateDraw implements IRateDraw<IRate> {
         float h = top + padding * 2 + (textHeight - metrics.bottom - metrics.top) / 2;
         for (String s : strings) {
             if (StrUtil.isTimeText(s)) {
+                mSelectorTextPaint.setTextSize(sp2px(12));
                 mSelectorTextPaint.setColor(mContext.getResources().getColor(R.color.color_text_positive_paint));
                 canvas.drawText(s, left + padding, h, mSelectorTextPaint);
 
             } else if (StrUtil.isChinaText(s)) {
+                mTextRactPaint.setTextSize(sp2px(10));
                 canvas.drawText(s, left + padding, h, mTextRactPaint);
 
             } else {
+                mSelectorTextPaint.setTextSize(sp2px(13));
                 if (StrUtil.isPositiveOrNagativeNumberText(s)) {
                     mSelectorTextPaint.setColor(mContext.getResources().getColor(R.color.color_negative_value));
                     canvas.drawText(s, left + padding, h, mSelectorTextPaint);

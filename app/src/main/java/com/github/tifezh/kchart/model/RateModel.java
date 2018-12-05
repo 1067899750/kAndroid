@@ -11,7 +11,6 @@ public class RateModel implements IRate {
     public String change;
 
 
-
     @Override
     public Date getDate() {
         return date;

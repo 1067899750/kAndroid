@@ -9,13 +9,13 @@
     android:background="@color/c2A2D4F">
 
 
-    <com.github.tifezh.kchartlib.chart.rate.MyRateView
+    <com.github.tifezh.kchartlib.chart.rate.RateView
         android:id="@+id/my_rate_view"
         android:layout_width="match_parent"
         android:layout_height="500dp"
         android:layout_marginTop="@dimen/d20"
         android:background="@color/c2A2D4F">
-    </com.github.tifezh.kchartlib.chart.rate.MyRateView>
+    </com.github.tifezh.kchartlib.chart.rate.RateView>
 
 
 </RelativeLayout>

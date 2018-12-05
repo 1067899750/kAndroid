@@ -30,9 +30,11 @@ public abstract class ScrollAndScaleView extends RelativeLayout implements
 
     private OverScroller mScroller;
     protected boolean touch = false;
-    protected float mScaleX = 1;
-    protected float mScaleXMax = 2f;
-    protected float mScaleXMin = 0.5f;
+
+    protected float mScaleX = 1; //默认缩放分量
+    protected float mScaleXMax = 2f;//最大缩放分量
+    protected float mScaleXMin = 0.5f;//最小缩放分量
+
     private boolean mMultipleTouch = false;
     private boolean mScrollEnable = true;
     private boolean mScaleEnable = true;
@@ -59,136 +61,6 @@ public abstract class ScrollAndScaleView extends RelativeLayout implements
         mScaleDetector = new ScaleGestureDetector(getContext(), this);
         mScroller = new OverScroller(getContext());
     }
-
-    @Override
-    public boolean onDown(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        if (!isScale && !isLongPress && !isMultipleTouch()) {
-            scrollBy(Math.round(distanceX), 0);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-        isLongPress = true;
-        isClosePress = false;
-    }
-
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        if (isClosePress) {
-            if (!isScale && !isTouch() && isScrollEnable()) {
-                mScroller.fling(mScrollX, 0
-                        , Math.round(velocityX / mScaleX), 0,
-                        Integer.MIN_VALUE, Integer.MAX_VALUE,
-                        0, 0);
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public void computeScroll() {
-        if (isClosePress) {
-            if (mScroller.computeScrollOffset()) {
-                if (!isTouch()) {
-                  //  scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
-                    scrollTo(mScroller.getCurrX(), 0);
-                } else {
-                    mScroller.forceFinished(true);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void scrollBy(int x, int y) {
-        if (isClosePress) {
-            scrollTo(mScrollX - Math.round(x / mScaleX), 0);
-        }
-
-    }
-
-    @Override
-    public void scrollTo(int x, int y) {
-        if (isClosePress) {
-            if (!isScrollEnable()) {
-                mScroller.forceFinished(true);
-                return;
-            }
-            int oldX = mScrollX;
-            mScrollX = x;
-            if (mScrollX < getMinScrollX()) {
-                mScrollX = getMinScrollX();
-                onRightSide();
-                mScroller.forceFinished(true);
-            } else if (mScrollX > getMaxScrollX()) {
-                mScrollX = getMaxScrollX();
-                onLeftSide();
-                mScroller.forceFinished(true);
-            }
-            onScrollChanged(mScrollX, 0, oldX, 0);
-            invalidate();
-        }
-    }
-
-    @Override
-    public boolean onScale(ScaleGestureDetector detector) {
-        if (isClosePress) {
-            if (!isScaleEnable()) {
-                return false;
-            }
-            float oldScale = mScaleX;
-            mScaleX *= detector.getScaleFactor();
-            if (mScaleX < mScaleXMin) {
-                mScaleX = mScaleXMin;
-            } else if (mScaleX > mScaleXMax) {
-                mScaleX = mScaleXMax;
-            } else {
-                onScaleChanged(mScaleX, oldScale);
-            }
-
-            Log.i("22222222222222", mScaleX + "");
-            if (mScaleX >= 2.0f || mScaleX <= 0.5f) {
-                isScale = true;
-            }
-        }
-        return true;
-    }
-
-    protected void onScaleChanged(float scale, float oldScale) {
-        isScale = true;
-        invalidate();
-    }
-
-    @Override
-    public boolean onScaleBegin(ScaleGestureDetector detector) {
-        isScale = true;
-        return true;
-    }
-
-    @Override
-    public void onScaleEnd(ScaleGestureDetector detector) {
-        isScale = false;
-    }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -229,58 +101,185 @@ public abstract class ScrollAndScaleView extends RelativeLayout implements
     }
 
 
-    /**
-     * 滑到了最左边
-     */
+
+    @Override
+    public void computeScroll() {
+        if (isClosePress) {
+            if (mScroller.computeScrollOffset()) {
+                if (!isTouch()) {
+                    //  scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
+                    scrollTo(mScroller.getCurrX(), 0);
+                } else {
+                    mScroller.forceFinished(true);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void scrollBy(int x, int y) {
+        if (isClosePress) {
+            scrollTo(mScrollX - Math.round(x / mScaleX), 0);
+        }
+
+    }
+
+    //设置滑动位置
+    @Override
+    public void scrollTo(int x, int y) {
+        if (isClosePress) {
+            if (!isScrollEnable()) {
+                mScroller.forceFinished(true);
+                return;
+            }
+            int oldX = mScrollX;
+            mScrollX = x;
+            if (mScrollX < getMinScrollX()) { //滑动最右边
+                mScrollX = getMinScrollX();
+                onRightSide();
+                mScroller.forceFinished(true);
+
+            } else if (mScrollX > getMaxScrollX()) {//滑动最左边
+                mScrollX = getMaxScrollX();
+                onLeftSide();
+                mScroller.forceFinished(true);
+            }
+            onScrollChanged(mScrollX, 0, oldX, 0);
+            invalidate();
+        }
+    }
+
+
+    // 获取位移的最小值
+    public abstract int getMinScrollX();
+
+    //获取位移的最大值
+    public abstract int getMaxScrollX();
+
+    //滑到了最左边
     abstract public void onLeftSide();
 
-    /**
-     * 滑到了最右边
-     */
+    // 滑到了最右边
     abstract public void onRightSide();
 
-    /**
-     * 是否在触摸中
-     *
-     * @return
-     */
+
+    /******************************长按，点击手势*****************************************/
+
+    // 单击, 触摸屏按下时立刻触发
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
+
+    //短按, 触摸屏按下后片刻后抬起，会触发这个手势，如果迅速抬起则不会
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+    //抬起, 手指离开触摸屏时触发(长按、滚动、滑动时，不会触发这个手势)
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+    //滚动, 触摸屏按下后移动
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        if (!isScale && !isLongPress && !isMultipleTouch()) {
+            scrollBy(Math.round(distanceX), 0);
+            return true;
+        }
+        return false;
+    }
+
+    //长按, 触摸屏按下后既不抬起也不移动，过一段时间后触发
+    @Override
+    public void onLongPress(MotionEvent e) {
+        isLongPress = true;
+        isClosePress = false;
+    }
+
+
+    //滑动, 触摸屏按下后快速移动并抬起，会先触发滚动手势，跟着触发一个滑动手势
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        if (isClosePress) {
+            if (!isScale && !isTouch() && isScrollEnable()) {
+                mScroller.fling(mScrollX, 0
+                        , Math.round(velocityX / mScaleX), 0,
+                        Integer.MIN_VALUE, Integer.MAX_VALUE,
+                        0, 0);
+            }
+        }
+        return true;
+    }
+
+
+    /******************************缩放手势*****************************************/
+    @Override
+    public boolean onScale(ScaleGestureDetector detector) {
+        if (isClosePress) {
+            if (!isScaleEnable()) {
+                return false;
+            }
+            float oldScale = mScaleX;
+            mScaleX *= detector.getScaleFactor();
+            if (mScaleX < mScaleXMin) {
+                mScaleX = mScaleXMin;
+
+            } else if (mScaleX > mScaleXMax) {
+                mScaleX = mScaleXMax;
+
+            } else {
+                onScaleChanged(mScaleX, oldScale);
+            }
+
+            Log.i("22222222222222", mScaleX + "");
+            if (mScaleX >= 2.0f || mScaleX <= 0.5f) {
+                isScale = true;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onScaleBegin(ScaleGestureDetector detector) {
+        isScale = true;
+        return true;
+    }
+
+    @Override
+    public void onScaleEnd(ScaleGestureDetector detector) {
+        isScale = false;
+    }
+
+    protected void onScaleChanged(float scale, float oldScale) {
+        isScale = true;
+        invalidate();
+    }
+
+
+
+    //是否在触摸中
     public boolean isTouch() {
         return touch;
     }
 
-    /**
-     * 获取位移的最小值
-     *
-     * @return
-     */
-    public abstract int getMinScrollX();
 
-    /**
-     * 获取位移的最大值
-     *
-     * @return
-     */
-    public abstract int getMaxScrollX();
-
-    /**
-     * 设置ScrollX
-     *
-     * @param scrollX
-     */
+    //设置ScrollX
     public void setScrollX(int scrollX) {
         this.mScrollX = scrollX;
         scrollTo(scrollX, 0);
     }
 
-    /**
-     * 是否是多指触控
-     *
-     * @return
-     */
+    //是否是多指触控
     public boolean isMultipleTouch() {
         return mMultipleTouch;
     }
 
+
+    //判断是否滑动到终点，滑动到终点结束滑动
     protected void checkAndFixScrollX() {
         if (mScrollX < getMinScrollX()) {
             mScrollX = getMinScrollX();
@@ -294,43 +293,22 @@ public abstract class ScrollAndScaleView extends RelativeLayout implements
     public float getScaleXMax() {
         return mScaleXMax;
     }
-
     public float getScaleXMin() {
         return mScaleXMin;
     }
-
     public boolean isScrollEnable() {
         return mScrollEnable;
     }
-
     public boolean isScaleEnable() {
         return mScaleEnable;
     }
 
-    /**
-     * 设置缩放的最大值
-     */
-    public void setScaleXMax(float scaleXMax) {
-        mScaleXMax = scaleXMax;
-    }
-
-    /**
-     * 设置缩放的最小值
-     */
-    public void setScaleXMin(float scaleXMin) {
-        mScaleXMin = scaleXMin;
-    }
-
-    /**
-     * 设置是否可以滑动
-     */
+    //设置是否可以滑动
     public void setScrollEnable(boolean scrollEnable) {
         mScrollEnable = scrollEnable;
     }
 
-    /**
-     * 设置是否可以缩放
-     */
+    //设置是否可以缩放
     public void setScaleEnable(boolean scaleEnable) {
         mScaleEnable = scaleEnable;
     }

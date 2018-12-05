@@ -8,10 +8,9 @@ import com.github.tifezh.kchart.adapter.RateAdapter;
 import com.github.tifezh.kchart.data.DataRequest;
 import com.github.tifezh.kchart.model.RateModel;
 import com.github.tifezh.kchart.model.TrendChartModel;
-import com.github.tifezh.kchartlib.chart.rate.MyRateView;
+import com.github.tifezh.kchartlib.chart.rate.RateView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +27,7 @@ import butterknife.ButterKnife;
 
 public class RateActivity extends AppCompatActivity {
     @BindView(R.id.my_rate_view)
-    MyRateView myRateView;
+    RateView myRateView;
 
     private TrendChartModel mTrendChartModel;
     private RateAdapter mRateAdapter;
@@ -57,7 +56,7 @@ public class RateActivity extends AppCompatActivity {
         mRateAdapter = new RateAdapter();
         mRateAdapter.addFooterData(mRateModels);
         myRateView.setAdapter(mRateAdapter);
-        myRateView.setScrollEnable(false); //禁止滑动
+        myRateView.setScrollEnable(true); //是否滑动
         myRateView.setGridRows(7);//横线
         myRateView.setGridColumns(5);//竖线
 

@@ -38,61 +38,61 @@ import java.util.Date;
  */
 
 public abstract class BaseRateView extends ScrollAndScaleView {
-    private float mTranslateX = Float.MIN_VALUE;
-    private float mMainScaleY = 1;
-    private float mDataLen = 0;
-    private float downX;
-    private float downY;
-    private float mMainMaxValue; //最大值
-    private float mMainMinValue;//最小值
+    protected float mTranslateX = Float.MIN_VALUE;
+    protected float mMainScaleY = 1;
 
-    private int mLeftCount = 4;
-    private float mPointWidth = 6;
-    private float mMaxValue;
-    private float mMinValue;
-    private float mOverScrollRange = 0;
+    protected float mDataLen = 0;  //数据的长度
 
-    private int mWidth; //试图宽
-    private int mHeight;//试图高
+    protected float downX;
+    protected float downY;
+    protected float mMainMaxValue; //最大值
+    protected float mMainMinValue;//最小值
+
+    protected float mPointWidth = 18; //点的宽度
+
+    protected float mOverScrollRange = 0;   //设置超出右方后可滑动的范围
+
+    protected int mWidth; //试图宽
+    protected int mHeight;//试图高
+
+    protected int mMaxPoint = 240; //最多点的个数
+    protected int mPoint = 60; //默认点的个数
+    protected int mMinPoint = 20;//最少点的个数
 
     //点的索引
-    private int mStartIndex = 0;
-    private int mStopIndex = 0;
-    private int mGridRows = 7;
-    private int mGridColumns = 5;
+    protected int mStartIndex = 0;
+    protected int mStopIndex = 0;
+    protected int mGridRows = 7;
+    protected int mGridColumns = 5;
 
-    private int mSelectedIndex;
+    protected int mSelectedIndex;
 
-    private int mMainHeight;//主视图高
-    private int mItemCount;//当前点的个数
+    protected int mMainHeight;//主视图高
+    protected int mItemCount;//当前点的个数
 
-    private Paint mGridPaint = new Paint(Paint.ANTI_ALIAS_FLAG); //网格线画笔
-    private Paint mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private Paint mBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private Paint mSelectedLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    protected Paint mGridPaint = new Paint(Paint.ANTI_ALIAS_FLAG); //网格线画笔
+    protected Paint mBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG); //背景
 
-    private IRateDraw mMainDraw;
-    private IAdapter mAdapter;
-    private CallOnClick mCallOnClick;//添加视图点击事件
+    protected IRateDraw mMainDraw;
+    protected IAdapter mAdapter;
+    protected CallOnClick mCallOnClick;//添加视图点击事件
 
-    private ValueAnimator mAnimator;
+    protected ValueAnimator mAnimator;
 
-    private long mAnimationDuration = 500;
+    protected long mAnimationDuration = 500;
     protected long mClickTime = 0; //点击时间
-    private OnSelectedChangedListener mOnSelectedChangedListener = null;
-    private Rect mMainRect;
-
-    private boolean isFirstInto = true;
-    private int mFirNum = 60;
+    protected OnSelectedChangedListener mOnSelectedChangedListener = null;
+    protected Rect mMainRect;
 
     protected int mBackgroundColor;
-    private Bitmap mBitmapLogo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_app_logo);
-    private int mBasePaddingLeft = DensityUtil.dp2px(25);  //左padding
-    private int mBasePaddingRight = DensityUtil.dp2px(25);//右padding
-    private int mTopPadding = DensityUtil.dp2px(5);//距顶部距离;
-    public static int mTextPaddingLeft = DensityUtil.dp2px(10);//指标文字间距
-    public static int mBottomPadding = DensityUtil.dp2px(20);//距底部距离
-    public static int mTimeLeftPadding = DensityUtil.dp2px(5);//时间距左边距离
+    protected Bitmap mBitmapLogo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_app_logo);
+    protected int mBasePaddingLeft = DensityUtil.dp2px(25);  //左padding
+    protected int mBasePaddingRight = DensityUtil.dp2px(25);//右padding
+    protected int mTopPadding = DensityUtil.dp2px(5);//距顶部距离;
+    protected int mBottomPadding = DensityUtil.dp2px(20);//距底部距离
+
+    private Paint mDotPaint = new Paint(Paint.ANTI_ALIAS_FLAG); //圆点
+
 
     public BaseRateView(Context context) {
         super(context);
@@ -116,19 +116,15 @@ public abstract class BaseRateView extends ScrollAndScaleView {
     private void initView() {
         setWillNotDraw(false);
 
-
         mBackgroundColor = Color.parseColor("#2A2D4F");
         mBackgroundPaint.setColor(mBackgroundColor);
 
         mGridPaint.setColor(Color.parseColor("#15FFFFFF")); //网格线颜色
         mGridPaint.setStrokeWidth(dp2px(1));
 
-        mSelectedLinePaint.setStrokeWidth(1);
-        mSelectedLinePaint.setColor(getColor(R.color.chart_press_xian));
 
-        mTextPaint.setColor(getColor(R.color.c6A798E));
-        mTextPaint.setTextSize(sp2px(11));
-
+        mDotPaint.setStyle(Paint.Style.FILL);   //圆点
+        mDotPaint.setColor(getColor(R.color.chart_FF6600));
 
         mDetector = new GestureDetectorCompat(getContext(), this);
         mScaleDetector = new ScaleGestureDetector(getContext(), this);
@@ -214,6 +210,7 @@ public abstract class BaseRateView extends ScrollAndScaleView {
     public void onConfigurationChanged(Configuration newConfig) {//横竖屏切换
         super.onConfigurationChanged(newConfig);
         mMainHeight = mHeight - mTopPadding - mBottomPadding;
+
         invalidate();
     }
 
@@ -225,7 +222,10 @@ public abstract class BaseRateView extends ScrollAndScaleView {
         this.mHeight = h;
         mMainHeight = h - mTopPadding - mBottomPadding;
         mMainRect = new Rect(0, mTopPadding, mWidth, mTopPadding + mMainHeight);
+
+        setScaleValue();  //计算缩放率
         setTranslateXFromScrollX(mScrollX);
+
     }
 
 
@@ -234,69 +234,9 @@ public abstract class BaseRateView extends ScrollAndScaleView {
         super.onDraw(canvas);
         canvas.drawColor(mBackgroundColor); //绘制背景
         drawMainViewLogo(canvas); //绘制logo
-        drawGird(canvas);
-
-        if (mWidth == 0 || mMainRect.height() == 0 || mItemCount == 0) {
-            return;
-        }
-
-        calculateValue();
-        canvas.save();
-        canvas.scale(1, 1);
-
-        drawLine(canvas);
-        drawText(canvas);
-
-        drawValue(canvas, (isLongPress || !isClosePress) ? mSelectedIndex : mStopIndex);
-        canvas.restore();
+        drawGird(canvas); //绘制网格线
 
     }
-
-    /**
-     * 计算当前的显示区域
-     */
-    private void calculateValue() {
-        if (!isLongPress()) {
-            mSelectedIndex = -1;
-        }
-
-        mMainMaxValue = getItem(0).getValue();
-        mMainMinValue = getItem(0).getValue();
-
-
-        mStartIndex = indexOfTranslateX(xToTranslateX(0));
-        mStopIndex = indexOfTranslateX(xToTranslateX(mWidth));
-
-
-        for (int i = mStartIndex; i <= mStopIndex; i++) {
-            IRate point = getItem(i);
-            if (mMainDraw != null) {
-                mMainMaxValue = Math.max(mMainMaxValue, mMainDraw.getValue(point));
-                mMainMinValue = Math.min(mMainMinValue, mMainDraw.getValue(point));
-            }
-
-        }
-        if (mMainMaxValue != mMainMinValue) {
-            float padding = (mMainMaxValue - mMainMinValue) * 0.05f;
-            mMainMaxValue += padding;
-            mMainMinValue -= padding;
-        } else {
-            //当最大值和最小值都相等的时候 分别增大最大值和 减小最小值
-            mMainMaxValue += Math.abs(mMainMaxValue * 0.05f);
-            mMainMinValue -= Math.abs(mMainMinValue * 0.05f);
-            if (mMainMaxValue == 0) {
-                mMainMaxValue = 1;
-            }
-        }
-        mMainScaleY = mMainRect.height() * 1f / (mMainMaxValue - mMainMinValue);
-
-
-        if (mAnimator.isRunning()) {
-            float value = (float) mAnimator.getAnimatedValue();
-            mStopIndex = mStartIndex + Math.round(value * (mStopIndex - mStartIndex));
-        }
-    }
-
 
     //添加主视图水印
     public void drawMainViewLogo(Canvas canvas) {
@@ -327,148 +267,6 @@ public abstract class BaseRateView extends ScrollAndScaleView {
         }
     }
 
-
-    //画走势图
-    private void drawLine(Canvas canvas) {
-        //保存之前的平移，缩放
-        canvas.save();
-        canvas.translate(mTranslateX * mScaleX, 0); //平移
-        canvas.scale(mScaleX, 1); //缩放
-
-        mMaxValue = getItem(mStartIndex).getValue();
-        mMinValue = getItem(mStartIndex).getValue();
-
-        for (int i = mStartIndex; i <= mStopIndex; i++) {
-            IRate currentPoint = getItem(i);
-            float currentPointX = getX(i);
-            IRate lastPoint = i == 0 ? currentPoint : getItem(i - 1);
-            float lastX = i == 0 ? currentPointX : getX(i - 1);
-            if (mMainDraw != null) {
-                if (mMaxValue < getItem(i).getValue()) {
-                    mMaxValue = getItem(i).getValue();
-                } else if (mMinValue > getItem(i).getValue()) {
-                    mMinValue = getItem(i).getValue();
-                }
-                mMainDraw.drawTranslated(lastPoint, currentPoint, lastX, currentPointX, canvas, this, i);
-            }
-        }
-
-
-        //画选择线
-        if (isLongPress || !isClosePress) {
-            IRate point = getItem(mSelectedIndex);
-            if (point == null) {
-                return;
-            }
-            float x = getX(mSelectedIndex);
-            float y = getMainY(point.getValue());
-
-            canvas.drawLine(x, mMainRect.top, x, mMainRect.bottom, mSelectedLinePaint);
-//            canvas.drawLine(-mTranslateX, y, -mTranslateX + mWidth / mScaleX, y, mSelectedLinePaint);//隐藏横线
-        }
-        //还原 平移缩放
-        canvas.restore();
-    }
-
-
-    //画文字
-    private void drawText(Canvas canvas) {
-        Paint.FontMetrics fm = mTextPaint.getFontMetrics();
-        float textHeight = fm.descent - fm.ascent;
-        float baseLine = (textHeight - fm.bottom - fm.top) / 2;
-        //--------------左边文字-------------
-        if (mMainDraw != null) {
-            canvas.drawText(StrUtil.floatToString(mMainMaxValue, 4), mTextPaddingLeft, baseLine + mMainRect.top, mTextPaint);
-            canvas.drawText(StrUtil.floatToString(mMainMinValue, 4), mTextPaddingLeft,
-                    mMainRect.bottom - textHeight + baseLine, mTextPaint);
-            float rowValue = (mMainMaxValue - mMainMinValue) / mLeftCount;
-            float rowSpace = mMainRect.height() / mLeftCount;
-
-            for (int i = 1; i < mLeftCount; i++) {
-                String text = StrUtil.floatToString(rowValue * (mLeftCount - i) + mMainMinValue, 4);
-                canvas.drawText(text, mTextPaddingLeft, fixTextY(rowSpace * i + mMainRect.top), mTextPaint);
-            }
-        }
-
-        //--------------画时间 共五个点---------------------
-        float columnSpace = (mWidth) / mLeftCount;
-        float y = mMainRect.bottom + baseLine;
-        float startX = getX(mStartIndex) - mPointWidth / 2;
-        float stopX = getX(mStopIndex) + mPointWidth / 2;
-
-        float translateX = xToTranslateX(0);
-        if (translateX >= startX && translateX <= stopX) {
-            canvas.drawText(DateUtil.getStringDateByLong(mAdapter.getDate(mStartIndex).getTime(), 9),
-                    mTimeLeftPadding,
-                    y + mTimeLeftPadding, mTextPaint);
-        }
-        translateX = xToTranslateX(mWidth);
-        if (translateX >= startX && translateX <= stopX) {
-            String text = DateUtil.getStringDateByLong(mAdapter.getDate(mStopIndex).getTime(), 9);
-            canvas.drawText(text,
-                    mWidth - mTextPaint.measureText(text) - mTimeLeftPadding,
-                    y + mTimeLeftPadding, mTextPaint);
-        }
-
-
-        for (int i = 1; i < mLeftCount; i++) {
-            translateX = xToTranslateX(columnSpace * i);
-            if (translateX >= startX && translateX <= stopX) {
-                int index = indexOfTranslateX(translateX);
-                String text = DateUtil.getStringDateByLong(mAdapter.getDate(index).getTime(), 9);
-                canvas.drawText(text,
-                        columnSpace * i - mTextPaint.measureText(text) / 2,
-                        y + mTimeLeftPadding, mTextPaint);
-            }
-        }
-
-    }
-
-
-    public float getMainY(float value) {
-        return (mMainMaxValue - value) * mMainScaleY + mMainRect.top;
-    }
-
-
-    /**
-     * 解决text居中的问题
-     */
-    public float fixTextY(float y) {
-        Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
-        return (y + (fontMetrics.descent - fontMetrics.ascent) / 2 - fontMetrics.descent);
-    }
-
-
-    //画值
-    private void drawValue(Canvas canvas, int position) {
-        Paint.FontMetrics fm = mTextPaint.getFontMetrics();
-        float textHeight = fm.descent - fm.ascent;
-        float baseLine = (textHeight - fm.bottom - fm.top) / 2;
-        if (position >= 0 && position < mItemCount) {
-            if (mMainDraw != null) {
-                float y = mMainRect.top + baseLine - textHeight;
-                float x = 0;
-                if (isLongPress || !isClosePress) {
-                    mMainDraw.drawText(canvas, this, position, x, y);
-                }
-            }
-        }
-    }
-
-
-    /**
-     * 重新计算并刷新线条
-     */
-    public void notifyChanged() {
-        if (mItemCount != 0) {
-            mDataLen = (mItemCount - 1) * mPointWidth;
-            checkAndFixScrollX();
-            setTranslateXFromScrollX(mScrollX);
-        } else {
-            setScrollX(0);
-        }
-        invalidate();
-    }
 
     private void calculateSelectedX(float x) {
         mSelectedIndex = indexOfTranslateX(xToTranslateX(x));
@@ -503,40 +301,44 @@ public abstract class BaseRateView extends ScrollAndScaleView {
 
     @Override
     protected void onScaleChanged(float scale, float oldScale) {
+        super.onScaleChanged(scale, oldScale);
         checkAndFixScrollX();
         setTranslateXFromScrollX(mScrollX);
-        super.onScaleChanged(scale, oldScale);
     }
 
-
-    /**
-     * 获取平移的最小值
-     *
-     * @return
-     */
-    private float getMinTranslateX() {
-        return -mDataLen + mWidth / mScaleX - mPointWidth / 2;
-    }
-
-    /**
-     * 获取平移的最大值
-     *
-     * @return
-     */
-    private float getMaxTranslateX() {
-        if (!isFullScreen()) {
-            return getMinTranslateX();
-        }
-        return mPointWidth / 2;
-    }
 
     @Override
     public int getMinScrollX() {
         return (int) -(mOverScrollRange / mScaleX);
     }
 
+    @Override
     public int getMaxScrollX() {
         return Math.round(getMaxTranslateX() - getMinTranslateX());
+    }
+
+
+    //获取平移的最小值
+    private float getMinTranslateX() {
+        return -mDataLen + mWidth / mScaleX - mPointWidth / 2;
+    }
+
+    //获取平移的最大值
+    private float getMaxTranslateX() {
+        if (!isFullScreen()) { //数据不够时
+            return getMinTranslateX();
+        }
+        return mPointWidth / 2;
+    }
+
+
+    //数据是否充满屏幕
+    public boolean isFullScreen() {
+        Log.i("mDataLen : ", mDataLen + "-->1");
+        Log.i("mDataLen : ", mWidth + "-->mWidth");
+        Log.i("mDataLen : ", mWidth / mScaleX + "-->mWidth / mScaleX");
+        Log.i("mDataLen : ", mScaleX + "-->mScaleX");
+        return mDataLen >= mWidth / mScaleX;
     }
 
     public float getXScale() {
@@ -544,23 +346,73 @@ public abstract class BaseRateView extends ScrollAndScaleView {
     }
 
 
-    //转化成数组的索引
-    public int indexOfTranslateX(float translateX) {
-        return indexOfTranslateX(translateX, 0, mItemCount - 1);
-    }
-
     //在试图区域画线
     public void drawMainLine(Canvas canvas, Paint paint, float startX, float startValue, float stopX, float stopValue) {
+        paint.setStrokeWidth(paint.getStrokeWidth() / mScaleX);
+
+        canvas.drawCircle(stopX, getMainY(stopValue), 5, mDotPaint);
+
         canvas.drawLine(startX, getMainY(startValue), stopX, getMainY(stopValue), paint);
     }
 
 
-    /**
-     * 根据索引获取实体
-     *
-     * @param position 索引值
-     * @return
-     */
+    //计算Y轴位置
+    public float getMainY(float value) {
+        return (mMainMaxValue - value) * mMainScaleY + mMainRect.top;
+    }
+
+
+    //获取适配器
+    public IAdapter getAdapter() {
+        return mAdapter;
+    }
+
+
+    //设置数据适配器
+    public void setAdapter(IAdapter adapter) {
+        if (mAdapter != null && mDataSetObserver != null) {
+            mAdapter.unregisterDataSetObserver(mDataSetObserver);
+        }
+        mAdapter = adapter;
+        mItemCount = mAdapter.getCount();
+        if (mAdapter != null) {
+            mAdapter.registerDataSetObserver(mDataSetObserver);
+            mItemCount = mAdapter.getCount();
+        } else {
+            mItemCount = 0;
+        }
+
+        notifyChanged();
+    }
+
+
+    //重新计算并刷新线条
+    public void notifyChanged() {
+        if (mItemCount != 0) {
+            mDataLen = (mItemCount - 1) * mPointWidth;
+            checkAndFixScrollX();
+            setTranslateXFromScrollX(mScrollX);
+
+        } else {
+            setScrollX(0);
+        }
+        invalidate();
+    }
+
+    //设置缩放率(并还原 当初设置)
+    public void setScaleValue() {
+        mScaleXMax = mWidth / (mMinPoint * mPointWidth);
+//        mScrollX = 0;
+        mScaleX = 1;
+
+        if (mAdapter.getCount() < mMaxPoint) {
+            mScaleXMin = mWidth / mDataLen;
+        } else {
+            mScaleXMin = mWidth / (mMaxPoint * mPointWidth);
+        }
+    }
+
+    //根据索引获取实体
     public IRate getItem(int position) {
         if (mAdapter != null) {
             return (IRate) mAdapter.getItem(position);
@@ -569,58 +421,40 @@ public abstract class BaseRateView extends ScrollAndScaleView {
         }
     }
 
-    /**
-     * 根据索引索取x坐标
-     *
-     * @param position 索引值
-     * @return
-     */
+    //根据索引索取x坐标
     public float getX(int position) {
         return position * mPointWidth;
     }
 
-    /**
-     * 获取适配器
-     *
-     * @return
-     */
-    public IAdapter getAdapter() {
-        return mAdapter;
-    }
 
 
-    /**
-     * scrollX 转换为 TranslateX
-     *
-     * @param scrollX
-     */
+    //scrollX 转换为 TranslateX
     private void setTranslateXFromScrollX(int scrollX) {
         mTranslateX = scrollX + getMinTranslateX();
     }
 
 
-    /**
-     * 获取主区域的 IRateDraw
-     *
-     * @return IRateDraw
-     */
-    public IRateDraw getMainDraw() {
-        return mMainDraw;
+    // view中的x转化为TranslateX
+    public float xToTranslateX(float x) {
+        return -mTranslateX + x / mScaleX;
     }
 
-    /**
-     * 设置主区域的 IRateDraw
-     *
-     * @param mainDraw IRateDraw
-     */
-    public void setMainDraw(IRateDraw mainDraw) {
-        mMainDraw = mainDraw;
+    //translateX转化为view中的x
+    public float translateXtoX(float translateX) {
+        return (translateX + mTranslateX) * mScaleX;
+    }
+
+
+
+    //转化成数组的索引
+    public int indexOfTranslateX(float translateX) {
+        return indexOfTranslateX(translateX, 0, mItemCount - 1);
     }
 
     /**
      * 二分查找当前值的index
      *
-     * @return
+     * @return 返回当前位置
      */
     public int indexOfTranslateX(float translateX, int start, int end) {
         if (end == start) {
@@ -642,45 +476,32 @@ public abstract class BaseRateView extends ScrollAndScaleView {
         }
     }
 
-    /**
-     * 设置数据适配器
-     */
-    public void setAdapter(IAdapter adapter) {
-        if (mAdapter != null && mDataSetObserver != null) {
-            mAdapter.unregisterDataSetObserver(mDataSetObserver);
-        }
-        mAdapter = adapter;
-        mItemCount = mAdapter.getCount();
-        if (mAdapter != null) {
-            mAdapter.registerDataSetObserver(mDataSetObserver);
-            mItemCount = mAdapter.getCount();
-        } else {
-            mItemCount = 0;
-        }
-        notifyChanged();
+    //获取主区域的 IRateDr
+    public IRateDraw getMainDraw() {
+        return mMainDraw;
     }
 
-    /**
-     * 开始动画
-     */
+    // 设置主区域的 IRateDraw
+    public void setMainDraw(IRateDraw mainDraw) {
+        mMainDraw = mainDraw;
+    }
+
+
+    //开始动画
     public void startAnimation() {
         if (mAnimator != null) {
             mAnimator.start();
         }
     }
 
-    /**
-     * 设置动画时间
-     */
+    //设置动画时间
     public void setAnimationDuration(long duration) {
         if (mAnimator != null) {
             mAnimator.setDuration(duration);
         }
     }
 
-    /**
-     * 设置表格行数
-     */
+    //设置表格行数
     public void setGridRows(int gridRows) {
         if (gridRows < 1) {
             gridRows = 1;
@@ -688,9 +509,7 @@ public abstract class BaseRateView extends ScrollAndScaleView {
         mGridRows = gridRows;
     }
 
-    /**
-     * 设置表格列数
-     */
+    //设置表格列数
     public void setGridColumns(int gridColumns) {
         if (gridColumns < 1) {
             gridColumns = 1;
@@ -699,52 +518,22 @@ public abstract class BaseRateView extends ScrollAndScaleView {
     }
 
 
-    /**
-     * view中的x转化为TranslateX
-     *
-     * @param x
-     * @return
-     */
-    public float xToTranslateX(float x) {
-        return -mTranslateX + x / mScaleX;
-    }
-
-    /**
-     * translateX转化为view中的x
-     *
-     * @param translateX
-     * @return
-     */
-    public float translateXtoX(float translateX) {
-        return (translateX + mTranslateX) * mScaleX;
-    }
-
-    /**
-     * 获取图的宽度
-     *
-     * @return
-     */
+    //获取图的宽度
     public int getChartWidth() {
         return mWidth;
     }
 
-    /**
-     * 是否长按
-     */
+    //是否长按
     public boolean isLongPress() {
         return (isLongPress || !isClosePress);
     }
 
-    /**
-     * 获取选择索引
-     */
+    //获取选择索引
     public int getSelectedIndex() {
         return mSelectedIndex;
     }
 
-    /**
-     * 设置选择监听
-     */
+    //设置选择监听
     public void setOnSelectedChangedListener(OnSelectedChangedListener l) {
         this.mOnSelectedChangedListener = l;
     }
@@ -755,18 +544,8 @@ public abstract class BaseRateView extends ScrollAndScaleView {
         }
     }
 
-    /**
-     * 数据是否充满屏幕
-     *
-     * @return
-     */
-    public boolean isFullScreen() {
-        return mDataLen >= mWidth / mScaleX;
-    }
 
-    /**
-     * 设置超出右方后可滑动的范围
-     */
+    //设置超出右方后可滑动的范围
     public void setOverScrollRange(float overScrollRange) {
         if (overScrollRange < 0) {
             overScrollRange = 0;
@@ -775,25 +554,13 @@ public abstract class BaseRateView extends ScrollAndScaleView {
     }
 
 
-    /**
-     * 设置背景颜色
-     */
-    public void setBackgroundColor(int color) {
-        mBackgroundPaint.setColor(color);
-    }
-
-
-    /**
-     * 设置每个点的宽度
-     */
+    //设置每个点的宽度
     public void setPointWidth(float pointWidth) {
         mPointWidth = pointWidth;
     }
 
 
-    /**
-     * 监听视图点击区域
-     */
+    //监听视图点击区域
     public interface CallOnClick {
         void onMainViewClick();
     }
@@ -812,9 +579,7 @@ public abstract class BaseRateView extends ScrollAndScaleView {
         }
     };
 
-    /**
-     * 选中点变化时的监听
-     */
+    //选中点变化时的监听
     public interface OnSelectedChangedListener {
         /**
          * 当选点中变化时
@@ -844,4 +609,6 @@ public abstract class BaseRateView extends ScrollAndScaleView {
         final float fontScale = getContext().getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
+
+
 }
