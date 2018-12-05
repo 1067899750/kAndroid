@@ -2,22 +2,12 @@ package com.github.tifezh.kchartlib.chart.groupview;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
-import com.github.tifezh.kchartlib.R;
-import com.github.tifezh.kchartlib.chart.base.IChartDraw;
 import com.github.tifezh.kchartlib.chart.base.IGroupDraw;
-import com.github.tifezh.kchartlib.chart.comInterface.ICandle;
-import com.github.tifezh.kchartlib.chart.comInterface.ILem;
-import com.github.tifezh.kchartlib.utils.DisplayUtil;
 
 import static android.view.View.MeasureSpec.AT_MOST;
 

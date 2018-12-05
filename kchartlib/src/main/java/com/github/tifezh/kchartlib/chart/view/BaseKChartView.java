@@ -34,13 +34,18 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * k线图
+ *
+ * Description k线图
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-12-4 10:44
  */
+
 public abstract class BaseKChartView extends ScrollAndScaleView {
-    private float mTranslateX = Float.MIN_VALUE; //滑动到显示主体的坐标（最右边）
-    private float mMainScaleY = 1; //Main缩放量
-    private float mChildScaleY = 1;//Child缩放量
-    private float mDataLen = 0; //数据的总长度
+    private float mTranslateX = Float.MIN_VALUE;
+    private float mMainScaleY = 1;
+    private float mChildScaleY = 1;
+    private float mDataLen = 0;
     private float downX;
     private float downY;
     private float mMainMaxValue = Float.MAX_VALUE;
@@ -56,14 +61,14 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
     private float mLineWidth;
 
     private int mWidth = 0;
-    private int mBottomPadding;
-    private int mStartIndex = 0; //起始位置
-    private int mStopIndex = 0; //结束位置
-    private int mGridRows = 6;//主视图网格数
+
+    private int mStartIndex = 0;
+    private int mStopIndex = 0;
+    private int mGridRows = 6;
     private int mGridColumns = 5;
     private int mChildGridRows = 4;//子图横向网格数
     private int mChildGridColumns = 5;
-    private int mSelectedIndex; //当前索引
+    private int mSelectedIndex;
     private int displayHeight;
     private int h;
     private int mChildHeight;//子视图高
@@ -88,6 +93,7 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
     protected KChartTabView mKChartTabView;
     private ValueAnimator mAnimator;
 
+    private boolean showBottomView = true;//是否显示底部视图
     private long mAnimationDuration = 500;
     protected long mClickTime = 0; //点击时间
     private OnSelectedChangedListener mOnSelectedChangedListener = null;
@@ -100,9 +106,12 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
     private int mBasePaddingRight = DensityUtil.dp2px(25);//右padding
     private int mMainChildSpace = DensityUtil.dp2px(20);//中间选项高
     private int mTopPadding = DensityUtil.dp2px(30);//距顶部距离;
+    //    private int mMainViewBottomPadding = DensityUtil.dp2px(6);//主视图距底部距离
     public static int mChildTextPaddingX = DensityUtil.dp2px(10);//指标显示信息距X左边距离
     public static int mChildTextPaddingY = DensityUtil.dp2px(16);//指标显示信息距Y顶部距离
     public static int mTextPaddingLeft = DensityUtil.dp2px(20);//指标文字间距
+    public static int mBottomPadding = DensityUtil.dp2px(15);//距底部距离
+    public static int mTimeBottomPadding = DensityUtil.dp2px(0);//时间距底部距离
 
     public BaseKChartView(Context context) {
         super(context);
@@ -125,20 +134,22 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
 
     private void init() {
         setWillNotDraw(false);
+        mKChartTabView = new KChartTabView(getContext());
+        if (showBottomView) {
+            mBottomPadding = (int) getResources().getDimension(R.dimen.chart_bottom_padding);//距底部距离
+            addView(mKChartTabView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            mKChartTabView.setOnTabSelectListener(new KChartTabView.TabSelectListener() {
+                @Override
+                public void onTabSelected(int type) {
+                    setChildDraw(type);
+                }
+            });
+        } else {
+            mBottomPadding = 0;//距底部距离
+            mMainChildSpace = 0;
+        }
         mDetector = new GestureDetectorCompat(getContext(), this);
         mScaleDetector = new ScaleGestureDetector(getContext(), this);
-        mBottomPadding = (int) getResources().getDimension(R.dimen.chart_bottom_padding);//距底部距离
-
-        //TabView
-        mKChartTabView = new KChartTabView(getContext());
-        addView(mKChartTabView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        mKChartTabView.setOnTabSelectListener(new KChartTabView.TabSelectListener() {
-            @Override
-            public void onTabSelected(int type) {
-                setChildDraw(type);
-            }
-        });
-
         mAnimator = ValueAnimator.ofFloat(0f, 1f);
         mAnimator.setDuration(mAnimationDuration);
         mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -147,6 +158,20 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
                 invalidate();
             }
         });
+    }
+
+    /**
+     * 是否显示底部视图
+     *
+     * @param show
+     */
+    public void setShowBottomView(boolean show) {
+        this.showBottomView = show;
+        if (!showBottomView) {
+            mChildHeight = 0;
+            mMainChildSpace = 0;
+        }
+        invalidate();
     }
 
     /**
@@ -193,8 +218,10 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         this.mWidth = w;
-        initRect(w, h); //绘制试图里的子示图
-        mKChartTabView.setTranslationY(mMainRect.bottom);
+        initRect(w, h);
+        if (showBottomView && mKChartTabView != null) {
+            mKChartTabView.setTranslationY(mMainRect.bottom);
+        }
         setTranslateXFromScrollX(mScrollX);
     }
 
@@ -211,11 +238,14 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
                         downX = e.getX();
                         downY = e.getY();
                         if (downX > 0 && downX < mWidth) {
-                            if (downY <= mMainHeight) {
-                                mCallOnClick.onMainViewClick();
-                            } else {
-                                mCallOnClick.onChildViewClick();
+                            if (showBottomView && mCallOnClick != null) {
+                                if (downY <= mMainHeight) {
+                                    mCallOnClick.onMainViewClick();
+                                } else {
+                                    mCallOnClick.onChildViewClick();
+                                }
                             }
+
                         }
                     }
                 } else {
@@ -233,18 +263,34 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
     public void onConfigurationChanged(Configuration newConfig) {//横竖屏切换
         super.onConfigurationChanged(newConfig);
         this.h = h;
+        if (!showBottomView) {
+            mTopPadding = 0;
+        }
         displayHeight = h - mTopPadding - mBottomPadding - mMainChildSpace;
-        mMainHeight = (int) (displayHeight * 0.75f);
-        mChildHeight = (int) (displayHeight * 0.25f);
+        if (showBottomView) {
+            mMainHeight = (int) (displayHeight * 0.75f);
+            mChildHeight = (int) (displayHeight * 0.25f);
+        } else {
+            mMainHeight = (int) (displayHeight * 1f);
+            mChildHeight = 0;
+        }
+        invalidate();
     }
 
 
-    //绘制试图里的子示图
     private void initRect(int w, int h) {
         this.h = h;
+        if (!showBottomView) {
+            mTopPadding = 0;
+        }
         displayHeight = h - mTopPadding - mBottomPadding - mMainChildSpace;
-        mMainHeight = (int) (displayHeight * 0.75f);
-        mChildHeight = (int) (displayHeight * 0.25f);
+        if (showBottomView) {
+            mMainHeight = (int) (displayHeight * 0.75f);
+            mChildHeight = (int) (displayHeight * 0.25f);
+        } else {
+            mMainHeight = (int) (displayHeight * 1f);
+            mChildHeight = 0;
+        }
         mMainRect = new Rect(0, mTopPadding, mWidth, mTopPadding + mMainHeight);
         mTabRect = new Rect(0, mMainRect.bottom, mWidth, mMainRect.bottom + mMainChildSpace);
         mChildRect = new Rect(0, mTabRect.bottom, mWidth, mTabRect.bottom + mChildHeight);
@@ -257,18 +303,19 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
         if (mWidth == 0 || mMainRect.height() == 0 || mItemCount == 0) {
             return;
         }
-        //绘制Logo
-        drawMainViewLogo(canvas);
-        drawChildViewLogo(canvas);
-
-        calculateValue(); //计算当前的显示区域
-
+        if (showBottomView) {
+            drawMainViewLogo(canvas);
+            drawChildViewLogo(canvas);
+        } else {
+            drawMainViewLogo(canvas);
+        }
+        calculateValue();
         canvas.save();
         canvas.scale(1, 1);
-        drawGird(canvas); //画表格
-        drawK(canvas); //画k线图
-        drawText(canvas); //画文字
-        drawValue(canvas, (isLongPress || !isClosePress) ? mSelectedIndex : mStopIndex); //显示指示线上点的值
+        drawGird(canvas);
+        drawK(canvas);
+        drawText(canvas);
+        drawValue(canvas, (isLongPress || !isClosePress) ? mSelectedIndex : mStopIndex);
         canvas.restore();
 
     }
@@ -281,6 +328,9 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
     public void drawMainViewLogo(Canvas canvas) {
         if (mBitmapLogo != null) {
             int mLeft = getWidth() / 2 - mBitmapLogo.getWidth() / 2;
+            if (!showBottomView) {
+                mTopPadding = 0;
+            }
             int mTop = (mTopPadding + mMainHeight) / 2 - mBitmapLogo.getHeight() / 2;
             canvas.drawBitmap(mBitmapLogo, mLeft, mTop, null);
         }
@@ -294,17 +344,15 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
     public void drawChildViewLogo(Canvas canvas) {
         if (mBitmapLogo != null) {
             int mLeft = getWidth() / 2 - mBitmapLogo.getWidth() / 2;
-            int mTop = mTopPadding + mMainHeight + mMainChildSpace + (mChildHeight / 2) - mBitmapLogo.getHeight() / 2;
+            int mTop =mTopPadding + mMainHeight + mMainChildSpace + (mChildHeight / 2) - mBitmapLogo.getHeight() / 2;
             canvas.drawBitmap(mBitmapLogo, mLeft, mTop, null);
         }
     }
 
-    //Min试图Y坐标
     public float getMainY(float value) {
         return (mMainMaxValue - value) * mMainScaleY + mMainRect.top;
     }
 
-    //Child试图Y坐标
     public float getChildY(float value) {
         return (mChildMaxValue - value) * mChildScaleY + mChildRect.top;
     }
@@ -317,31 +365,33 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
         return (y + (fontMetrics.descent - fontMetrics.ascent) / 2 - fontMetrics.descent);
     }
 
-        /**
-         * 画表格
-         *
-         * @param canvas
-         */
-        private void drawGird(Canvas canvas) {
-        //-----------------------上方k线图横向网格------------------------
+    /**
+     * 画表格
+     *
+     * @param canvas
+     */
+    private void drawGird(Canvas canvas) {
+        //-----------------------上方k线图------------------------
         //横向的grid
         float rowSpace = mMainRect.height() / mGridRows;
         for (int i = 0; i <= mGridRows; i++) {
             canvas.drawLine(0, rowSpace * i + mMainRect.top, mWidth, rowSpace * i + mMainRect.top, mGridPaint);
         }
-        //-----------------------下方子图横向网格------------------------
-
-        float childRowSpace = (mChildRect.height()) / mChildGridRows;
-        for (int i = 0; i <= mChildGridColumns; i++) {
-            canvas.drawLine(0, childRowSpace * i + mChildRect.top, mWidth, childRowSpace * i + mChildRect.top, mGridPaint);
+        //-----------------------下方子图------------------------
+        if (showBottomView) {
+            float childRowSpace = (mChildRect.height()) / mChildGridRows;
+            for (int i = 0; i <= mChildGridColumns; i++) {
+                canvas.drawLine(0, childRowSpace * i + mChildRect.top, mWidth, childRowSpace * i + mChildRect.top, mGridPaint);
+            }
+//            canvas.drawLine(0, mChildRect.bottom, mWidth, mChildRect.bottom, mGridPaint);
         }
-        canvas.drawLine(0, mChildRect.bottom, mWidth, mChildRect.bottom, mGridPaint);
-
         //纵向的grid
         float columnSpace = (mWidth - mBasePaddingLeft - mBasePaddingRight) / mGridColumns;
         for (int i = 0; i <= mGridColumns; i++) {
             canvas.drawLine(columnSpace * i + mBasePaddingLeft, mMainRect.top, columnSpace * i + mBasePaddingRight, mMainRect.bottom, mGridPaint);
-            canvas.drawLine(columnSpace * i + mBasePaddingLeft, mChildRect.top, columnSpace * i + mBasePaddingRight, mChildRect.bottom, mGridPaint);
+            if (showBottomView) {
+                canvas.drawLine(columnSpace * i + mBasePaddingLeft, mChildRect.top, columnSpace * i + mBasePaddingRight, mChildRect.bottom, mGridPaint);
+            }
         }
     }
 
@@ -365,16 +415,15 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
         mMinValue = ((ICandle) getItem(mStartIndex)).getLowPrice();
 
         for (int i = mStartIndex; i <= mStopIndex; i++) {
-            Object currentPoint = getItem(i);//当前点
-            float currentPointX = getX(i);//当前点的坐标
-            Object lastPoint = i == 0 ? currentPoint : getItem(i - 1); //上一点
-            float lastX = i == 0 ? currentPointX : getX(i - 1); //上一个点的坐标
+            Object currentPoint = getItem(i);
+            float currentPointX = getX(i);
+            Object lastPoint = i == 0 ? currentPoint : getItem(i - 1);
+            float lastX = i == 0 ? currentPointX : getX(i - 1);
             if (mMainDraw != null) {
                 if (mMaxValue < ((ICandle) getItem(i)).getHighPrice()) {
                     mMaxValue = ((ICandle) getItem(i)).getHighPrice();
                     mMaxPoint = (ICandle) getItem(i);
                     mMaxX = currentPointX;
-
                 } else if (mMinValue > ((ICandle) getItem(i)).getLowPrice()) {
                     mMinValue = ((ICandle) getItem(i)).getLowPrice();
                     mMinPoint = (ICandle) getItem(i);
@@ -401,8 +450,8 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
             float y = getMainY(point.getClosePrice());
 
             mSelectedLinePaint.setColor(ContextCompat.getColor(getContext(), R.color.chart_press_xian));//长按时线条显示文字的颜色
-            canvas.drawLine(x, mMainRect.top, x, mChildRect.bottom, mSelectedLinePaint); //竖向指示线
-            canvas.drawLine(-mTranslateX, y, -mTranslateX + mWidth / mScaleX, y, mSelectedLinePaint);//横向指示线
+            canvas.drawLine(x, mMainRect.top, x, mChildRect.bottom, mSelectedLinePaint);
+            canvas.drawLine(-mTranslateX, y, -mTranslateX + mWidth / mScaleX, y, mSelectedLinePaint);//隐藏横线
         }
         //还原 平移缩放
         canvas.restore();
@@ -434,7 +483,6 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
             canvas.drawText(mChildDraw.getValueFormatter().format(mChildMaxValue), paddingLeft, mChildRect.top + baseLine, mTextPaint);
             canvas.drawText(mChildDraw.getValueFormatter().format(mChildMinValue), paddingLeft, mChildRect.bottom, mTextPaint);
 
-            //add by star
             float rowValue = (mChildMaxValue - mChildMinValue) / mChildGridRows;
             float rowSpace = mChildRect.height() / mChildGridRows;
             for (int i = 1; i < mChildGridRows; i++) {
@@ -447,7 +495,6 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
         //--------------画时间---------------------
         float columnSpace = (mWidth) / mGridColumns;
         float y = mChildRect.bottom + baseLine;
-
         float startX = getX(mStartIndex) - mPointWidth / 2;
         float stopX = getX(mStopIndex) + mPointWidth / 2;
 
@@ -456,18 +503,18 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
             if (translateX >= startX && translateX <= stopX) {
                 int index = indexOfTranslateX(translateX);
                 String text = formatDateTime(mAdapter.getDate(index));
-                canvas.drawText(text, columnSpace * i - mTextPaint.measureText(text) / 2, y, mTextPaint);
+                canvas.drawText(text, columnSpace * i - mTextPaint.measureText(text) / 2, y + mTimeBottomPadding, mTextPaint);
             }
         }
 
         float translateX = xToTranslateX(0);
         if (translateX >= startX && translateX <= stopX) {
-            canvas.drawText(formatDateTime(getAdapter().getDate(mStartIndex)), 0, y, mTextPaint);
+            canvas.drawText(formatDateTime(getAdapter().getDate(mStartIndex)), 0, y + mTimeBottomPadding, mTextPaint);
         }
         translateX = xToTranslateX(mWidth);
         if (translateX >= startX && translateX <= stopX) {
             String text = formatDateTime(getAdapter().getDate(mStopIndex));
-            canvas.drawText(text, mWidth - mTextPaint.measureText(text), y, mTextPaint);
+            canvas.drawText(text, mWidth - mTextPaint.measureText(text), y + mTimeBottomPadding, mTextPaint);
         }
         //--------------画长按线 文字---------------------
         if (isLongPress || !isClosePress) {
@@ -543,7 +590,6 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
     public void notifyChanged() {
         if (mItemCount != 0) {
             mDataLen = (mItemCount - 1) * mPointWidth;
-            Log.i("---> mDataLen : ", mDataLen + "");
             checkAndFixScrollX();
             setTranslateXFromScrollX(mScrollX);
         } else {
@@ -557,7 +603,6 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
         Log.e("move mSelectedIndex:", "" + mSelectedIndex + "/mStartIndex:" + mStartIndex);
         if (mSelectedIndex < mStartIndex) {
             mSelectedIndex = mStartIndex;
-            //Log.e("move mSelectedIndex:",""+mSelectedIndex);
         }
         if (mSelectedIndex > mStopIndex) {
             mSelectedIndex = mStopIndex;
@@ -753,8 +798,11 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
      * @param childDraw IChartDraw
      */
     public void addChildDraw(String name, IChartDraw childDraw) {
-        mChildDraws.add(childDraw);
-        mKChartTabView.addTab(name);
+        if (showBottomView && mKChartTabView != null) {
+            mChildDraws.add(childDraw);
+            mKChartTabView.addTab(name);
+        }
+
     }
 
     /**
@@ -764,7 +812,6 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
      */
     private void setTranslateXFromScrollX(int scrollX) {
         mTranslateX = scrollX + getMinTranslateX();
-//        Log.i("---> mTranslateX : ", mTranslateX + "");
     }
 
     /**
@@ -951,7 +998,6 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
      * @return
      */
     public float xToTranslateX(float x) {
-//        Log.i("---> mTranslateX : ", -mTranslateX + x / mScaleX + "");
         return -mTranslateX + x / mScaleX;
     }
 
@@ -1039,8 +1085,13 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
     public void setTopPadding(int topPadding) {
         this.mTopPadding = topPadding;
         displayHeight = h - mTopPadding - mBottomPadding - mMainChildSpace;
-        mMainHeight = (int) (displayHeight * 0.75f);
-        mChildHeight = (int) (displayHeight * 0.25f);
+        if (showBottomView) {
+            mMainHeight = (int) (displayHeight * 0.75f);
+            mChildHeight = (int) (displayHeight * 0.25f);
+        } else {
+            mMainHeight = (int) (displayHeight * 1f);
+            mChildHeight = 0;
+        }
         mMainRect = new Rect(0, mTopPadding, mWidth, mTopPadding + mMainHeight);
         mTabRect = new Rect(0, mMainRect.bottom, mWidth, mMainRect.bottom + mMainChildSpace);
         mChildRect = new Rect(0, mTabRect.bottom, mWidth, mTabRect.bottom + mChildHeight);

@@ -8,6 +8,7 @@ import com.github.tifezh.kchart.model.KLine;
 import com.github.tifezh.kchart.model.Lem;
 import com.github.tifezh.kchart.model.MinuteLine;
 import com.github.tifezh.kchart.model.MinuteParent;
+import com.github.tifezh.kchart.model.TrendChartModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -203,6 +204,18 @@ public class DataRequest {
         return lemModels;
     }
 
+
+    /**
+     *  利率模拟数据
+     * @param context
+     * @return
+     */
+    public static  TrendChartModel getRateData(Context context) {
+        TrendChartModel trendChartModel = new Gson().fromJson(getStringFromAssert(context, "rate.json"),
+                new TypeToken<TrendChartModel>() {}.getType());
+
+        return trendChartModel;
+    }
 
 }
 

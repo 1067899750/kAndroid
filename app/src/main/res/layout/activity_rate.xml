@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.RateActivity"
+    android:background="@color/c2A2D4F">
+
+
+    <com.github.tifezh.kchartlib.chart.rate.MyRateView
+        android:id="@+id/my_rate_view"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_marginTop="@dimen/d20"
+        android:background="@color/c2A2D4F">
+    </com.github.tifezh.kchartlib.chart.rate.MyRateView>
+
+
+</RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+

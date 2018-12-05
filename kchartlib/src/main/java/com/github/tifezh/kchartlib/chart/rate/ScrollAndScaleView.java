@@ -1,4 +1,4 @@
-package com.github.tifezh.kchartlib.chart.view;
+package com.github.tifezh.kchartlib.chart.rate;
 
 import android.content.Context;
 import android.support.v4.view.GestureDetectorCompat;
@@ -29,39 +29,31 @@ public abstract class ScrollAndScaleView extends RelativeLayout implements
     protected boolean isClosePress = true; //关闭长按时间
 
     private OverScroller mScroller;
-
     protected boolean touch = false;
-
     protected float mScaleX = 1;
-
     protected float mScaleXMax = 2f;
-
     protected float mScaleXMin = 0.5f;
-
     private boolean mMultipleTouch = false;
-
     private boolean mScrollEnable = true;
-
     private boolean mScaleEnable = true;
-
     private boolean isScale = false;
 
     public ScrollAndScaleView(Context context) {
         super(context);
-        init();
+        initView();
     }
 
     public ScrollAndScaleView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        initView();
     }
 
     public ScrollAndScaleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        initView();
     }
 
-    private void init() {
+    private void initView() {
         setWillNotDraw(false);
         mDetector = new GestureDetectorCompat(getContext(), this);
         mScaleDetector = new ScaleGestureDetector(getContext(), this);

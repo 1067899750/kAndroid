@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StrUtil {
@@ -44,15 +45,30 @@ public class StrUtil {
     /**
      * 保留2位小数
      */
-    public static String floatToString(float value) {
-        String s = String.format("%.2f", value);
-        char end = s.charAt(s.length() - 1);
-        while (s.contains(".") && (end == '0' || end == '.')) {
-            s = s.substring(0, s.length() - 1);
-            end = s.charAt(s.length() - 1);
+
+
+    /**
+     * 将float格式化为指定小数位的String，不足小数位用0补全
+     *
+     * @param v     需要格式化的数字
+     * @param scale 小数点后保留几位
+     * @return
+     */
+    public static String floatToString(double v, int scale) {
+        if (scale < 0) {
+            throw new IllegalArgumentException(
+                    "The   scale   must   be   a   positive   integer   or   zero");
         }
-        return s;
+        if(scale == 0){
+            return new DecimalFormat("0").format(v);
+        }
+        String formatStr = "0.";
+        for(int i=0;i<scale;i++){
+            formatStr = formatStr + "0";
+        }
+        return new DecimalFormat(formatStr).format(v);
     }
+
 
     //保留一位小数
     public static String getOneDecimals(double d) {
@@ -177,6 +193,24 @@ public class StrUtil {
             text = text * 10 - 10;
             return text;
         }
+    }
+
+    //匹配正负号
+    public static boolean matchAddSubMark(String str) {
+        Pattern pattern = Pattern.compile("^[-\\+]?");
+        Matcher isNum = pattern.matcher(str);
+        if (!isNum.matches()) {
+            return false;
+        }
+        return true;
+    }
+
+    //截取“+”，“-”号
+    public static String subAddAndSubMark(String str){
+        if (matchAddSubMark(str.substring(0, 1))){
+            return str.substring(1, str.length());
+        }
+        return str;
     }
 
     /**
@@ -306,7 +340,7 @@ public class StrUtil {
 
 
     public static void main(String[] argc) {
-        System.out.println(StrUtil.getAndOnePositiveNumber(-3.1));
+        System.out.println(StrUtil.subAddAndSubMark("-3.1"));
 
         System.out.println(StrUtil.getPositiveNumber(-0.1));
 

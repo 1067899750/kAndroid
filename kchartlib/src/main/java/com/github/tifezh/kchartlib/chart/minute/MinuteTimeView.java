@@ -306,7 +306,7 @@ public class MinuteTimeView extends BaseMinuteView {
 
                         canvas.drawLine(curX + mBaseTimePadding - mPointWidth * 0.5f,
                                 mMainHeight + mVolumeTextHeight + mVolumeHeight,
-                                curX + mBaseTimePadding  - mPointWidth * 0.5f,
+                                curX + mBaseTimePadding - mPointWidth * 0.5f,
                                 getVolumeCJLY(curPoint.getVolume()),
                                 mVolumePaint);
 
@@ -314,17 +314,17 @@ public class MinuteTimeView extends BaseMinuteView {
                         //MACD成交量(柱状图)
                         if (curPoint.getMacd() > 0) {
                             mVolumePaint.setColor(getResources().getColor(R.color.color_positive_value));
-                            canvas.drawLine(curX + mBaseTimePadding  - mPointWidth * 0.5f,
+                            canvas.drawLine(curX + mBaseTimePadding - mPointWidth * 0.5f,
                                     getMACDLineY(0),
-                                    curX + mBaseTimePadding  - mPointWidth * 0.5f,
+                                    curX + mBaseTimePadding - mPointWidth * 0.5f,
                                     getMACDLineY(curPoint.getMacd()),
                                     mVolumePaint);
 
                         } else if (curPoint.getMacd() < 0) {
                             mVolumePaint.setColor(getResources().getColor(R.color.color_negative_value));
-                            canvas.drawLine(curX + mBaseTimePadding  - mPointWidth * 0.5f,
+                            canvas.drawLine(curX + mBaseTimePadding - mPointWidth * 0.5f,
                                     getMACDLineY(0),
-                                    curX + mBaseTimePadding  - mPointWidth * 0.5f,
+                                    curX + mBaseTimePadding - mPointWidth * 0.5f,
                                     getMACDLineY(curPoint.getMacd()),
                                     mVolumePaint);
 
@@ -348,13 +348,13 @@ public class MinuteTimeView extends BaseMinuteView {
                 return;
             }
             IMinuteLine point = mPoints.get(selectedIndex);
-            float x = getX(selectedIndex) + mBaseTimePadding  - mPointWidth * 0.5f;
+            float x = getX(selectedIndex) + mBaseTimePadding - mPointWidth * 0.5f;
             //轴线
             canvas.drawLine(x, 0, x, mMainHeight + mVolumeHeight + mVolumeTextHeight, mLinePaint);//Y
 //            canvas.drawLine(0, getY(point.getLast()), mWidth, getY(point.getLast()), mLinePaint);//X
 
 
-                drawMainSelector(selectedIndex, point, canvas);
+            drawMainSelector(selectedIndex, point, canvas);
 
         }
     }
@@ -494,17 +494,17 @@ public class MinuteTimeView extends BaseMinuteView {
         //画右边的值
         mTextReightPaint.setTextAlign(Paint.Align.RIGHT);
         mTextReightPaint.setColor(getResources().getColor(R.color.color_positive_value));
-        String text = StrUtil.floatToString((mValueMax - mValueStart) * 100f / mValueStart) + "%";
+        String text = StrUtil.floatToString((mValueMax - mValueStart) * 100f / mValueStart, 2) + "%";
         canvas.drawText("+" + text, mWidth - mBaseTextPaddingRight, baseLine, mTextReightPaint);
 
         mTextReightPaint.setColor(getResources().getColor(R.color.color_negative_value));
-        text = StrUtil.floatToString(Math.abs(mValueMin - mValueStart) * 100f / mValueStart) + "%";
+        text = StrUtil.floatToString(Math.abs(mValueMin - mValueStart) * 100f / mValueStart, 2) + "%";
         canvas.drawText("-" + text, mWidth - mBaseTextPaddingRight,
                 mMainHeight - textHeight + baseLine, mTextReightPaint);
 
         for (int i = 0; i < 3; i++) {
             if (i == 0) {
-                text = StrUtil.floatToString((rowValue * 1.5f) * 100f / mValueStart) + "%";
+                text = StrUtil.floatToString((rowValue * 1.5f) * 100f / mValueStart, 2) + "%";
                 mTextReightPaint.setColor(getResources().getColor(R.color.color_positive_value));
                 canvas.drawText("+" + text, mWidth - mBaseTextPaddingRight,
                         (float) (rowSpace * 1.5 + baseLine / 2), mTextReightPaint);
@@ -516,7 +516,7 @@ public class MinuteTimeView extends BaseMinuteView {
                         fixTextY(rowSpace * 3), mTextReightPaint);
 
             } else if (i == 2) {
-                text = StrUtil.floatToString((rowValue * 1.5f) * 100f / mValueStart) + "%";
+                text = StrUtil.floatToString((rowValue * 1.5f) * 100f / mValueStart, 2) + "%";
                 mTextReightPaint.setColor(getResources().getColor(R.color.color_negative_value));
                 canvas.drawText("-" + text, mWidth - mBaseTextPaddingRight,
                         (float) (mMainHeight - textHeight / 2 - rowSpace * 1.5 + baseLine / 2), mTextReightPaint);
@@ -591,7 +591,7 @@ public class MinuteTimeView extends BaseMinuteView {
 //                Log.i("diff --> :" , curPoint.getDiff() + "");
                 canvas.drawLine(lastX + mBaseTimePadding - mScaleX / 2,
                         getMACDLineY(lastPoint.getDiff()),
-                        curX + mBaseTimePadding  - mScaleX / 2,
+                        curX + mBaseTimePadding - mScaleX / 2,
                         getMACDLineY(curPoint.getDiff()),
                         mPricePaint); //成交价
 
@@ -611,9 +611,9 @@ public class MinuteTimeView extends BaseMinuteView {
                 float curX = getX(i);
 
 //                Log.i("dea --> :" , curPoint.getDea() + "");
-                canvas.drawLine(lastX + mBaseTimePadding  - mScaleX / 2,
+                canvas.drawLine(lastX + mBaseTimePadding - mScaleX / 2,
                         getMACDLineY(lastPoint.getDea()),
-                        curX + mBaseTimePadding  - mScaleX / 2,
+                        curX + mBaseTimePadding - mScaleX / 2,
                         getMACDLineY(curPoint.getDea()),
                         mPricePaint); //成交价
 
@@ -640,15 +640,15 @@ public class MinuteTimeView extends BaseMinuteView {
                 mMainHeight + mVolumeTextHeight / 2 + textHeight - baseLine, mTextMACDPaint); //MACD
 
         mTextMACDPaint.setColor(getResources().getColor(R.color.color_diff_text));
-        canvas.drawText("DIFF:" + StrUtil.floatToString(point.getDiff()), x + countX,
+        canvas.drawText("DIFF:" + StrUtil.floatToString(point.getDiff(), 2), x + countX,
                 mMainHeight + mVolumeTextHeight / 2 + textHeight - baseLine, mTextMACDPaint); //DIFF
 
         mTextMACDPaint.setColor(getResources().getColor(R.color.color_dea_text));
-        canvas.drawText("DEA:" + StrUtil.floatToString(point.getDea()), x + countX * 2,
+        canvas.drawText("DEA:" + StrUtil.floatToString(point.getDea(), 2), x + countX * 2,
                 mMainHeight + mVolumeTextHeight / 2 + textHeight - baseLine, mTextMACDPaint); //DEA
 
         mTextMACDPaint.setColor(getResources().getColor(R.color.c6774FF));
-        canvas.drawText("STICK:" + StrUtil.floatToString(point.getMacd()), x + countX * 3,
+        canvas.drawText("STICK:" + StrUtil.floatToString(point.getMacd(), 2), x + countX * 3,
                 mMainHeight + mVolumeTextHeight / 2 + textHeight - baseLine, mTextMACDPaint); //STICK
     }
 

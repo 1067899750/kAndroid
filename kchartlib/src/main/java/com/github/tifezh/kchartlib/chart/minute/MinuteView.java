@@ -364,17 +364,17 @@ public class MinuteView extends BaseMinuteView {
         //画右边的值
         mTextReightPaint.setTextAlign(Paint.Align.RIGHT);
         mTextReightPaint.setColor(getResources().getColor(R.color.color_positive_value));
-        String text = StrUtil.floatToString((mValueMax - mValueStart) * 100f / mValueStart) + "%";
+        String text = StrUtil.floatToString((mValueMax - mValueStart) * 100f / mValueStart, 2) + "%";
         canvas.drawText("+" + text, mWidth - mBaseTextPaddingRight, baseLine, mTextReightPaint);
 
         mTextReightPaint.setColor(getResources().getColor(R.color.color_negative_value));
-        text = StrUtil.floatToString(Math.abs(mValueMin - mValueStart) * 100f / mValueStart) + "%";
+        text = StrUtil.floatToString(Math.abs(mValueMin - mValueStart) * 100f / mValueStart, 2) + "%";
         canvas.drawText("-" + text, mWidth - mBaseTextPaddingRight,
                 mMainHeight - textHeight + baseLine, mTextReightPaint);
 
         for (int i = 0; i < 3; i++) {
             if (i == 0) {
-                text = StrUtil.floatToString((rowValue * 1.5f) * 100f / mValueStart) + "%";
+                text = StrUtil.floatToString((rowValue * 1.5f) * 100f / mValueStart, 2) + "%";
                 mTextReightPaint.setColor(getResources().getColor(R.color.color_positive_value));
                 canvas.drawText("+" + text, mWidth - mBaseTextPaddingRight,
                         (float) (rowSpace * 1.5 + baseLine / 2), mTextReightPaint);
@@ -386,7 +386,7 @@ public class MinuteView extends BaseMinuteView {
                         fixTextY(rowSpace * 3), mTextReightPaint);
 
             } else if (i == 2) {
-                text = StrUtil.floatToString((rowValue * 1.5f) * 100f / mValueStart) + "%";
+                text = StrUtil.floatToString((rowValue * 1.5f) * 100f / mValueStart, 2) + "%";
                 mTextReightPaint.setColor(getResources().getColor(R.color.color_negative_value));
                 canvas.drawText("-" + text, mWidth - mBaseTextPaddingRight,
                         (float) (mMainHeight - textHeight / 2 - rowSpace * 1.5 + baseLine / 2), mTextReightPaint);

@@ -49,6 +49,12 @@ public class DateUtil {
             case 8:
                 template = "HH:mm";
                 break;
+            case 9:
+                template = "MM/dd";
+                break;
+            case 10:
+                template = "yyyy/MM";
+                break;
         }
 
         SimpleDateFormat sdf = new SimpleDateFormat(template, Locale.CHINA);
@@ -96,6 +102,12 @@ public class DateUtil {
                 break;
             case 8:
                 template = "HH:mm";
+                break;
+            case 9:
+                template = "MM/dd";
+                break;
+            case 10:
+                template = "yyyy/MM";
                 break;
         }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(template);
