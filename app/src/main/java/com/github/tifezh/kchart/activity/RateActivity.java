@@ -41,27 +41,36 @@ public class RateActivity extends AppCompatActivity {
         mRateModels = new ArrayList<>();
 
         mTrendChartModel = DataRequest.getRateData(this);
+
+        mRateAdapter = new RateAdapter();
+        myRateView.setAdapter(mRateAdapter);
+        myRateView.setScrollEnable(true); //是否滑动
+        myRateView.setGridRows(7);//横线
+        myRateView.setGridColumns(5);//竖线
+
+        initData();
+
+
+    }
+
+    public void  initData(){
         List<TrendChartModel.DataBean> dataBeans = mTrendChartModel.getData();
         for (int i =0; i < dataBeans.size(); i ++){
             RateModel rateModel = new RateModel();
             rateModel.date = new Date(dataBeans.get(i).getDate());
             rateModel.value = Float.valueOf(dataBeans.get(i).getValue());
             rateModel.change = dataBeans.get(i).getChange();
+            rateModel.percent = dataBeans.get(i).getPercent();
             mRateModels.add(rateModel);
 
         }
 
         Collections.reverse(mRateModels);//对histories 集合中的数据进行倒叙排序
-
-        mRateAdapter = new RateAdapter();
         mRateAdapter.addFooterData(mRateModels);
-        myRateView.setAdapter(mRateAdapter);
-        myRateView.setScrollEnable(true); //是否滑动
-        myRateView.setGridRows(7);//横线
-        myRateView.setGridColumns(5);//竖线
 
 
     }
+
 
 
 }

@@ -90,8 +90,7 @@ public class RateView extends BaseRateView {
             mSelectedIndex = -1;
         }
 
-        mMainMaxValue = getItem(0).getValue();
-        mMainMinValue = getItem(0).getValue();
+
 
         Log.i("mStartIndex : ", mTranslateX + "-->mTranslateX");
         Log.i("mStartIndex : ", xToTranslateX(0) + "-->mStartIndex");
@@ -99,6 +98,9 @@ public class RateView extends BaseRateView {
         mStartIndex = indexOfTranslateX(xToTranslateX(0));
         mStopIndex = indexOfTranslateX(xToTranslateX(mWidth));
 
+
+        mMainMaxValue = getItem(mStartIndex).getValue();
+        mMainMinValue = getItem(mStartIndex).getValue();
 
         for (int i = mStartIndex; i <= mStopIndex; i++) {
             IRate point = getItem(i);

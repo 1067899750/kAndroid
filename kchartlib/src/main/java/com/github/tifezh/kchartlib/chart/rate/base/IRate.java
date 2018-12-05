@@ -19,6 +19,7 @@ public interface IRate {
      */
     String getChange();
 
+    String getPercent();
 
 }
 

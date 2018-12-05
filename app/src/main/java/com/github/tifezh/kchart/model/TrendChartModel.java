@@ -50,6 +50,15 @@ public class TrendChartModel {
         private long date;
         private String value;
         private String change;
+        private String percent;
+
+        public String getPercent() {
+            return percent;
+        }
+
+        public void setPercent(String percent) {
+            this.percent = percent;
+        }
 
         public long getDate() {
             return date;

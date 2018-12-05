@@ -97,7 +97,7 @@ public class RateDraw implements IRateDraw<IRate> {
 
         strings.add("涨跌");
         strings.add(point.getChange());
-        strings.add(point.getValue()+ "");
+        strings.add(point.getPercent());
 
         width = sp2px(78);
 
