@@ -62,7 +62,7 @@ public class RateActivity extends AppCompatActivity {
 
         }
 
-        Collections.reverse(mRateModels);//对histories 集合中的数据进行倒叙排序
+//        Collections.reverse(mRateModels);//对histories 集合中的数据进行倒叙排序
         myRateView.initData(mRateModels);
 
 

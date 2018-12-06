@@ -24,6 +24,8 @@ import com.github.tifezh.kchartlib.utils.DensityUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.view.View.MeasureSpec.AT_MOST;
+
 /**
  * Description k线图
  * Author puyantao
@@ -32,6 +34,9 @@ import java.util.List;
  */
 
 public abstract class BaseRateView extends ScrollAndScaleView {
+    protected final float DEF_WIDTH = 650;
+    protected final float DEF_HIGHT = 400;
+
     protected float mTranslateX = Float.MIN_VALUE;
     protected float mMainScaleY = 1;
 
@@ -204,6 +209,32 @@ public abstract class BaseRateView extends ScrollAndScaleView {
         invalidate();
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
+        if (widthSpecMode == AT_MOST && heightSpecMode == AT_MOST) {
+            setMeasuredDimension((int) DEF_WIDTH, (int) DEF_HIGHT);
+        } else if (widthSpecMode == AT_MOST) {
+            setMeasuredDimension((int) DEF_WIDTH, heightSpecSize);
+        } else if (heightSpecMode == AT_MOST) {
+            setMeasuredDimension(widthSpecSize, (int) DEF_HIGHT);
+        } else {
+            setMeasuredDimension(widthSpecSize, heightSpecSize);
+        }
+        mWidth = getMeasuredWidth();
+        mHeight = getMeasuredHeight();
+        mMainWidth = mWidth - mLeftPadding - mRightPadding;
+        mMainHeight = mHeight - mTopPadding - mBottomPadding;
+        notifyChanged();
+
+        setScaleValue();  //计算缩放率
+        setTranslateXFromScrollX(mScrollX);
+    }
+
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -212,6 +243,8 @@ public abstract class BaseRateView extends ScrollAndScaleView {
         this.mHeight = h;
         mMainHeight = h - mTopPadding - mBottomPadding;
         mMainWidth = w - mLeftPadding - mRightPadding;
+
+        notifyChanged();
 
         setScaleValue();  //计算缩放率
         setTranslateXFromScrollX(mScrollX);
@@ -384,7 +417,7 @@ public abstract class BaseRateView extends ScrollAndScaleView {
 
 
     //scrollX 转换为 TranslateX
-    private void setTranslateXFromScrollX(int scrollX) {
+    public void setTranslateXFromScrollX(int scrollX) {
         mTranslateX = scrollX + getMinTranslateX();
     }
 

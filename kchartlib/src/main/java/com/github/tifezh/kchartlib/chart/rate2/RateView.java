@@ -108,6 +108,9 @@ public class RateView extends BaseRateView {
             mItemCount = mPoints.size();
         }
         notifyChanged();
+
+        setScaleValue();  //计算缩放率
+        setTranslateXFromScrollX(mScrollX);
     }
 
 
@@ -260,7 +263,7 @@ public class RateView extends BaseRateView {
         }
         translateX = xToTranslateX(mWidth);
         if (translateX >= startX && translateX <= stopX) {
-            String text = DateUtil.getStringDateByLong(mPoints.get(mStartIndex).getDate().getTime(), 9);
+            String text = DateUtil.getStringDateByLong(mPoints.get(mStopIndex).getDate().getTime(), 9);
             canvas.drawText(text,
                     mWidth - mTextPaint.measureText(text) - mTimeLeftPadding,
                     y, mTextPaint);
@@ -271,7 +274,7 @@ public class RateView extends BaseRateView {
             translateX = xToTranslateX(columnSpace * i);
             if (translateX >= startX && translateX <= stopX) {
                 int index = indexOfTranslateX(translateX);
-                String text = DateUtil.getStringDateByLong(mPoints.get(mStartIndex).getDate().getTime(), 9);
+                String text = DateUtil.getStringDateByLong(mPoints.get(index).getDate().getTime(), 9);
                 canvas.drawText(text,
                         columnSpace * i - mTextPaint.measureText(text) / 2,
                         y, mTextPaint);
