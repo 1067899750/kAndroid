@@ -6,12 +6,21 @@
         <img src='https://github.com/tifezh/KChartView/blob/master/img/demo.gif' width="300px"/>
 </div>
 
-* 支持自定义样式
+* 样式1
 <div class='row'>
         <img src='https://github.com/tifezh/KChartView/blob/master/img/style1.png' width="300px"/>
         <img src='https://github.com/tifezh/KChartView/blob/master/img/style2.png' width="300px"/>
 </div>
 
+* 样式2
+
+<div class='row'>
+        <img src='https://github.com/1067899750/kAndroid/blob/master/img/image2.jpg' width="300px"/>
+</div>
 
 
+* 样式3
 
+<div class='row'>
+        <img src='https://github.com/1067899750/kAndroid/blob/master/img/image2.png' width="300px"/>
+</div>
