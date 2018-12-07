@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.setClass(this, GroupMinuteActivity.class);
                 break;
 
-            case R.id.btn_scale:
+            case R.id.btn_shade:
                 intent.setClass(this, ScaleActivity.class);//缩放
                 break;
         }

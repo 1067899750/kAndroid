@@ -67,12 +67,12 @@
                 android:textAllCaps="false" />
 
             <Button
-                android:id="@+id/btn_scale"
+                android:id="@+id/btn_shade"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:onClick="onClick"
-                android:text="缩放研究" />
+                android:text="下部阴影" />
 
 
         </LinearLayout>

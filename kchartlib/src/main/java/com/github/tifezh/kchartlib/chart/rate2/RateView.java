@@ -304,7 +304,7 @@ public class RateView extends BaseRateView {
 
     //在试图区域画线
     public void drawMainLine(Canvas canvas, Paint paint, float startX, float startValue, float stopX, float stopValue) {
-        canvas.drawCircle(stopX, getMainY(stopValue), 5, mDotPaint);
+        canvas.drawCircle(stopX, getMainY(stopValue), 5 / mScaleX, mDotPaint);
         canvas.drawLine(startX, getMainY(startValue), stopX, getMainY(stopValue), paint);
     }
 
