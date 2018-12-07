@@ -191,6 +191,9 @@ public class RateView extends BaseRateView {
         canvas.translate(mTranslateX * mScaleX, 0); //平移
         canvas.scale(mScaleX, 1); //缩放
 
+        mLinePaint.setStrokeWidth(dp2px(1) / mScaleX); //避免缩放对画笔粗细的影响
+        mSelectedLinePaint.setStrokeWidth(dp2px(1) / mScaleX); //避免缩放对画笔粗细的影响
+
         mMaxValue = getItem(mStartIndex).getValue();
         mMinValue = getItem(mStartIndex).getValue();
 
@@ -219,7 +222,6 @@ public class RateView extends BaseRateView {
             float x = getX(mSelectedIndex);
             float y = getMainY(point.getValue());
 
-//            mSelectedLinePaint.setStrokeWidth(mSelectedLinePaint.getStrokeWidth() / mScaleX);
             canvas.drawLine(x, mTopPadding, x, mMainHeight, mSelectedLinePaint);
 //            canvas.drawLine(-mTranslateX, y, -mTranslateX + mWidth / mScaleX, y, mSelectedLinePaint);//隐藏横线
         }
@@ -302,10 +304,7 @@ public class RateView extends BaseRateView {
 
     //在试图区域画线
     public void drawMainLine(Canvas canvas, Paint paint, float startX, float startValue, float stopX, float stopValue) {
-//        paint.setStrokeWidth(paint.getStrokeWidth() / mScaleX);
-
         canvas.drawCircle(stopX, getMainY(stopValue), 5, mDotPaint);
-
         canvas.drawLine(startX, getMainY(startValue), stopX, getMainY(stopValue), paint);
     }
 
