@@ -39,6 +39,7 @@ public class StrUtil {
      * @return
      */
     public static boolean isPositiveOrNagativeNumberText(String str) {
+        if (str.equals("- -")) return false;
         return str.substring(0, 1).matches("-");
     }
 
@@ -59,11 +60,11 @@ public class StrUtil {
             throw new IllegalArgumentException(
                     "The   scale   must   be   a   positive   integer   or   zero");
         }
-        if(scale == 0){
+        if (scale == 0) {
             return new DecimalFormat("0").format(v);
         }
         String formatStr = "0.";
-        for(int i=0;i<scale;i++){
+        for (int i = 0; i < scale; i++) {
             formatStr = formatStr + "0";
         }
         return new DecimalFormat(formatStr).format(v);
@@ -85,22 +86,22 @@ public class StrUtil {
     }
 
     //进一法保留正数
-    public static double getAndOnePositiveNumber(double d) {
-        if (d > 0){
-            if (d > Double.valueOf(getPositiveNumber(d))){
-                return Double.valueOf(getPositiveNumber(d)) + 1;
+    public static float getAndOnePositiveNumber(double d) {
+        if (d > 0) {
+            if (d > Double.valueOf(getPositiveNumber(d))) {
+                return Float.valueOf(getPositiveNumber(d)) + 1;
             } else {
-                return Double.valueOf(getPositiveNumber(d));
+                return Float.valueOf(getPositiveNumber(d));
             }
 
-        } else if (d < 0){
-            if (d < Double.valueOf(getPositiveNumber(d))){
-                return Double.valueOf(getPositiveNumber(d)) - 1;
+        } else if (d < 0) {
+            if (d < Float.valueOf(getPositiveNumber(d))) {
+                return Float.valueOf(getPositiveNumber(d)) - 1;
             } else {
-                return Double.valueOf(getPositiveNumber(d));
+                return Float.valueOf(getPositiveNumber(d));
             }
         } else {
-            return d;
+            return (float) d;
         }
     }
 
@@ -142,8 +143,7 @@ public class StrUtil {
 
 
     //获取长度
-    public static int getNumberDigit(long l) {
-        String str = String.valueOf(l);
+    public static int getNumberDigit(String str) {
         return str.length();
     }
 
@@ -155,11 +155,7 @@ public class StrUtil {
             if (a < 10) {
                 a = (a / 5 * 5 + 5);
             } else {
-                if (a % 5 == 0) {
-                    a = (long) ((a / 5 * 5) * Math.pow(10, getNumberDigit(text) - 2));
-                } else {
-                    a = (long) ((a / 5 * 5 + 5) * Math.pow(10, getNumberDigit(text) - 2));
-                }
+                a = (long) ((a / 5 * 5 + 5) * Math.pow(10, getNumberDigit(getPositiveNumber(text)) - 2));
             }
             return a;
         } else if (text == 0) {
@@ -170,11 +166,7 @@ public class StrUtil {
             if (a < 10) {
                 a = (a / 5 * 5 + 5);
             } else {
-                if (a % 5 == 0) {
-                    a = (long) ((a / 5 * 5) * Math.pow(10, getNumberDigit(aa) - 2));
-                } else {
-                    a = (long) ((a / 5 * 5 + 5) * Math.pow(10, getNumberDigit(aa) - 2));
-                }
+                a = (long) ((a / 5 * 5 + 5) * Math.pow(10, getNumberDigit(getPositiveNumber(aa)) - 2));
             }
             return -a;
         }
@@ -195,6 +187,41 @@ public class StrUtil {
         }
     }
 
+
+    /**
+     * @param text
+     * @param i    1 向上取， 2向下取
+     * @return
+     */
+    public static long getZeroMultipleMinimum(long text, int i) {
+        if (i == 1) {
+            if (text > 0) {
+                text /= 10;
+                text = text * 10 + 10;
+                return text;
+            } else if (text == 0) {
+                return 0;
+            } else {
+                text /= 10;
+                text = text * 10 - 10;
+                return text;
+            }
+        } else if (i == 2) {
+            if (text > 0) {
+                text /= 10;
+                text = text * 10 - 10;
+                return text;
+            } else if (text == 0) {
+                return 0;
+            } else {
+                text /= 10;
+                text = text * 10 + 10;
+                return text;
+            }
+        }
+        return 0;
+    }
+
     //匹配正负号
     public static boolean matchAddSubMark(String str) {
         Pattern pattern = Pattern.compile("^[-\\+]?");
@@ -206,36 +233,33 @@ public class StrUtil {
     }
 
     //截取“+”，“-”号
-    public static String subAddAndSubMark(String str){
-        if (matchAddSubMark(str.substring(0, 1))){
+    public static String subAddAndSubMark(String str) {
+        if (matchAddSubMark(str.substring(0, 1))) {
             return str.substring(1, str.length());
         }
         return str;
     }
 
     /**
-     *  取n的倍数(LEM)
+     * 取n的倍数(LEM)
+     *
      * @param text 原数
-     * @param n 倍数
+     * @param n    倍数
      * @return n的被数
      */
-    public static int getLemMultipleMinimum(long text, int n) {
+    public static int getLemMultipleMinimum(double text, int n) {
+        int a = 0;
         if (text > 0) {
-            if (text % n == 0) {
-                text = text / n * n;
-            } else {
-                text = text / n * n + n;
-            }
-            return (int) text;
+            text /= n;
+            a= (int) text;
+            a = a * n + n;
+            return (int) a;
         } else if (text == 0) {
             return 0;
         } else {
             int aa = (int) Math.abs(text);
-            if (text % n == 0) {
-                aa = aa / n * n;
-            } else {
-                aa = aa / n * n + n;
-            }
+            aa /= n;
+            aa = aa * n + n;
             return -aa;
         }
     }
@@ -274,9 +298,10 @@ public class StrUtil {
     }
 
     /**
-     *  LEM 右边轴的计算 aa[0] 最大值， aa[1] 最小值， aa[2] 等分个数, aa[3] 缩放量
+     * LEM 右边轴的计算 aa[0] 最大值， aa[1] 最小值， aa[2] 等分个数, aa[3] 缩放量
+     *
      * @param height 传最大值
-     * @param low 传最小值
+     * @param low    传最小值
      * @return 返回数组， aa[0] 最大值， aa[1] 最小值， aa[2] 等分个数, aa[3] 缩放量
      */
     public static int[] getLemRightValue(float height, float low) {
@@ -340,17 +365,9 @@ public class StrUtil {
 
 
     public static void main(String[] argc) {
-        System.out.println(StrUtil.subAddAndSubMark("-3.1"));
+        System.out.println(StrUtil.getFaveMultipleMinimum((long) 7360.77));
 
-        System.out.println(StrUtil.getPositiveNumber(-0.1));
-
-        System.out.println(StrUtil.getLemMultipleMinimum(33, 5));
-
-        int[] aa = getLemRightValue(4.5f, -0.1f);
-
-        System.out.println(aa[0] + ":" + aa[1] + ";" + aa[2] + ":" + aa[3]);
     }
-
 
 
 }
