@@ -291,20 +291,37 @@ public class MinuteTimeView extends BaseMinuteView {
 
                 if (isDrawChildView) {
                     if (isCJL) {
-                        try {
-                            //CJL成交量(柱状图)
-                            if (Double.valueOf(curPoint.getChgVolume()) > 0) {
-                                mVolumePaint.setColor(getResources().getColor(R.color.color_positive_value));
+                        if (i == 0) {
+                            try {
+                                //CJL成交量(柱状图)
+                                if (Double.valueOf(curPoint.getUpdown()) > 0) {
+                                    mVolumePaint.setColor(getResources().getColor(R.color.color_positive_value));
 
-                            } else if (Double.valueOf(curPoint.getChgVolume()) < 0) {
-                                mVolumePaint.setColor(getResources().getColor(R.color.color_negative_value));
+                                } else if (Double.valueOf(curPoint.getUpdown()) < 0) {
+                                    mVolumePaint.setColor(getResources().getColor(R.color.color_negative_value));
 
-                            } else if (curPoint.getOpen() == curPoint.getClose()) {
-                                mVolumePaint.setColor(getResources().getColor(R.color.chart_text));
+                                } else {
+                                    mVolumePaint.setColor(getResources().getColor(R.color.chart_text));
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
+                        } else {
+                            try {
+                                //CJL成交量(柱状图)
+                                if ((curPoint.getLast() - lastPoint.getLast()) > 0) {
+                                    mVolumePaint.setColor(getResources().getColor(R.color.color_positive_value));
 
-                        } catch (Exception e){
-                            e.printStackTrace();
+                                } else if ((curPoint.getLast() - lastPoint.getLast()) < 0) {
+                                    mVolumePaint.setColor(getResources().getColor(R.color.color_negative_value));
+
+                                } else {
+                                    mVolumePaint.setColor(getResources().getColor(R.color.chart_text));
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
 
                         canvas.drawLine(curX + mBaseTimePadding - mPointWidth * 0.5f,
