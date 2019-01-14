@@ -3,13 +3,9 @@ package com.github.tifezh.kchartlib.chart.comInterface;
 import java.util.Date;
 
 /**
+ * 分时图实体接口
  *
- * Description  分时图实体接口
- * Author puyantao
- * Email 1067899750@qq.com
- * Date 2018-10-26 17:40
  */
-
 
 public interface IMinuteLine {
 
@@ -33,6 +29,10 @@ public interface IMinuteLine {
      */
     float getVolume();
 
+    /**
+     * 成交量变化量
+     */
+    String getChgVolume();
 
     /**
      * 开盘价
@@ -60,7 +60,7 @@ public interface IMinuteLine {
     float getInterest();
 
     //持仓变化量
-    float getChgInterest();
+    String getChgInterest();
 
     //结算价
     float getSettle();
@@ -93,7 +93,7 @@ public interface IMinuteLine {
     float getPreInterest();
 
     //前一日收盘价
-    float getUpdown();
+    String getUpdown();
 
     //前一日持仓量
     String getPercent();

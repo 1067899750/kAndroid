@@ -175,7 +175,7 @@ public class DataRequest {
      *
      * @return
      */
-    public static MinuteParent.DataBeanX getMinuteData(Context context) {
+    public static MinuteParent.DataBean getMinuteData(Context context) {
         MinuteParent minuteModel = new Gson().fromJson(getStringFromAssert(context, "cu12.json"),
                 MinuteParent.class);
 
@@ -185,7 +185,7 @@ public class DataRequest {
 //        MinuteParent minuteModel = new Gson().fromJson(getStringFromAssert(context, "testTimeShare.json"),
 //                MinuteParent.class);
 
-        MinuteParent.DataBeanX data = minuteModel.getData();
+        MinuteParent.DataBean data = minuteModel.getData();
         return data;
     }
 

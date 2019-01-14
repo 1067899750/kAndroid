@@ -117,93 +117,42 @@ public class TimeMainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 //获取随机生成的数据
-                MinuteParent.DataBeanX minuteData = DataRequest.getMinuteData(TimeMainActivity.this);
+                MinuteParent.DataBean minuteData = DataRequest.getMinuteData(TimeMainActivity.this);
                 minTime = new Date(minuteData.getMin());
                 maxTime = new Date(minuteData.getMax());
                 preSettle = Float.valueOf(minuteData.getPreSettle());
 //        float preSettle = Float.valueOf(minuteData.getPreClose());
-                List<MinuteParent.DataBeanX.DataBean> data = minuteData.getData();
-                List<MinuteParent.DataBeanX.TradeRangesBean> tradeRanges = minuteData.getTradeRanges();
+                List<MinuteParent.DataBean.MinuteDatasBean> dataBeans = minuteData.getMinuteDatas();
+                List<MinuteParent.DataBean.TradeRangesBean> tradeRanges = minuteData.getTradeRanges();
 
 
-                for (int i = 1; i < data.size(); i++) {
+                for (int i = 1; i < dataBeans.size(); i++) {
                     Minute minuteDataMadel = new Minute();
 
-                    minuteDataMadel.ruleAt = new Date(data.get(i).getRuleAt());
-
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getLast())) { //成交价 最新报价 Y轴值
-                        minuteDataMadel.last = data.get(i).getLast();
-                    }
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getAverage())) {
-                        minuteDataMadel.average = data.get(i).getAverage(); //均价
-                    }
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getInterest())) {
-                        minuteDataMadel.interest = data.get(i).getInterest(); //持仓量
-                    }
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getChgInterest())) { //持仓变化量
-                        minuteDataMadel.chgInterest = data.get(i).getChgInterest();
-                    }
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getVolume())) { //成交量
-                        minuteDataMadel.volume = data.get(i).getVolume();
-                    }
-
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getSettle())) { //结算价
-                        minuteDataMadel.settle = data.get(i).getSettle();
-                    }
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getHighest())) {
-                        minuteDataMadel.highest = data.get(i).getHighest(); //最高价
-                    }
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getLowest())) {
-                        minuteDataMadel.lowest = data.get(i).getLowest(); //最低价
-                    }
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getOpen())) { //开盘价
-                        minuteDataMadel.open = data.get(i).getOpen();
-                    }
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getLast())) { //收盘价
-                        minuteDataMadel.close = data.get(i).getLast();
-                    }
-
-
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getAsk1p())) { //卖价
-                        minuteDataMadel.ask1p = data.get(i).getAsk1p();
-                    }
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getAsk1v())) {
-                        minuteDataMadel.ask1v = data.get(i).getAsk1v(); //卖量
-                    }
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getBid1p())) {
-                        minuteDataMadel.bid1p = data.get(i).getBid1p(); //买价
-                    }
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getBid1v())) { //买量
-                        minuteDataMadel.bid1v = data.get(i).getBid1v();
-                    }
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getUpdown())) { //涨跌
-                        minuteDataMadel.updown = data.get(i).getUpdown();
-                    }
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getPercent())) { //涨跌幅度
-                        minuteDataMadel.percent = data.get(i).getPercent();
-                    }
-
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getPreSettle())) { //买量
-                        minuteDataMadel.preSettle = data.get(i).getPreSettle();
-                    }
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getPreClose())) { //涨跌
-                        minuteDataMadel.preClose = data.get(i).getPreClose();
-                    }
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getPreInterest())) { //涨跌幅度
-                        minuteDataMadel.preInterest = data.get(i).getPreInterest();
-                    }
-
-
-
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getUpLimit())) {//
-                        minuteDataMadel.upLimit = data.get(i).getUpLimit();
-                    }
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getLoLimit())) { //
-                        minuteDataMadel.loLimit = data.get(i).getLoLimit();
-                    }
-                    if (ValueUtil.isStrNotEmpty(data.get(i).getTurnover())) { //
-                        minuteDataMadel.turnover = data.get(i).getTurnover();
-                    }
+                    minuteDataMadel.ruleAt = new Date(dataBeans.get(i).getRuleAt());
+                    minuteDataMadel.last = dataBeans.get(i).getLast(); //成交价 最新报价 Y轴值
+                    minuteDataMadel.average = dataBeans.get(i).getAverage(); //均价
+                    minuteDataMadel.interest = dataBeans.get(i).getInterest();  //持仓量
+                    minuteDataMadel.chgInterest = dataBeans.get(i).getChgInterest(); //持仓变化量
+                    minuteDataMadel.volume = dataBeans.get(i).getVolume(); //成交量
+                    minuteDataMadel.chgVolume = dataBeans.get(i).getChgVolume(); //成交量变化量
+                    minuteDataMadel.settle = dataBeans.get(i).getSettle(); //结算价
+                    minuteDataMadel.highest = dataBeans.get(i).getHighest(); //最高价
+                    minuteDataMadel.lowest = dataBeans.get(i).getLowest(); //最低价
+                    minuteDataMadel.open = dataBeans.get(i).getOpen();//开盘价
+                    minuteDataMadel.close = dataBeans.get(i).getLast();//收盘价
+                    minuteDataMadel.ask1p = dataBeans.get(i).getAsk1p();  //卖价
+                    minuteDataMadel.ask1v = dataBeans.get(i).getAsk1v(); //卖量
+                    minuteDataMadel.bid1p = dataBeans.get(i).getBid1p(); //买价
+                    minuteDataMadel.bid1v = dataBeans.get(i).getBid1v(); //买量
+                    minuteDataMadel.updown = dataBeans.get(i).getUpdown(); //涨跌
+                    minuteDataMadel.percent = dataBeans.get(i).getPercent();//涨跌幅度
+                    minuteDataMadel.preSettle = dataBeans.get(i).getPreSettle();  //买量
+                    minuteDataMadel.preClose = dataBeans.get(i).getPreClose(); //涨跌
+                    minuteDataMadel.preInterest = dataBeans.get(i).getPreInterest(); //涨跌幅度
+                    minuteDataMadel.upLimit = dataBeans.get(i).getUpLimit(); //
+                    minuteDataMadel.loLimit = dataBeans.get(i).getLoLimit();//
+                    minuteDataMadel.turnover = dataBeans.get(i).getTurnover();//
 
                     mMinuteDataMadels1.add(minuteDataMadel);
                     MinuteDataHelper.calculateMACD(mMinuteDataMadels1);

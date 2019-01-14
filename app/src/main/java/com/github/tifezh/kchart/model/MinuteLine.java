@@ -1,15 +1,15 @@
 package com.github.tifezh.kchart.model;
 
+
 import com.github.tifezh.kchartlib.chart.comInterface.IMinuteLine;
 
 import java.util.Date;
 
 /**
- *
- * Description 分时图实体
- * Author puyantao
- * Email 1067899750@qq.com
- * Date 2018-10-26 17:43
+ * Description：分时图实体
+ * Author: star
+ * Email: guimingxing@163.com
+ * Date: 2018-10-12 14:48
  */
 
 public class MinuteLine implements IMinuteLine {
@@ -24,7 +24,6 @@ public class MinuteLine implements IMinuteLine {
     public float price;
     public float avg;
     public float volume;
-
 
     @Override
     public float getAverage() {
@@ -44,6 +43,11 @@ public class MinuteLine implements IMinuteLine {
     @Override
     public float getVolume() {
         return volume;
+    }
+
+    @Override
+    public String getChgVolume() {
+        return "";
     }
 
     @Override
@@ -67,8 +71,8 @@ public class MinuteLine implements IMinuteLine {
     }
 
     @Override
-    public float getChgInterest() {
-        return 0;
+    public String getChgInterest() {
+        return "";
     }
 
 
@@ -154,8 +158,8 @@ public class MinuteLine implements IMinuteLine {
     }
 
     @Override
-    public float getUpdown() {
-        return 0;
+    public String getUpdown() {
+        return "";
     }
 
     @Override

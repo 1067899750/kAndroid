@@ -1,11 +1,14 @@
 package com.github.tifezh.kchart.model;
 
+
+import com.github.tifezh.kchart.utils.StrUntils;
+import com.github.tifezh.kchart.utils.ValueUtil;
 import com.github.tifezh.kchartlib.chart.comInterface.IMinuteLine;
+
 
 import java.util.Date;
 
 /**
- *
  * Description： 分时数据Model
  * Author: puyantao
  * Email: 1067899750@qq.com
@@ -14,29 +17,29 @@ import java.util.Date;
 
 public class Minute implements IMinuteLine {
     /**
-     "ruleAt": 1539867600000, 日期  X轴值
-     "last": null, 最新报价 Y轴值
-     "open": null, 开盘价
-     "ask1p": null, 卖价
-     "ask1v": null, 卖量
-     "bid1p": null, 买价
-     "bid1v": null, 买量
-     "highest": null, 最高价
-     "lowest": null, 最低价
-     "upLimit": null,
-     "loLimit": null,
-     "interest": null, 持仓量
-     "volume": null, 成交量
-     "turnover": null,
-     "average": null, 均价
-     "settle": null,结算价
-     "close": null,收盘价
-     "preSettle": null,前一日结算价
-     "preClose": null,前一日收盘价
-     "preInterest": null,前一日持仓量
-     "chgInterest": null,持仓变化量
-     "updown": null,涨跌
-     "percent": null 涨跌幅度
+     * "ruleAt": 1539867600000, 日期  X轴值
+     * "last": null, 最新报价 Y轴值
+     * "open": null, 开盘价
+     * "ask1p": null, 卖价
+     * "ask1v": null, 卖量
+     * "bid1p": null, 买价
+     * "bid1v": null, 买量
+     * "highest": null, 最高价
+     * "lowest": null, 最低价
+     * "upLimit": null,
+     * "loLimit": null,
+     * "interest": null, 持仓量
+     * "volume": null, 成交量
+     * "turnover": null,
+     * "average": null, 均价
+     * "settle": null,结算价
+     * "close": null,收盘价
+     * "preSettle": null,前一日结算价
+     * "preClose": null,前一日收盘价
+     * "preInterest": null,前一日持仓量
+     * "chgInterest": null,持仓变化量
+     * "updown": null,涨跌
+     * "percent": null 涨跌幅度
      */
 
     public Date ruleAt;
@@ -44,6 +47,7 @@ public class Minute implements IMinuteLine {
     public String average; //均价
     public String interest; //持仓量
     public String volume; //成交量
+    public String chgVolume; //成交量
 
     public String settle; //结算价
     public String highest; //最高价
@@ -72,7 +76,7 @@ public class Minute implements IMinuteLine {
 
 
     /**
-     *  用于MACD
+     * 用于MACD
      */
     public float dea;
     public float diff;
@@ -80,18 +84,22 @@ public class Minute implements IMinuteLine {
 
     @Override
     public float getAverage() {
-        if (average == null){
-            return 0;
-        }
-        return Float.parseFloat(average);
+        return StrUntils.strToFloat(average);
+
     }
 
     @Override
     public float getLast() {
-        if (last == null){
-            return 0;
+        if (last == null || last.equals("-") || last.equals("- -")) {
+            return -1;
         }
-        return Float.parseFloat(last);
+        try {
+            return Float.parseFloat(last);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalStateException("数据异常");
+        }
+
     }
 
     @Override
@@ -101,26 +109,26 @@ public class Minute implements IMinuteLine {
 
     @Override
     public float getVolume() {
-        if (volume == null){
-            return 0;
+        return StrUntils.strToFloat(volume);
+    }
+
+    @Override
+    public String getChgVolume() {
+        if (ValueUtil.isStrEmpty(chgVolume)) {
+            return "- -";
         }
-        return Float.parseFloat(volume);
+        return chgVolume;
     }
 
     @Override
     public float getOpen() {
-        if (open == null){
-            return 0;
-        }
-        return Float.parseFloat(open);
+        return StrUntils.strToFloat(open);
+
     }
 
     @Override
     public float getClose() {
-        if (close == null){
-            return 0;
-        }
-        return Float.parseFloat(close);
+        return StrUntils.strToFloat(close);
     }
 
     @Override
@@ -130,136 +138,114 @@ public class Minute implements IMinuteLine {
 
     @Override
     public float getInterest() {
-        if (interest == null){
-            return 0;
-        }
-        return Float.parseFloat(interest);
+        return StrUntils.strToFloat(interest);
     }
 
     @Override
-    public float getChgInterest() {
-        if (chgInterest != null) {
-            return Float.parseFloat(chgInterest);
-        } else {
-            return 0;
+    public String getChgInterest() {
+        if (ValueUtil.isStrEmpty(chgInterest)) {
+            return "- -";
         }
+        return chgInterest;
     }
 
     @Override
     public float getSettle() {
-        if (settle == null){
-            return 0;
-        }
-        return Float.valueOf(settle);
+        return StrUntils.strToFloat(settle);
     }
 
     @Override
     public float getHighest() {
-        if (highest == null){
-            return 0;
+        if (highest == null || highest.equals("-") || highest.equals("- -")) {
+            return Float.valueOf(last);
         }
-        return Float.valueOf(highest);
+        try {
+            return Float.valueOf(highest);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalStateException("数据异常");
+        }
+
     }
 
     @Override
     public float getLowest() {
-        if (lowest == null){
-            return 0;
+        if (lowest == null || lowest.equals("-") || lowest.equals("- -")) {
+            return Float.valueOf(last);
         }
-        return Float.valueOf(lowest);
+        try {
+            return Float.valueOf(lowest);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalStateException("数据异常");
+        }
+
     }
 
     @Override
     public float getAsk1p() {
-        if (ask1p == null){
-            return 0;
-        }
-        return Float.valueOf(ask1p);
+        return StrUntils.strToFloat(ask1p);
     }
 
     @Override
     public float getAsk1v() {
-        if (ask1v == null){
-            return 0;
-        }
-        return Float.valueOf(ask1v);
+        return StrUntils.strToFloat(ask1v);
     }
 
     @Override
     public float getBid1p() {
-        if (bid1p == null){
-            return 0;
-        }
-        return Float.valueOf(bid1p);
+        return StrUntils.strToFloat(bid1p);
     }
 
     @Override
     public float getBid1v() {
-        if (bid1v == null){
-            return 0;
-        }
-        return Float.valueOf(bid1v);
+        return StrUntils.strToFloat(bid1v);
     }
 
     @Override
     public float getPreSettle() {
-        if (preSettle == null){
-            return 0;
-        }
-        return Float.valueOf(preSettle);
+        return StrUntils.strToFloat(preSettle);
     }
 
     @Override
     public float getPreClose() {
-        if (preClose == null){
-            return 0;
-        }
-        return Float.valueOf(preClose);
+        return StrUntils.strToFloat(preClose);
     }
 
     @Override
     public float getPreInterest() {
-        if (preInterest == null){
-            return 0;
-        }
-        return Float.valueOf(preInterest);
+        return StrUntils.strToFloat(preInterest);
     }
 
     @Override
-    public float getUpdown() {
-        if (updown == null){
-            return 0;
+    public String getUpdown() {
+        if (ValueUtil.isStrEmpty(updown)) {
+            return "- -";
         }
-        return Float.parseFloat(updown);
+        return updown;
     }
 
     @Override
     public String getPercent() {
+        if (ValueUtil.isStrEmpty(percent)) {
+            return "- -";
+        }
         return percent;
     }
 
     @Override
     public float getUpLimit() {
-        if (upLimit == null){
-            return 0;
-        }
-        return Float.parseFloat(upLimit);
+        return StrUntils.strToFloat(upLimit);
     }
 
     @Override
     public float getLoLimit() {
-        if (loLimit == null){
-            return 0;
-        }
-        return Float.parseFloat(loLimit);
+        return StrUntils.strToFloat(loLimit);
     }
 
     @Override
     public float getTurnover() {
-        if (turnover == null){
-            return 0;
-        }
-        return Float.parseFloat(turnover);
+        return StrUntils.strToFloat(turnover);
     }
 
     @Override
