@@ -736,7 +736,8 @@ public class MinuteTimeView extends BaseMinuteView {
      * 修正y值
      */
     private float getY(float value) {
-        return (mValueMax - value) * mScaleY;
+        return mMainHeight / 2 - (value - mValueStart) * mScaleY;
+//        return (mValueMax - value) * mScaleY;
     }
 
     //CJL柱形
