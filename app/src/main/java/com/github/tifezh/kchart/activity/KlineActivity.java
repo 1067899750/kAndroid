@@ -222,6 +222,12 @@ public class KlineActivity extends AppCompatActivity implements KChartView.KChar
     protected void onDestroy() {
         super.onDestroy();
         mUnbinder.unbind();
+        if (kchartView != null){
+            kchartView.releaseMemory();
+        }
+        if (minuteChartView != null){
+            minuteChartView.releaseMemory();
+        }
     }
 
 

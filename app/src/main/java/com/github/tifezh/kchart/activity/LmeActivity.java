@@ -59,10 +59,13 @@ public class LmeActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (lmeView != null){
+            lmeView.releaseMemory();
+        }
+    }
 }
 
 

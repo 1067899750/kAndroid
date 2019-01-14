@@ -574,5 +574,14 @@ public abstract class BaseRateView extends ScrollAndScaleView {
         return (int) (spValue * fontScale + 0.5f);
     }
 
+    //释放内存
+    public void releaseMemory(){
+        if (mBitmapLogo != null){
+            if (!mBitmapLogo.isRecycled()){
+                mBitmapLogo.recycle();
+                mBitmapLogo = null;
+            }
+        }
+    }
 
 }

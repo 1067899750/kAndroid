@@ -334,7 +334,13 @@ public class TimeMainActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (minuteChartView != null){
+            minuteChartView.releaseMemory();
+        }
+    }
 
 }
 

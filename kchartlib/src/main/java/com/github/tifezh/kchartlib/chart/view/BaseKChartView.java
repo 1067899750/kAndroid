@@ -1238,4 +1238,14 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
          */
         void onSelectedChanged(BaseKChartView view, Object point, int index);
     }
+
+    //释放内存
+    public void releaseMemory(){
+        if (mBitmapLogo != null){
+            if (!mBitmapLogo.isRecycled()){
+                mBitmapLogo.recycle();
+                mBitmapLogo = null;
+            }
+        }
+    }
 }

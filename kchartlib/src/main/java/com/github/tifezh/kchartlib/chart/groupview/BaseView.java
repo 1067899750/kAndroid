@@ -324,6 +324,14 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
         return false;
     }
 
-
+    //释放内存
+    public void releaseMemory(){
+        if (mBitmapLogo != null){
+            if (!mBitmapLogo.isRecycled()){
+                mBitmapLogo.recycle();
+                mBitmapLogo = null;
+            }
+        }
+    }
 
 }

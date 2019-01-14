@@ -67,7 +67,13 @@ public class RateActivity extends AppCompatActivity {
 
 
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (myRateView != null){
+            myRateView.releaseMemory();
+        }
+    }
 
 
 }
