@@ -209,31 +209,29 @@ public class MinuteTimeView extends BaseMinuteView {
         }
         mMACDValueY = StrUtil.getFaveMultipleMinimum(Long.parseLong(StrUtil.getPositiveNumber(mMACDValueY)));
         Log.i("mMACDValue :", mMACDValueY + "");
-        //最大值和开始值的单位差值
-        float offsetValueMax = (Math.abs(mValueMax - mValueStart)) / (mGridRows / 2);
-        float offsetValueMin = (Math.abs(mValueStart - mValueMin)) / (mGridRows / 2);
-
-        //以开始的点为中点值   上下间隙多出20%
-        float offset = (offsetValueMax > offsetValueMin ? offsetValueMax : offsetValueMin) * 1.2f;
-        //坐标轴高度以开始的点对称
-        mValueMax = mValueStart + offset * (mGridRows / 2);
-        mValueMin = mValueStart - offset * (mGridRows / 2);
-        //y轴的缩放值
-        mScaleY = mMainHeight / (mValueMax - mValueMin);
 
         //判断最大值和最小值是否一致
-        if (mValueMax == mValueMin) {
+        if (mValueMax == mValueMin && mValueMax == mValueStart) {
             //当最大值和最小值都相等的时候 分别增大最大值和 减小最小值
             mValueMax += Math.abs(mValueMax * 0.05f);
-            mValueMin -= Math.abs(mValueMax * 0.05f);
+            mValueMin -= Math.abs(mValueMin * 0.05f);
             if (mValueMax == 0) {
                 mValueMax = 1;
             }
-        }
+        } else {
 
-        if (mVolumeMax == 0) {
-            mVolumeMax = 1;
+            //最大值和开始值的单位差值
+            float offsetValueMax = (Math.abs(mValueMax - mValueStart)) / (mGridRows / 2);
+            float offsetValueMin = (Math.abs(mValueStart - mValueMin)) / (mGridRows / 2);
+
+            //以开始的点为中点值   上下间隙多出20%
+            float offset = (offsetValueMax > offsetValueMin ? offsetValueMax : offsetValueMin) * 1.05f;
+            //坐标轴高度以开始的点对称
+            mValueMax = mValueStart + offset * (mGridRows / 2);
+            mValueMin = mValueStart - offset * (mGridRows / 2);
+            //y轴的缩放值
         }
+        mScaleY = mMainHeight / (mValueMax - mValueMin);
 
 
         //CJL右轴的缩放值

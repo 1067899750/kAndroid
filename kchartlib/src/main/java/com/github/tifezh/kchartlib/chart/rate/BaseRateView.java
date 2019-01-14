@@ -233,7 +233,7 @@ public abstract class BaseRateView extends ScrollAndScaleView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawColor(mBackgroundColor); //绘制背景
-        drawMainViewLogo(canvas); //绘制logo
+//        drawMainViewLogo(canvas); //绘制logo
         drawGird(canvas); //绘制网格线
 
     }

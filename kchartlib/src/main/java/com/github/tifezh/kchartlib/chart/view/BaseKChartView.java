@@ -303,12 +303,12 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
         if (mWidth == 0 || mMainRect.height() == 0 || mItemCount == 0) {
             return;
         }
-        if (showBottomView) {
-            drawMainViewLogo(canvas);
-            drawChildViewLogo(canvas);
-        } else {
-            drawMainViewLogo(canvas);
-        }
+//        if (showBottomView) {
+//            drawMainViewLogo(canvas);
+//            drawChildViewLogo(canvas);
+//        } else {
+//            drawMainViewLogo(canvas);
+//        }
         calculateValue();
         canvas.save();
         canvas.scale(1, 1);

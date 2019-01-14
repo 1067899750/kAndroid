@@ -152,7 +152,7 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
         super.onDraw(canvas);
 
         //绘制水印
-        drawMainViewLogo(canvas);
+//        drawMainViewLogo(canvas);
 
     }
 

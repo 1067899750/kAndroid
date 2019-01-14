@@ -270,10 +270,10 @@ public abstract class BaseMinuteView extends View implements GestureDetector.OnG
         if (mWidth == 0 || mMainHeight == 0) {
             return;
         }
-        drawMainViewLogo(canvas);
-        if (isDrawChildView) {
-            drawChildViewLogo(canvas);
-        }
+//        drawMainViewLogo(canvas);
+//        if (isDrawChildView) {
+//            drawChildViewLogo(canvas);
+//        }
         drawGird(canvas); //绘制网格
         if (mPoints == null || mPoints.size() == 0) {
             return;
