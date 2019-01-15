@@ -387,6 +387,15 @@ public class MinuteTimeView extends BaseMinuteView {
      */
 
     private void drawMainSelector(int selectedIndex, IMinuteLine point, Canvas canvas) {
+        //绘制 MACD, DIFF, DEA, STICK 的指标
+        if (isDrawChildView) {
+            //GJL
+            if (!isCJL) {
+                drawMACDText(selectedIndex, point, canvas);
+                invalidate();
+            }
+        }
+
         Paint.FontMetrics metrics = mTextLeftPaint.getFontMetrics();
         float textHeight = metrics.descent - metrics.ascent;
 
@@ -464,14 +473,7 @@ public class MinuteTimeView extends BaseMinuteView {
             y += textHeight + padding;
         }
 
-        //绘制 MACD, DIFF, DEA, STICK 的指标
-        if (isDrawChildView) {
-            //GJL
-            if (!isCJL) {
-                drawMACDText(selectedIndex, point, canvas);
-                invalidate();
-            }
-        }
+
 
 
     }
