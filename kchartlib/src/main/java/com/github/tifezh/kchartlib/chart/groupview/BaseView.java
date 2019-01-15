@@ -60,7 +60,7 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
 
     protected Paint mGridPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-    private Bitmap mBitmapLogo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_app_logo);
+    private Bitmap mBitmapLogo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.logo);
 
     protected GestureDetectorCompat mDetector;
     protected boolean isLongPress = false; //是否长按事件
@@ -152,7 +152,7 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
         super.onDraw(canvas);
 
         //绘制水印
-//        drawMainViewLogo(canvas);
+        drawMainViewLogo(canvas);
 
     }
 

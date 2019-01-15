@@ -101,7 +101,7 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
     private Rect mTabRect;
     private Rect mChildRect;
 
-    private Bitmap mBitmapLogo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_app_logo);
+    private Bitmap mBitmapLogo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.logo);
     private int mBasePaddingLeft = DensityUtil.dp2px(25);  //左padding
     private int mBasePaddingRight = DensityUtil.dp2px(25);//右padding
     private int mMainChildSpace = DensityUtil.dp2px(20);//中间选项高
@@ -303,12 +303,12 @@ public abstract class BaseKChartView extends ScrollAndScaleView {
         if (mWidth == 0 || mMainRect.height() == 0 || mItemCount == 0) {
             return;
         }
-//        if (showBottomView) {
-//            drawMainViewLogo(canvas);
-//            drawChildViewLogo(canvas);
-//        } else {
-//            drawMainViewLogo(canvas);
-//        }
+        if (showBottomView) {
+            drawMainViewLogo(canvas);
+            drawChildViewLogo(canvas);
+        } else {
+            drawMainViewLogo(canvas);
+        }
         calculateValue();
         canvas.save();
         canvas.scale(1, 1);

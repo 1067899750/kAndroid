@@ -85,7 +85,7 @@ public abstract class BaseRateView extends ScrollAndScaleView {
     protected Rect mMainRect;
 
     protected int mBackgroundColor;
-    protected Bitmap mBitmapLogo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_app_logo);
+    protected Bitmap mBitmapLogo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.logo);
     protected int mBasePaddingLeft = DensityUtil.dp2px(25);  //左padding
     protected int mBasePaddingRight = DensityUtil.dp2px(25);//右padding
     protected int mTopPadding = DensityUtil.dp2px(5);//距顶部距离;
@@ -233,7 +233,7 @@ public abstract class BaseRateView extends ScrollAndScaleView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawColor(mBackgroundColor); //绘制背景
-//        drawMainViewLogo(canvas); //绘制logo
+        drawMainViewLogo(canvas); //绘制logo
         drawGird(canvas); //绘制网格线
 
     }

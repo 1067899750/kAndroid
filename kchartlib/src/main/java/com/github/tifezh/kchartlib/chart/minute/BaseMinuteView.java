@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GestureDetectorCompat;
 import android.util.AttributeSet;
@@ -21,6 +22,7 @@ import com.github.tifezh.kchartlib.chart.base.IValueFormatter;
 import com.github.tifezh.kchartlib.chart.comInterface.IMinuteLine;
 import com.github.tifezh.kchartlib.chart.comInterface.IMinuteTime;
 import com.github.tifezh.kchartlib.chart.formatter.BigValueFormatter;
+import com.github.tifezh.kchartlib.utils.MyDrawLogo;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -91,27 +93,27 @@ public abstract class BaseMinuteView extends View implements GestureDetector.OnG
     protected Date mEndTime;
 
     protected int mMACDClickPoint; //MACD选择点
-    private Bitmap mBitmapLogo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_app_logo);
+    private Bitmap mBitmapLogo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.logo);
 
     private IValueFormatter mVolumeFormatter;
 
     public BaseMinuteView(Context context) {
         super(context);
-        init();
+        init(context);
     }
 
     public BaseMinuteView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context);
     }
 
     public BaseMinuteView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(context);
     }
 
 
-    protected void init() {
+    protected void init(Context context) {
         mDetector = new GestureDetectorCompat(getContext(), this);
         mScaleDetector = new ScaleGestureDetector(getContext(), this);
 
@@ -235,7 +237,7 @@ public abstract class BaseMinuteView extends View implements GestureDetector.OnG
         if (isDrawChildView) {
             this.mMainHeight = (int) (height * 0.75f);
             this.mVolumeHeight = (int) (height * 0.25f);
-        }else {
+        } else {
             this.mMainHeight = (int) (height * 1f);
             this.mVolumeHeight = (int) (height * 0f);
         }
@@ -270,10 +272,10 @@ public abstract class BaseMinuteView extends View implements GestureDetector.OnG
         if (mWidth == 0 || mMainHeight == 0) {
             return;
         }
-//        drawMainViewLogo(canvas);
-//        if (isDrawChildView) {
-//            drawChildViewLogo(canvas);
-//        }
+        drawMainViewLogo(canvas);
+        if (isDrawChildView) {
+            drawChildViewLogo(canvas);
+        }
         drawGird(canvas); //绘制网格
         if (mPoints == null || mPoints.size() == 0) {
             return;
@@ -639,9 +641,9 @@ public abstract class BaseMinuteView extends View implements GestureDetector.OnG
     }
 
     //释放内存
-    public void releaseMemory(){
-        if (mBitmapLogo != null){
-            if (!mBitmapLogo.isRecycled()){
+    public void releaseMemory() {
+        if (mBitmapLogo != null) {
+            if (!mBitmapLogo.isRecycled()) {
                 mBitmapLogo.recycle();
                 mBitmapLogo = null;
             }

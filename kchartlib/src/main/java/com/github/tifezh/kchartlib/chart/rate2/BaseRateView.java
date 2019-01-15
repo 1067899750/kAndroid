@@ -85,7 +85,7 @@ public abstract class BaseRateView extends ScrollAndScaleView {
 
 
     protected int mBackgroundColor;
-    protected Bitmap mBitmapLogo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_app_logo);
+    protected Bitmap mBitmapLogo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.logo);
     protected int mLeftPadding = DensityUtil.dp2px(25);  //左padding
     protected int mRightPadding = DensityUtil.dp2px(25);//右padding
     protected int mTopPadding = DensityUtil.dp2px(5);//距顶部距离;
