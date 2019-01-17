@@ -475,7 +475,7 @@ public class KlineActivity extends AppCompatActivity implements KChartView.KChar
                 List<MinuteParent.DataBean.MinuteDatasBean> dataBeans = minuteData.getMinuteDatas();
                 List<MinuteParent.DataBean.TradeRangesBean> tradeRanges = minuteData.getTradeRanges();
 
-                for (int i = 1; i < dataBeans.size(); i++) {
+                for (int i = 0; i < dataBeans.size(); i++) {
                     Minute minuteDataMadel = new Minute();
 
                     minuteDataMadel.ruleAt = new Date(dataBeans.get(i).getRuleAt());

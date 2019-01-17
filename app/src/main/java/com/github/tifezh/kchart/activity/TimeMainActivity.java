@@ -126,7 +126,7 @@ public class TimeMainActivity extends AppCompatActivity {
                 List<MinuteParent.DataBean.TradeRangesBean> tradeRanges = minuteData.getTradeRanges();
 
 
-                for (int i = 1; i < dataBeans.size(); i++) {
+                for (int i = 0; i < dataBeans.size(); i++) {
                     Minute minuteDataMadel = new Minute();
 
                     minuteDataMadel.ruleAt = new Date(dataBeans.get(i).getRuleAt());
