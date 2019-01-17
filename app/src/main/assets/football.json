@@ -1,0 +1,497 @@
+{
+  "errorCode": 0,
+  "message": "操作成功",
+  "result": {
+    "businessCode": 0,
+    "data": {
+      "leagueNameShort": "越青锦U19",
+      "homeTeamName": "槟椥U19",
+      "homeTeamFlag": "http://zq.win007.com/Image/team/null",
+      "awayTeamName": "平阳U19",
+      "awayTeamFlag": "http://zq.win007.com/Image/team/",
+      "midfieldTime": 45,
+      "homeTeamAttack": 39,
+      "awayTeamAttack": 51,
+      "homeTeamDangerousAttack": 22,
+      "awayTeamDangerousAttack": 34,
+      "homeTeamBallControl": 37,
+      "awayTeamBallControl": 63,
+      "homeTeamCornerKick": 1,
+      "awayTeamCornerKick": 2,
+      "homeTeamRedCard": 0,
+      "awayTeamRedCard": 0,
+      "homeTeamYellowCard": 2,
+      "awayTeamYellowCard": 1,
+      "homeTeamShotPositiveDoor": 1,
+      "awayTeamShotPositiveDoor": 7,
+      "homeTeamPolarizationDoor": 1,
+      "awayTeamPolarizationDoor": 6,
+      "homeTeamData": [
+        {
+          "time": 4,
+          "eventType": 6,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 14,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 15,
+          "eventType": 12,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 18,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 27,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 27,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 28,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 35,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 36,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 40,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 42,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 44,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 45,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 50,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 52,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 54,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 55,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 60,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 62,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 73,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 79,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 83,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 85,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 85,
+          "eventType": 10,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 87,
+          "eventType": 5,
+          "sequenceStaus": 2
+        }
+      ],
+      "awayTeamData": [
+        {
+          "time": 0,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 3,
+          "eventType": 10,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 7,
+          "eventType": 6,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 8,
+          "eventType": 6,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 8,
+          "eventType": 10,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 9,
+          "eventType": 10,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 11,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 16,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 18,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 19,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 19,
+          "eventType": 12,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 21,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 22,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 25,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 29,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 31,
+          "eventType": 10,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 34,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 38,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 38,
+          "eventType": 10,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 39,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 40,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 41,
+          "eventType": 6,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 43,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 0,
+          "eventType": 5,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 0,
+          "eventType": 10,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 47,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 50,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 53,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 53,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 55,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 57,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 58,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 59,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 60,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 63,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 64,
+          "eventType": 6,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 65,
+          "eventType": 6,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 64,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 67,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 68,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 68,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 69,
+          "eventType": 12,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 70,
+          "eventType": 6,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 74,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 75,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 75,
+          "eventType": 6,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 75,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 81,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 82,
+          "eventType": 5,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 40,
+          "eventType": 1,
+          "sequenceStaus": 1
+        },
+        {
+          "time": 70,
+          "eventType": 1,
+          "sequenceStaus": 2
+        },
+        {
+          "time": 76,
+          "eventType": 1,
+          "sequenceStaus": 2
+        }
+      ],
+      "detailsEventVos": [
+        {
+          "matchId": 1657475,
+          "sign": 0,
+          "eventType": 1,
+          "playerName": "",
+          "time": 76,
+          "sequenceStaus": 2
+        },
+        {
+          "matchId": 1657475,
+          "sign": 0,
+          "eventType": 1,
+          "playerName": "",
+          "time": 70,
+          "sequenceStaus": 2
+        },
+        {
+          "matchId": 1657475,
+          "sign": 0,
+          "eventType": 12,
+          "playerName": "",
+          "time": 69,
+          "sequenceStaus": 2
+        },
+        {
+          "matchId": 1657475,
+          "sign": 1,
+          "eventType": 3,
+          "playerName": "",
+          "time": 63,
+          "sequenceStaus": 2
+        },
+        {
+          "matchId": 1657475,
+          "sign": 0,
+          "eventType": 1,
+          "playerName": "",
+          "time": 40,
+          "sequenceStaus": 1
+        },
+        {
+          "matchId": 1657475,
+          "sign": 0,
+          "eventType": 3,
+          "playerName": "",
+          "time": 22,
+          "sequenceStaus": 1
+        },
+        {
+          "matchId": 1657475,
+          "sign": 0,
+          "eventType": 12,
+          "playerName": "",
+          "time": 19,
+          "sequenceStaus": 1
+        },
+        {
+          "matchId": 1657475,
+          "sign": 1,
+          "eventType": 12,
+          "playerName": "",
+          "time": 15,
+          "sequenceStaus": 1
+        },
+        {
+          "matchId": 1657475,
+          "sign": 1,
+          "eventType": 3,
+          "playerName": "",
+          "time": 11,
+          "sequenceStaus": 1
+        }
+      ]
+    },
+    "encryptionStatus": 0,
+    "message": "success"
+  }
+}
+

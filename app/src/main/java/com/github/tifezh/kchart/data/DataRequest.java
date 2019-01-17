@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.github.tifezh.kchart.model.FootballModel;
 import com.github.tifezh.kchart.model.KLine;
 import com.github.tifezh.kchart.model.Lem;
 import com.github.tifezh.kchart.model.MinuteLine;
@@ -217,6 +218,18 @@ public class DataRequest {
         return trendChartModel;
     }
 
+
+    /**
+     *  利率模拟数据
+     * @param context
+     * @return
+     */
+    public static FootballModel getFootBallData(Context context) {
+        FootballModel footballModel = new Gson().fromJson(getStringFromAssert(context, "football.json"),
+                new TypeToken<FootballModel>() {}.getType());
+
+        return footballModel;
+    }
 }
 
 

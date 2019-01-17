@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.FootBallActivity">
+
+
+    <com.github.tifezh.kchartlib.chart.football.FootBallView
+        android:id="@+id/footBallView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d120"
+        android:layout_centerVertical="true"/>
+
+
+</RelativeLayout>

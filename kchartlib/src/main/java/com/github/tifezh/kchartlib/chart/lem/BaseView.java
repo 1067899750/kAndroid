@@ -121,7 +121,7 @@ public abstract class BaseView extends View  implements GestureDetector.OnGestur
         //绘制背景颜色
         canvas.drawColor(mBackgroundColor);
         //绘制水印
-//        drawMainViewLogo(canvas);
+        drawMainViewLogo(canvas);
     }
 
     /**

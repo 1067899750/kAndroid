@@ -42,9 +42,10 @@
         <activity
             android:name=".activity.GroupMinuteActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
-
-        <activity android:name=".activity.RateActivity"
+        <activity
+            android:name=".activity.RateActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity android:name=".activity.FootBallActivity"></activity>
     </application>
 
 </manifest>
