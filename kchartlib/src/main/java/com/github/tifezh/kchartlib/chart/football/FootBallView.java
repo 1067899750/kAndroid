@@ -276,14 +276,12 @@ public class FootBallView extends BaseView {
      * 根据索引获取x的值
      */
     private float getX(int position, int treamType) {
-
         if (treamType == 0) { //主队
             float c = mHomePoints.get(position).getHomeDate();
-            return mHomePoints.get(position).getHomeDate() * mScaleX;
+            return mHomePoints.get(position).getHomeDate() * mScaleX + mScaleX / 2;
         } else if (treamType == 1) { //客队
             float c = mAwayPoints.get(position).getAwayDate();
-            return mAwayPoints.get(position).getAwayDate() * mScaleX;
-
+            return mAwayPoints.get(position).getAwayDate() * mScaleX + mScaleX / 2;
         } else {
             return 0;
         }
@@ -303,11 +301,11 @@ public class FootBallView extends BaseView {
             case 1: //入球
                 if (state == 0) {
                     canvas.drawBitmap(mFootBallBitmap,
-                            x + mScaleX / 2,
+                            x,
                             (mBaseHeight - mCentreLineLength) / 2 + mTopPadding - mFootBallLength - mFootBallBitmap.getHeight() / 2, null);
                 } else if (state == 1) {
                     canvas.drawBitmap(mFootBallBitmap,
-                            x + mScaleX / 2,
+                            x,
                             (mBaseHeight - mCentreLineLength) / 2 + mTopPadding + mFootBallLength, null);
                 }
                 break;
@@ -327,15 +325,15 @@ public class FootBallView extends BaseView {
             case 6://射正球门时间
                 mFootLinePaint.setColor(getColor(R.color.cF27A68));
                 if (state == 0) {
-                    canvas.drawLine(x + mScaleX / 2,
+                    canvas.drawLine(x,
                             (mBaseHeight - mCentreLineLength) / 2 + mTopPadding,
-                            x + mScaleX / 2,
+                            x,
                             (mBaseHeight - mCentreLineLength) / 2 + mTopPadding - mReadLength,
                             mFootLinePaint);
                 } else if (state == 1) {
-                    canvas.drawLine(x + mScaleX / 2,
+                    canvas.drawLine(x,
                             (mBaseHeight + mCentreLineLength) / 2 + mTopPadding,
-                            x + mScaleX / 2,
+                            x,
                             (mBaseHeight + mCentreLineLength) / 2 + mTopPadding + mReadLength,
                             mFootLinePaint);
                 }
@@ -353,15 +351,15 @@ public class FootBallView extends BaseView {
             case 10://射偏球门时间
                 mFootLinePaint.setColor(getColor(R.color.c9EB2CD));
                 if (state == 0) {
-                    canvas.drawLine(x + mScaleX / 2,
+                    canvas.drawLine(x,
                             (mBaseHeight - mCentreLineLength) / 2 + mTopPadding,
-                            x + mScaleX / 2,
+                            x,
                             (mBaseHeight - mCentreLineLength) / 2 + mTopPadding - mGrayLength,
                             mFootLinePaint);
                 } else if (state == 1) {
-                    canvas.drawLine(x + mScaleX / 2,
+                    canvas.drawLine(x,
                             (mBaseHeight + mCentreLineLength) / 2 + mTopPadding,
-                            x + mScaleX / 2,
+                            x,
                             (mBaseHeight + mCentreLineLength) / 2 + mTopPadding + mGrayLength,
                             mFootLinePaint);
                 }
@@ -373,11 +371,11 @@ public class FootBallView extends BaseView {
             case 12://角球
                 if (state == 0) {
                     canvas.drawBitmap(mStandardBitmap,
-                            x + mScaleX / 2,
+                            x,
                             (mBaseHeight - mCentreLineLength) / 2 + mTopPadding - mStandardLength - mStandardBitmap.getHeight() / 2, null);
                 } else if (state == 1) {
                     canvas.drawBitmap(mStandardBitmap,
-                            x + mScaleX / 2,
+                            x,
                             (mBaseHeight - mCentreLineLength) / 2 + mTopPadding + mStandardLength, null);
                 }
                 break;
