@@ -119,7 +119,7 @@
         },
         {
           "time": 62,
-          "eventType": 5,
+          "eventType": 1,
           "sequenceStaus": 2
         },
         {
@@ -270,16 +270,6 @@
           "sequenceStaus": 1
         },
         {
-          "time": 0,
-          "eventType": 5,
-          "sequenceStaus": 1
-        },
-        {
-          "time": 0,
-          "eventType": 10,
-          "sequenceStaus": 1
-        },
-        {
           "time": 47,
           "eventType": 5,
           "sequenceStaus": 2
@@ -398,11 +388,6 @@
           "time": 82,
           "eventType": 5,
           "sequenceStaus": 2
-        },
-        {
-          "time": 40,
-          "eventType": 1,
-          "sequenceStaus": 1
         },
         {
           "time": 70,

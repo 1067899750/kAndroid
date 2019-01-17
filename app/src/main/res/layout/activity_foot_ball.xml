@@ -12,7 +12,7 @@
     <com.github.tifezh.kchartlib.chart.football.FootBallView
         android:id="@+id/footBallView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/d130"
+        android:layout_height="@dimen/d170"
         android:layout_centerVertical="true"/>
 
 

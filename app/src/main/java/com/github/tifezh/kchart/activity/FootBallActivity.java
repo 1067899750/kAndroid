@@ -52,7 +52,7 @@ public class FootBallActivity extends AppCompatActivity {
         List<FootballModel.ResultBean.DataBean.AwayTeamDataBean> awayTeamDataBeans = mFootballModel.getResult().getData().getAwayTeamData();
         for (int i = 0; i < homeTeamData.size(); i++) {
             IFootBallModel iFootBallModel = new IFootBallModel();
-            iFootBallModel.homeSequenceStaus = homeTeamData.get(i).getTime();
+            iFootBallModel.homeTime = homeTeamData.get(i).getTime();
             iFootBallModel.homeEventType = homeTeamData.get(i).getEventType();
             iFootBallModel.homeSequenceStaus = homeTeamData.get(i).getSequenceStaus();
             mIHomeFootBallModels.add(iFootBallModel);
@@ -61,9 +61,9 @@ public class FootBallActivity extends AppCompatActivity {
 
         for (int i = 0; i < awayTeamDataBeans.size(); i++) {
             IFootBallModel iFootBallModel = new IFootBallModel();
-            iFootBallModel.homeSequenceStaus = awayTeamDataBeans.get(i).getTime();
-            iFootBallModel.homeEventType = awayTeamDataBeans.get(i).getEventType();
-            iFootBallModel.homeSequenceStaus = awayTeamDataBeans.get(i).getSequenceStaus();
+            iFootBallModel.awayTime = awayTeamDataBeans.get(i).getTime();
+            iFootBallModel.awayEventType = awayTeamDataBeans.get(i).getEventType();
+            iFootBallModel.awaySequenceStaus = awayTeamDataBeans.get(i).getSequenceStaus();
             mIAwayFootBallModels.add(iFootBallModel);
 
         }

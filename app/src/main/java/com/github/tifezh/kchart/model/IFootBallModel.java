@@ -49,6 +49,6 @@ public class IFootBallModel implements IFootball {
 
     @Override
     public int getAwaySequenceStaus() {
-        return getAwaySequenceStaus();
+        return awaySequenceStaus;
     }
 }

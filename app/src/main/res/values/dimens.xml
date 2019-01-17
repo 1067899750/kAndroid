@@ -61,7 +61,9 @@
     <dimen name="d140">140dp</dimen>
     <dimen name="d150">150dp</dimen>
     <dimen name="d160">160dp</dimen>
+    <dimen name="d170">170dp</dimen>
     <dimen name="d180">180dp</dimen>
+    <dimen name="d190">190dp</dimen>
     <dimen name="d197">197dp</dimen>
     <dimen name="d200">200dp</dimen>
     <dimen name="d300">300dp</dimen>

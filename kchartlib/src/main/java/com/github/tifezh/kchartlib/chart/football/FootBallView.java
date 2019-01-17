@@ -36,11 +36,15 @@ public class FootBallView extends BaseView {
     private Paint mBottomLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint mFootLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-    private int mCentreLineLengh = dp2px(4);  //中轴
-    private int mCentreSeaftLengh = dp2px(2);  //中轴
+    private int mCentreLineLength = dp2px(4);  //中轴
+    private int mCentreSeaftLength = dp2px(2);  //中轴
     private int mLeftPadding = dp2px(20);  //左padding
-    private int mReadLengh = dp2px(30);
-    private int mGrayLengh = dp2px(20);
+    private int mReadLength = dp2px(30);
+    private int mGrayLength = dp2px(20);
+
+    private int mFootBallLength = dp2px(40);
+    private int mStandardLength = dp2px(50);
+
     private int mBottomLeftPadding = dp2px(30);
     private String mFootBallName = "主客";
 
@@ -88,7 +92,7 @@ public class FootBallView extends BaseView {
             this.mHomePoints.addAll(homeDatas);
             mHomePointCount = mHomePoints.size();
 
-            this.mAwayPoints.addAll(homeDatas);
+            this.mAwayPoints.addAll(AwayDatas);
             mAwayPointCount = mAwayPoints.size();
         }
 
@@ -105,19 +109,13 @@ public class FootBallView extends BaseView {
             return;
         }
 
-        mScaleX = (mWidth - mLeftPadding - mCentreSeaftLengh) / mTotalTimers;
+        mScaleX = (mWidth - mLeftPadding - mCentreSeaftLength) / mTotalTimers;
 
     }
 
     @Override
     protected void calculateSelectedX(float x) {
-        selectedIndex = (int) (x * 1f / getX(mHomePoints.size() - 1) * (mHomePoints.size() - 1) + 0.5f);
-        if (selectedIndex < 0) {
-            selectedIndex = 0;
-        }
-        if (selectedIndex > mHomePoints.size() - 1) {
-            selectedIndex = mHomePoints.size() - 1;
-        }
+
     }
 
 
@@ -144,8 +142,8 @@ public class FootBallView extends BaseView {
         canvas.drawLine(0, mTopPadding, mWidth, mTopPadding, mGridLinePaint);
 
         //中
-        canvas.drawRect(new RectF(0, (mBaseHeight - mCentreLineLengh) / 2 + mTopPadding, mWidth,
-                (mBaseHeight + mCentreLineLengh) / 2 + mTopPadding), mLeftLinePaint);
+        canvas.drawRect(new RectF(0, (mBaseHeight - mCentreLineLength) / 2 + mTopPadding, mWidth,
+                (mBaseHeight + mCentreLineLength) / 2 + mTopPadding), mLeftLinePaint);
 
         //下
         canvas.drawLine(0, mTopPadding + mBaseHeight, mWidth,
@@ -156,8 +154,8 @@ public class FootBallView extends BaseView {
                 mTopPadding + mBaseHeight), mLeftLinePaint);
 
         //上下半场分界线
-        canvas.drawRect(new RectF((mBaseWidth + mLeftPadding - mCentreSeaftLengh) / 2, mTopPadding,
-                (mBaseWidth + mLeftPadding + mCentreSeaftLengh) / 2, mTopPadding + mBaseHeight), mLeftLinePaint);
+        canvas.drawRect(new RectF((mBaseWidth + mLeftPadding - mCentreSeaftLength) / 2, mTopPadding,
+                (mBaseWidth + mLeftPadding + mCentreSeaftLength) / 2, mTopPadding + mBaseHeight), mLeftLinePaint);
 
     }
 
@@ -245,34 +243,28 @@ public class FootBallView extends BaseView {
     private void drawView(Canvas canvas) {
         //绘制主队进攻
         for (int i = 0; i < mHomePoints.size(); i++) {
-            switch (mHomePoints.get(i).getHomeSequenceStaus()) {
-                case 1: {
-                    drawLine(getX(i) + mLeftPadding, 1, canvas, mHomePoints.get(i).getHomeEventType());
-                    break;
-                }
-                case 2: {
-                    drawLine(getX(i) + mLeftPadding + mCentreSeaftLengh, 1, canvas, mHomePoints.get(i).getHomeEventType());
-                    break;
-                }
-                default:
-                    break;
+            if (mHomePoints.get(i).getHomeSequenceStaus() == 1) {
+                drawLine(getX(i, 0) + mLeftPadding,
+                        0, canvas, mHomePoints.get(i).getHomeEventType());
+
+            } else if (mHomePoints.get(i).getHomeSequenceStaus() == 2) {
+                drawLine(getX(i, 0) + mLeftPadding + mCentreSeaftLength,
+                        0, canvas, mHomePoints.get(i).getHomeEventType());
+
             }
+
         }
 
-
-        //绘制主队进攻
+        //绘制客队进攻
         for (int i = 0; i < mAwayPoints.size(); i++) {
-            switch (mAwayPoints.get(i).getHomeSequenceStaus()) {
-                case 1: {
-                    drawLine(getX(i) + mLeftPadding, 2, canvas, mAwayPoints.get(i).getHomeEventType());
-                    break;
-                }
-                case 2: {
-                    drawLine(getX(i) + mLeftPadding + mCentreSeaftLengh, 2, canvas, mAwayPoints.get(i).getHomeEventType());
-                    break;
-                }
-                default:
-                    break;
+            if (mAwayPoints.get(i).getAwaySequenceStaus() == 1) {
+                drawLine(getX(i, 1) + mLeftPadding,
+                        1, canvas, mAwayPoints.get(i).getAwayEventType());
+
+            } else if (mAwayPoints.get(i).getAwaySequenceStaus() == 2) {
+                drawLine(getX(i, 1) + mLeftPadding + mCentreSeaftLength,
+                        1, canvas, mAwayPoints.get(i).getAwayEventType());
+
             }
         }
 
@@ -283,25 +275,41 @@ public class FootBallView extends BaseView {
     /**
      * 根据索引获取x的值
      */
-    private float getX(int position) {
-        mCount = 0;
-        int dateTime = mHomePoints.get(position).getHomeDate();
-        int startTime = mHomePoints.get(0).getHomeDate();
-        int endTime = mHomePoints.get(mHomePoints.size() - 1).getHomeDate();
-        if (dateTime >= startTime && dateTime <= endTime) {
-            mCount = position;
+    private float getX(int position, int treamType) {
+
+        if (treamType == 0) { //主队
+            float c = mHomePoints.get(position).getHomeDate();
+            return mHomePoints.get(position).getHomeDate() * mScaleX;
+        } else if (treamType == 1) { //客队
+            float c = mAwayPoints.get(position).getAwayDate();
+            return mAwayPoints.get(position).getAwayDate() * mScaleX;
+
         } else {
-            mCount = 0;
+            return 0;
         }
-        float c = mCount * mScaleX;
-        return mCount * mScaleX;
     }
 
 
-    //绘制柱体
+    /**
+     * 绘制柱体
+     *
+     * @param x         x轴距离
+     * @param state     0 主队， 1客队
+     * @param canvas
+     * @param eventType 事件类型
+     */
     private void drawLine(float x, float state, Canvas canvas, int eventType) {
         switch (eventType) {
             case 1: //入球
+                if (state == 0) {
+                    canvas.drawBitmap(mFootBallBitmap,
+                            x + mScaleX / 2,
+                            (mBaseHeight - mCentreLineLength) / 2 + mTopPadding - mFootBallLength - mFootBallBitmap.getHeight() / 2, null);
+                } else if (state == 1) {
+                    canvas.drawBitmap(mFootBallBitmap,
+                            x + mScaleX / 2,
+                            (mBaseHeight - mCentreLineLength) / 2 + mTopPadding + mFootBallLength, null);
+                }
                 break;
 
             case 2: //红牌
@@ -318,17 +326,17 @@ public class FootBallView extends BaseView {
 
             case 6://射正球门时间
                 mFootLinePaint.setColor(getColor(R.color.cF27A68));
-                if (state == 1) {
+                if (state == 0) {
                     canvas.drawLine(x + mScaleX / 2,
-                            (mBaseHeight - mCentreLineLengh) / 2 + mTopPadding,
+                            (mBaseHeight - mCentreLineLength) / 2 + mTopPadding,
                             x + mScaleX / 2,
-                            (mBaseHeight - mCentreLineLengh) / 2 + mTopPadding - mReadLengh,
+                            (mBaseHeight - mCentreLineLength) / 2 + mTopPadding - mReadLength,
                             mFootLinePaint);
-                } else if (state == 2) {
+                } else if (state == 1) {
                     canvas.drawLine(x + mScaleX / 2,
-                            (mBaseHeight + mCentreLineLengh) / 2 + mTopPadding,
+                            (mBaseHeight + mCentreLineLength) / 2 + mTopPadding,
                             x + mScaleX / 2,
-                            (mBaseHeight + mCentreLineLengh) / 2 + mTopPadding + mReadLengh,
+                            (mBaseHeight + mCentreLineLength) / 2 + mTopPadding + mReadLength,
                             mFootLinePaint);
                 }
                 break;
@@ -344,17 +352,17 @@ public class FootBallView extends BaseView {
 
             case 10://射偏球门时间
                 mFootLinePaint.setColor(getColor(R.color.c9EB2CD));
-                if (state == 1) {
+                if (state == 0) {
                     canvas.drawLine(x + mScaleX / 2,
-                            (mBaseHeight - mCentreLineLengh) / 2 + mTopPadding,
+                            (mBaseHeight - mCentreLineLength) / 2 + mTopPadding,
                             x + mScaleX / 2,
-                            (mBaseHeight - mCentreLineLengh) / 2 + mTopPadding - mGrayLengh,
+                            (mBaseHeight - mCentreLineLength) / 2 + mTopPadding - mGrayLength,
                             mFootLinePaint);
-                } else if (state == 2) {
+                } else if (state == 1) {
                     canvas.drawLine(x + mScaleX / 2,
-                            (mBaseHeight + mCentreLineLengh) / 2 + mTopPadding,
+                            (mBaseHeight + mCentreLineLength) / 2 + mTopPadding,
                             x + mScaleX / 2,
-                            (mBaseHeight + mCentreLineLengh) / 2 + mTopPadding + mGrayLengh,
+                            (mBaseHeight + mCentreLineLength) / 2 + mTopPadding + mGrayLength,
                             mFootLinePaint);
                 }
                 break;
@@ -363,6 +371,15 @@ public class FootBallView extends BaseView {
                 break;
 
             case 12://角球
+                if (state == 0) {
+                    canvas.drawBitmap(mStandardBitmap,
+                            x + mScaleX / 2,
+                            (mBaseHeight - mCentreLineLength) / 2 + mTopPadding - mStandardLength - mStandardBitmap.getHeight() / 2, null);
+                } else if (state == 1) {
+                    canvas.drawBitmap(mStandardBitmap,
+                            x + mScaleX / 2,
+                            (mBaseHeight - mCentreLineLength) / 2 + mTopPadding + mStandardLength, null);
+                }
                 break;
 
             case 13:
@@ -381,13 +398,13 @@ public class FootBallView extends BaseView {
     }
 
 
-    public void clearMemory(){
-        if (mFootBallBitmap != null){
+    public void clearMemory() {
+        if (mFootBallBitmap != null) {
             mFootBallBitmap.recycle();
             mFootBallBitmap = null;
         }
 
-        if (mStandardBitmap != null){
+        if (mStandardBitmap != null) {
             mStandardBitmap.recycle();
             mStandardBitmap = null;
         }
