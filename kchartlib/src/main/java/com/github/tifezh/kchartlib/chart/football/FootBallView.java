@@ -1,6 +1,8 @@
 package com.github.tifezh.kchartlib.chart.football;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
@@ -13,7 +15,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Description
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2019-1-17 14:14
+ */
+
 public class FootBallView extends BaseView {
+    private Bitmap mFootBallBitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.football);
+    private Bitmap mStandardBitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.standard);
 
     private final List<IFootball> mHomePoints = new ArrayList<>();
     private final List<IFootball> mAwayPoints = new ArrayList<>();
@@ -21,8 +32,8 @@ public class FootBallView extends BaseView {
     private Paint mGridLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint mLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint mLeftLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private Paint mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG); //文字
-
+    private Paint mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Paint mBottomLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint mFootLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     private int mCentreLineLengh = dp2px(4);  //中轴
@@ -30,6 +41,7 @@ public class FootBallView extends BaseView {
     private int mLeftPadding = dp2px(20);  //左padding
     private int mReadLengh = dp2px(30);
     private int mGrayLengh = dp2px(20);
+    private int mBottomLeftPadding = dp2px(30);
     private String mFootBallName = "主客";
 
     private int mCount = 0;
@@ -64,8 +76,9 @@ public class FootBallView extends BaseView {
         mLeftLinePaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
         mTextPaint.setColor(getColor(R.color.cffffff));
-        mTextPaint.setTextSize(sp2px(16));
 
+        mBottomLinePaint.setColor(getColor(R.color.c3EB86A));
+        mBottomLinePaint.setStrokeWidth(dp2px(3));
     }
 
     public void initData(Collection<? extends IFootball> homeDatas, Collection<? extends IFootball> AwayDatas) {
@@ -117,6 +130,7 @@ public class FootBallView extends BaseView {
             return;
         }
 
+        drawBottomView(canvas);
         drawText(canvas);
         drawView(canvas);
 
@@ -147,9 +161,72 @@ public class FootBallView extends BaseView {
 
     }
 
+    //绘制下面图标
+    private void drawBottomView(Canvas canvas) {
+        float textLength = mTextPaint.measureText("进球");
+        float textHeight = getFontBaseLineHeight(mTextPaint);
+
+        mTextPaint.setTextAlign(Paint.Align.LEFT);
+        mTextPaint.setTextSize(sp2px(12));
+        mTextPaint.setColor(getColor(R.color.c6A798E));
+        int h = dp2px(7);
+        //进球
+        canvas.drawBitmap(mFootBallBitmap,
+                mBottomLeftPadding,
+                mTopPadding + mBaseHeight + mBottomPadding / 2 - mFootBallBitmap.getHeight() / 2, null);
+
+        canvas.drawText("进球",
+                mBottomLeftPadding * 1 + mFootBallBitmap.getWidth(),
+                mTopPadding + mBaseHeight + mBottomPadding / 2 + textHeight,
+                mTextPaint);
+
+
+        //角球
+        canvas.drawBitmap(mStandardBitmap,
+                mBottomLeftPadding * 2 + textLength * 1 + mFootBallBitmap.getWidth(),
+                mTopPadding + mBaseHeight + mBottomPadding / 2 - mStandardBitmap.getHeight() / 2, null);
+
+        canvas.drawText("角球",
+                mBottomLeftPadding * 2 + textLength * 1 + mStandardBitmap.getWidth() + mFootBallBitmap.getWidth(),
+                mTopPadding + mBaseHeight + mBottomPadding / 2 + textHeight,
+                mTextPaint);
+
+
+        //射正
+        mBottomLinePaint.setTextAlign(Paint.Align.CENTER);
+        mBottomLinePaint.setColor(getColor(R.color.cF27A68));
+        canvas.drawLine(mBottomLeftPadding * 3 + textLength * 2 + mStandardBitmap.getWidth() + mFootBallBitmap.getWidth(),
+                mTopPadding + mBaseHeight + h,
+                mBottomLeftPadding * 3 + textLength * 2 + mStandardBitmap.getWidth() + mFootBallBitmap.getWidth(),
+                mTopPadding + mBaseHeight + mBottomPadding - h,
+                mBottomLinePaint);
+
+
+        canvas.drawText("射正",
+                mBottomLeftPadding * 3 + textLength * 2 + dp2px(5) + mStandardBitmap.getWidth() + mFootBallBitmap.getWidth(),
+                mTopPadding + mBaseHeight + mBottomPadding / 2 + textHeight,
+                mTextPaint);
+
+
+        //射偏
+        mBottomLinePaint.setColor(getColor(R.color.c3EB86A));
+        canvas.drawLine(mBottomLeftPadding * 4 + textLength * 3 + dp2px(5) + mStandardBitmap.getWidth() + mFootBallBitmap.getWidth(),
+                mTopPadding + mBaseHeight + h,
+                mBottomLeftPadding * 4 + textLength * 3 + dp2px(5) + mStandardBitmap.getWidth() + mFootBallBitmap.getWidth(),
+                mTopPadding + mBaseHeight + mBottomPadding - h,
+                mBottomLinePaint);
+
+        canvas.drawText("射偏",
+                mBottomLeftPadding * 4 + textLength * 3 + dp2px(5) * 2 + mStandardBitmap.getWidth() + mFootBallBitmap.getWidth(),
+                mTopPadding + mBaseHeight + mBottomPadding / 2 + textHeight,
+                mTextPaint);
+
+
+    }
 
     private void drawText(Canvas canvas) {
         //绘制名字
+        mTextPaint.setColor(getColor(R.color.cffffff));
         mTextPaint.setTextAlign(Paint.Align.CENTER);
         mTextPaint.setTextSize(sp2px(14));
         for (int i = 0; i < mFootBallName.length(); i++) {
@@ -277,7 +354,7 @@ public class FootBallView extends BaseView {
                     canvas.drawLine(x + mScaleX / 2,
                             (mBaseHeight + mCentreLineLengh) / 2 + mTopPadding,
                             x + mScaleX / 2,
-                            (mBaseHeight + mCentreLineLengh) / 2 + mTopPadding+ mGrayLengh,
+                            (mBaseHeight + mCentreLineLengh) / 2 + mTopPadding + mGrayLengh,
                             mFootLinePaint);
                 }
                 break;
@@ -303,6 +380,18 @@ public class FootBallView extends BaseView {
         this.mFootBallName = footBallName;
     }
 
+
+    public void clearMemory(){
+        if (mFootBallBitmap != null){
+            mFootBallBitmap.recycle();
+            mFootBallBitmap = null;
+        }
+
+        if (mStandardBitmap != null){
+            mStandardBitmap.recycle();
+            mStandardBitmap = null;
+        }
+    }
 
 }
 

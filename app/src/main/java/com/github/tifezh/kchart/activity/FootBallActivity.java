@@ -17,6 +17,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+/**
+ *
+ * Description
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2019-1-17 14:15
+ */
 
 public class FootBallActivity extends AppCompatActivity {
     @BindView(R.id.footBallView)
@@ -69,7 +76,10 @@ public class FootBallActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        footBallView.clearMemory();
     }
+
+
 }
 
 

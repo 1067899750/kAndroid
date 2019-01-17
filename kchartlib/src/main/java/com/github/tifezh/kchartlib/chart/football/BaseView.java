@@ -8,13 +8,14 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
-
-import com.github.tifezh.kchartlib.chart.comInterface.ILem;
-import com.github.tifezh.kchartlib.utils.DensityUtil;
-
-import java.util.Collection;
+/**
+ *
+ * Description
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2019-1-17 14:14
+ */
 
 public abstract class BaseView extends View {
     protected long mHomePointCount = 0; //点的个数
@@ -33,8 +34,8 @@ public abstract class BaseView extends View {
     protected int mHeight; //试图高度
     protected int mWidth;  //试图宽度
 
-    protected int mTopPadding = dp2px(20); //据顶部
-    protected int mBottomPadding = dp2px(0);//距底部
+    protected int mTopPadding = dp2px(0); //据顶部
+    protected int mBottomPadding = dp2px(30);//距底部
 
 
     public BaseView(Context context) {

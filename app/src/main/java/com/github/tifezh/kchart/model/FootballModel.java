@@ -1,6 +1,13 @@
 package com.github.tifezh.kchart.model;
 
 import java.util.List;
+/**
+ *
+ * Description
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2019-1-17 14:14
+ */
 
 public class FootballModel {
     /**
