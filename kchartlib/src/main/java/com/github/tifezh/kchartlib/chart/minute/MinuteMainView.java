@@ -405,6 +405,52 @@ public class MinuteMainView extends BaseMinuteView {
                 y, mTextBottomPaint);//结束时间
 
 
+//        float y = mMainHeight + mVolumeHeight + mVolumeTextHeight + baseLine;
+//        mTextBottomPaint.setTextAlign(Paint.Align.LEFT);
+//        mCount = 0;
+//        if (mIndex == 1) {
+//            canvas.drawText(DateUtil.getStringDateByLong(mMainStartTime.getTime(), 8), mBaseTimePadding, y, mTextBottomPaint); //起始时间
+//            for (int i = 0; i < mTimes.size() - 1; i++) {
+//                mCount += (mTimes.get(i).getEndDate().getTime() - mTimes.get(i).getStartDate().getTime()) / ONE_MINUTE;
+//                float x = mScaleX * mCount;
+//                mTextBottomPaint.setTextAlign(Paint.Align.CENTER);
+//                canvas.drawText(DateUtil.getStringDateByLong(mTimes.get(i + 1).getStartDate().getTime(), 8),
+//                        mBaseTimePadding + x,
+//                        y, mTextBottomPaint); //中间起始时间
+//            }
+//            mTextBottomPaint.setTextAlign(Paint.Align.RIGHT);
+//            canvas.drawText(DateUtil.getStringDateByLong(mMainEndTime.getTime(), 8),
+//                    mWidth - mBaseTimePadding,
+//                    y, mTextBottomPaint);//结束时间
+//
+//        } else { //大于1天时
+//            String startStr = DateUtil.getStringDateByLong(mMainStartTime.getTime(), 8);
+//            if (startStr.equals("21:00")) {
+//                canvas.drawText(DateUtil.addOneDayDate(mMainStartTime.getTime() + 1), mBaseTimePadding, y, mTextBottomPaint); //起始时间
+//            } else {
+//                canvas.drawText(DateUtil.getStringDateByLong(mMainStartTime.getTime(), 9), mBaseTimePadding, y, mTextBottomPaint); //起始时间
+//            }
+//            for (int i = 0; i < mTimes.size() - 1; i++) {
+//                mCount += (mTimes.get(i).getEndDate().getTime() - mTimes.get(i).getStartDate().getTime()) / ONE_MINUTE;
+//                float x = mScaleX * mCount;
+//                String dataStr = DateUtil.getStringDateByLong(mTimes.get(i + 1).getStartDate().getTime(), 8);
+//
+//                if (dataStr.equals(startStr)) { //上期所
+//                    mTextBottomPaint.setTextAlign(Paint.Align.CENTER);
+//                    if (startStr.equals("21:00")) {
+//                        canvas.drawText(DateUtil.addOneDayDate(mTimes.get(i + 1).getStartDate().getTime()),
+//                                mBaseTimePadding + x,
+//                                y, mTextBottomPaint);
+//                    } else {
+//                        canvas.drawText(DateUtil.getStringDateByLong(mTimes.get(i + 1).getStartDate().getTime(), 9),
+//                                mBaseTimePadding + x,
+//                                y, mTextBottomPaint);
+//                    }
+//                }
+//            }
+//        }
+
+
     }
 
 

@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -118,6 +119,15 @@ public class DateUtil {
             e.printStackTrace();
         }
         return date.getTime();
+    }
+
+    //日期加一天
+    public static String addOneDayDate(long dateLen){
+        Date today = new Date(dateLen);
+        Calendar c = Calendar.getInstance();
+        c.setTime(today);
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        return getStringDateByLong(c.getTime().getTime(), 9);
     }
 
     public static void main(String[] argc){
