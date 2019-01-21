@@ -385,18 +385,17 @@ public class MinuteTimeView extends BaseMinuteView {
 
         drawText(canvas); //绘制文字
 
+        if (selectedIndex >= mPoints.size() || selectedIndex < 0 || mPoints.size() == 0) {
+            return;
+        }
+        IMinuteLine point = mPoints.get(selectedIndex);
+        float x = getX(selectedIndex) + mBaseTimePadding - mPointWidth * 0.5f;
+
         //画指示线
         if (isLongPress || !isClosePress) {
-            if (selectedIndex >= mPoints.size() || selectedIndex < 0 || mPoints.size() == 0) {
-                return;
-            }
-            IMinuteLine point = mPoints.get(selectedIndex);
-            float x = getX(selectedIndex) + mBaseTimePadding - mPointWidth * 0.5f;
             //轴线
             canvas.drawLine(x, 0, x, mMainHeight + mVolumeHeight + mVolumeTextHeight, mLinePaint);//Y
 //            canvas.drawLine(0, getY(point.getLast()), mWidth, getY(point.getLast()), mLinePaint);//X
-
-
             drawMainSelector(selectedIndex, point, canvas);
 
         }
