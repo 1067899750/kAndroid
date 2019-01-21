@@ -35,7 +35,7 @@ public class MinuteTimeView extends BaseMinuteView {
     private Paint mLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG); //轴线
     private Paint mTextBottomPaint = new Paint(Paint.ANTI_ALIAS_FLAG); //下边文字
     private Paint mPricePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-
+    private Paint mPriceAveragePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint mVolumePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     private Paint mSelectorBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -129,6 +129,10 @@ public class MinuteTimeView extends BaseMinuteView {
 
         mSelectorTextPaint.setColor(Color.parseColor("#E7EDF5"));
         mSelectorTextPaint.setTextSize(sp2px(13));
+
+        mPriceAveragePaint.setDither(true);
+        mPriceAveragePaint.setColor(Color.parseColor("#FFEFD521"));
+        mPriceAveragePaint.setStrokeWidth(dp2px(0.5f));
 
         mVolumePaint.setColor(ContextCompat.getColor(getContext(), R.color.chart_red));
 
@@ -280,14 +284,33 @@ public class MinuteTimeView extends BaseMinuteView {
             IMinuteLine lastPoint = mPoints.get(0);
             float lastX = getX(0);
             for (int i = 0; i < mPoints.size(); i++) {
+                if (mPoints.get(i).getLast() == -1) {
+                    continue;
+                }
+
                 IMinuteLine curPoint = mPoints.get(i);
                 float curX = getX(i);
+
+                if ((i - lastX / mScaleX) > 1) {  //控制的最大个数时断点
+                    lastPoint = curPoint;
+                    lastX = curX;
+                }
 
                 canvas.drawLine(lastX + mBaseTimePadding - mScaleX / 2,
                         getY(lastPoint.getLast()),
                         curX + mBaseTimePadding - mScaleX / 2,
                         getY(curPoint.getLast()),
                         mPricePaint); //成交价
+
+                if (lastPoint.getAverage() > mValueMin && lastPoint.getAverage() < mValueMax && lastPoint.getAverage() != -1 &&
+                        curPoint.getAverage() > mValueMin && curPoint.getAverage() < mValueMax && curPoint.getAverage() != -1) {
+                    canvas.drawLine(lastX + mBaseTimePadding - mScaleX / 2,
+                            getY(lastPoint.getAverage()),
+                            curX + mBaseTimePadding - mScaleX / 2,
+                            getY(curPoint.getAverage()),
+                            mPriceAveragePaint); //均价线
+                }
+
 
                 if (isDrawChildView) {
                     if (isCJL) {
