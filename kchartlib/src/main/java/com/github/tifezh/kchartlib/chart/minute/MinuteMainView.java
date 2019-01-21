@@ -157,9 +157,12 @@ public class MinuteMainView extends BaseMinuteView {
     @Override
     protected void notifyChanged() {
         if (mPoints.size() > 0) {
-            mValueMax = mPoints.get(0).getHighest();
-            mValueMin = mPoints.get(0).getLowest();
-
+            for (int i = 0; i < mPoints.size(); i++) {
+                if (mPoints.get(i).getLast() != -1) {
+                    mValueMax = mPoints.get(i).getLast();
+                    mValueMin = mPoints.get(i).getLast();
+                }
+            }
         }
 
         for (int i = 0; i < mPoints.size(); i++) {
