@@ -215,8 +215,17 @@ public class MinuteMainView extends BaseMinuteView {
             IMinuteLine lastPoint = mPoints.get(0);
             float lastX = getX(0);
             for (int i = 0; i < mPoints.size(); i++) {
+                if (mPoints.get(i).getLast() == -1) {
+                    continue;
+                }
+
                 IMinuteLine curPoint = mPoints.get(i);
                 float curX = getX(i);
+
+                if ((i - lastX / mScaleX) > 1) { //控制的最大个数时断点
+                    lastPoint = curPoint;
+                    lastX = curX;
+                }
 
                 canvas.drawLine(lastX + mBaseTimePadding,
                         getY(lastPoint.getLast()),
