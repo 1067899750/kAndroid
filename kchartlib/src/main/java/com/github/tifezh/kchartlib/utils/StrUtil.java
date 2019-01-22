@@ -11,6 +11,25 @@ import java.util.regex.Pattern;
 
 public class StrUtil {
 
+    //保留万位
+    public static String reserveToThousandBits(String strBit) {
+        if (strBit == null || strBit.equals("--") || strBit.equals("-") || strBit.equals("- -")) {
+            return "- -";
+        }
+        Double dou = Double.valueOf(strBit);
+        if (dou > 10000 || dou < -10000) {
+            dou /= 10000;
+            String souStr = getPositiveNumber(dou);
+            if (souStr.contains("-")) {
+                return souStr + "万";
+            } else {
+                return "+" + souStr + "万";
+            }
+        } else {
+            return strBit;
+        }
+    }
+
     /**
      * 判断汉字
      *
