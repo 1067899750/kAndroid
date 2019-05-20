@@ -50,7 +50,7 @@ public class BitmapUntils {
         //将logo绘制到画布上并做矩阵变换
         canvas.drawBitmap(logo, matrix, null);
         // 保存状态
-        canvas.save(Canvas.ALL_SAVE_FLAG);// 保存
+        canvas.save();// 保存
         // 恢复状态
         canvas.restore();
         return newBitmap;
