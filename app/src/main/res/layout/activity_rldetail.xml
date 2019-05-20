@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.RLDetailActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/d50">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c000000"
+            android:textSize="@dimen/f14"
+            android:layout_marginLeft="@dimen/d20"
+            android:text="总收入:"/>
+
+        <TextView
+            android:id="@+id/all_input_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c000000"
+            android:textSize="@dimen/f14"
+            android:layout_marginLeft="@dimen/d5"
+            android:text="2100元"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/d10">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c000000"
+            android:textSize="@dimen/f14"
+            android:layout_marginLeft="@dimen/d20"
+            android:text="总收入:"/>
+
+        <TextView
+            android:id="@+id/average_input_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c000000"
+            android:textSize="@dimen/f14"
+            android:layout_marginLeft="@dimen/d5"
+            android:text="70元"/>
+    </LinearLayout>
+
+    <com.github.tifezh.kchartlib.chart.detail.DetailView
+        android:id="@+id/detail_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d250"
+        android:layout_marginTop="@dimen/d10"/>
+
+</LinearLayout>

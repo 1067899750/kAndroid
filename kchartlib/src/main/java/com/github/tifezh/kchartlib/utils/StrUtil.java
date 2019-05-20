@@ -62,10 +62,6 @@ public class StrUtil {
         return str.substring(0, 1).matches("-");
     }
 
-    /**
-     * 保留2位小数
-     */
-
 
     /**
      * 将float格式化为指定小数位的String，不足小数位用0补全

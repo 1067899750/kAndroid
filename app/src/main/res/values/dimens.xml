@@ -66,6 +66,7 @@
     <dimen name="d190">190dp</dimen>
     <dimen name="d197">197dp</dimen>
     <dimen name="d200">200dp</dimen>
+    <dimen name="d250">250dp</dimen>
     <dimen name="d300">300dp</dimen>
 
 </resources>
