@@ -177,7 +177,7 @@ public class DetailView extends BaseDetailView {
         float y = mHeight - mBottomPadding + baseLine;
         float dataWeight = mTextPaint.measureText(StrUtil.getPositiveNumber(mPoints.get((int) mPointCount - 1).getDate()));
         canvas.drawText(StrUtil.getPositiveNumber(1), getX(0), y, mTextPaint); //起始时间
-        int dataCount = (int) (mValueMax / 50);
+        int dataCount = (int) (mPointCount / 5);
         for (int i = 1; i < dataCount; i++) {
             canvas.drawText(StrUtil.getPositiveNumber(mPoints.get(5 * i).getDate()),
                     getX(5 * i) + dataWeight,

@@ -46,7 +46,7 @@ public class RLDetailActivity extends AppCompatActivity {
     }
 
     private void initDatas() {
-        for (int i = 0; i < 32; i++) {
+        for (int i = 0; i < 30; i++) {
             DetailModel model = new DetailModel();
             model.data = i;
             model.value = (float) (1 + Math.random() * 300);
