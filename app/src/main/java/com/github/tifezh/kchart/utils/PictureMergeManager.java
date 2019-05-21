@@ -14,7 +14,13 @@ import android.webkit.WebView;
 
 import com.github.tifezh.kchart.R;
 
-
+/**
+ *
+ * Description
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2019/5/21 13:59
+ */
 public class PictureMergeManager {
     private Context context;
     private static PictureMergeManager pictureMergeManager = null;

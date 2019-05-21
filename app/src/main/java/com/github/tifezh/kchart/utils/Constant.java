@@ -5,10 +5,11 @@ package com.github.tifezh.kchart.utils;
 import java.io.Serializable;
 
 /**
- * Description：静态常量类
- * Author: star
- * Email: guimingxing@163.com
- * Date: 2018-3-28  17:23
+ *
+ * Description
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2019/5/21 13:59
  */
 public class Constant {
     public static final boolean IS_TEST = false;//App 是否为测试环境

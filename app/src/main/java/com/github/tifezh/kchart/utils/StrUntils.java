@@ -74,51 +74,38 @@ public class StrUntils {
         return str == null || str.trim().length() == 0;
     }
 
-    /**
-     * 字符串 千位符
-     *
-     * @param num
-     * @return
-     */
-    public static String num2Thousand(String num) {
-        String numStr = "";
-        if (isEmpty(num)) {
-            return numStr;
-        }
-        NumberFormat nf = NumberFormat.getInstance();
-        try {
-            DecimalFormat df = new DecimalFormat("#,###");
-            numStr = df.format(nf.parse(num));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return numStr;
-    }
 
     /**
-     * 字符串 千位符  保留两位小数点后两位
-     *
-     * @param num
-     * @return
+     * @Title: fmtMicrometer
+     * @Description: 格式化数字为千分位
+     * @param text
+     * @return    设定文件
+     * @return String    返回类型
      */
-    public static String num2Thousand00(String num) {
-        String numStr = "";
-        if (isEmpty(num)) {
-            return numStr;
+    public static String fmtMicrometer(String text) {
+        DecimalFormat df = null;
+        if (text.indexOf(".") > 0) {
+            if (text.length() - text.indexOf(".") - 1 == 0) {
+                df = new DecimalFormat("###,##0.");
+            } else if (text.length() - text.indexOf(".") - 1 == 1) {
+                df = new DecimalFormat("###,##0.0");
+            } else {
+                df = new DecimalFormat("###,##0.00");
+            }
+        } else {
+            df = new DecimalFormat("###,##0");
         }
-        NumberFormat nf = NumberFormat.getInstance();
+        double number = 0.0;
         try {
-            DecimalFormat df = new DecimalFormat("#,##0.00");
-            numStr = df.format(nf.parse(num));
-        } catch (ParseException e) {
-            e.printStackTrace();
+            number = Double.parseDouble(text);
+        } catch (Exception e) {
+            number = 0.0;
         }
-        return numStr;
+        return df.format(number);
     }
-
 
     public static void main(String[] argc){
-        System.out.println(num2Thousand00("125245579690.2222123"));
+        System.out.println(fmtMicrometer("125245579690"));
     }
 
 }

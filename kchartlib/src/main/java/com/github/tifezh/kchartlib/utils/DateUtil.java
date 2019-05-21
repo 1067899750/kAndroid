@@ -23,6 +23,12 @@ public class DateUtil {
     public static SimpleDateFormat shortDateFormat = new SimpleDateFormat("MM/dd");
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
+    /**
+     *    时间蹉  -->  日期
+     * @param dateLong  时间蹉
+     * @param type  类型
+     * @return  日期
+     */
     public static String getStringDateByLong(long dateLong, int type) {
         String template = null;
         switch (type) {
@@ -64,6 +70,11 @@ public class DateUtil {
         return dateString;
     }
 
+    /**
+     *
+     * @param dateString
+     * @return
+     */
     public static Date getDateByByStringDate(String dateString) {
         if (TextUtils.isEmpty(dateString)) {
             return null;
@@ -77,6 +88,12 @@ public class DateUtil {
         return date;
     }
 
+    /**
+     *  日期 --> 时间蹉
+     * @param s  日期
+     * @param type 类型
+     * @return 时间蹉
+     */
     public static long dateToStamp(String s, int type) {
         String template = null;
         switch (type) {
@@ -121,7 +138,11 @@ public class DateUtil {
         return date.getTime();
     }
 
-    //日期加一天
+    /**
+     *  日期加一天
+     * @param dateLen
+     * @return
+     */
     public static String addOneDayDate(long dateLen){
         Date today = new Date(dateLen);
         Calendar c = Calendar.getInstance();

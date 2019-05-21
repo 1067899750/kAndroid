@@ -28,7 +28,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.UUID;
-
+/**
+ * 
+ * Description
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2019/5/21 14:07
+ */
 public class CommonUtils {
     private static final String TAG = "MD5";
     private static final String DEFAULT_MAC_ADDRESS = "02:00:00:00:00:00";

@@ -8,10 +8,20 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+/**
+ *
+ * Description
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2019/5/21 14:05
+ */
 public class StrUtil {
 
-    //保留万位
+    /**
+     *  保留万位
+     * @param strBit
+     * @return
+     */
     public static String reserveToThousandBits(String strBit) {
         if (strBit == null || strBit.equals("--") || strBit.equals("-") || strBit.equals("- -")) {
             return "- -";
@@ -86,7 +96,11 @@ public class StrUtil {
     }
 
 
-    //保留一位小数
+    /**
+     *  保留一位小数
+     * @param d
+     * @return
+     */
     public static String getOneDecimals(double d) {
         DecimalFormat decimalFormat = new DecimalFormat("0.0");//构造方法的字符格式这里如果小数不足1位,会以0补足.
         String p = decimalFormat.format(d);//format 返回的是字符串
@@ -94,13 +108,21 @@ public class StrUtil {
     }
 
 
-    //四舍五入保留正数
+    /**
+     *  四舍五入保留正数
+     * @param d
+     * @return
+     */
     public static String getPositiveNumber(double d) {
         NumberFormat nf = new DecimalFormat("#");
         return nf.format(d);
     }
 
-    //进一法保留正数
+    /**
+     *  进一法保留正数
+     * @param d
+     * @return
+     */
     public static float getAndOnePositiveNumber(double d) {
         if (d > 0) {
             if (d > Double.valueOf(getPositiveNumber(d))) {
@@ -146,7 +168,11 @@ public class StrUtil {
         }
     }
 
-    //截取数字的前两位，小于两位直接返回
+    /**
+     *  截取数字的前两位，小于两位直接返回
+     * @param l
+     * @return
+     */
     public static int getNumberFrontTwoNumber(long l) {
         String str = String.valueOf(l);
         if (str.length() > 2) {
@@ -157,13 +183,21 @@ public class StrUtil {
     }
 
 
-    //获取长度
+    /**
+     *  获取长度
+     * @param str
+     * @return
+     */
     public static int getNumberDigit(String str) {
         return str.length();
     }
 
 
-    //前两位取5的倍数(CJL, MACD)
+    /**
+     *  前两位取5的倍数(CJL, MACD)
+     * @param text
+     * @return
+     */
     public static long getFaveMultipleMinimum(long text) {
         if (text > 0) {
             long a = getNumberFrontTwoNumber(text);
@@ -187,7 +221,11 @@ public class StrUtil {
         }
     }
 
-    //取10的倍数(LME)
+    /**
+     *  取10的倍数(LME)
+     * @param text
+     * @return
+     */
     public static long getZeroMultipleMinimum(long text) {
         if (text > 0) {
             text /= 10;
@@ -237,7 +275,11 @@ public class StrUtil {
         return 0;
     }
 
-    //匹配正负号
+    /**
+     *  匹配正负号
+     * @param str
+     * @return
+     */
     public static boolean matchAddSubMark(String str) {
         Pattern pattern = Pattern.compile("^[-\\+]?");
         Matcher isNum = pattern.matcher(str);
@@ -247,7 +289,11 @@ public class StrUtil {
         return true;
     }
 
-    //截取“+”，“-”号
+    /**
+     *  截取“+”，“-”号
+     * @param str
+     * @return
+     */
     public static String subAddAndSubMark(String str) {
         if (matchAddSubMark(str.substring(0, 1))) {
             return str.substring(1, str.length());
@@ -279,7 +325,11 @@ public class StrUtil {
         }
     }
 
-    //取100的倍数(LEM)
+    /**
+     *  取100的倍数(LEM)
+     * @param text
+     * @return
+     */
     public static long getMillionMultipleMinimum(long text) {
         if (text > 0) {
             text /= 100;
@@ -294,7 +344,11 @@ public class StrUtil {
         }
     }
 
-    //LEM 时间格式化
+    /**
+     *  LEM 时间格式化
+     * @param l
+     * @return
+     */
     public static String getLEMDataStr(Long l) {
         String format = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

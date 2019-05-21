@@ -8,10 +8,11 @@ import java.math.RoundingMode;
 import java.util.List;
 
 /**
- * Description：数据检测类
- * Author: star
- * Email: guimingxing@163.com
- * Date: 2018-3-28  17:21
+ *
+ * Description
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2019/5/21 13:59
  */
 public class ValueUtil {
 
