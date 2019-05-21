@@ -32,3 +32,11 @@
 <div class='row'>
         <img src='https://github.com/1067899750/kAndroid/blob/master/img/football.png' width="300px"/>
 </div>
+
+
+* 样式四  柱状图中柱子个数自适应
+
+<div class='row'>
+        <img src='https://github.com/1067899750/kAndroid/blob/master/img/detail.jpg' width="300px"/>
+</div>
+
