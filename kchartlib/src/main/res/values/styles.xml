@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    //试图属性
+    <declare-styleable name="MyViewStyle">
+        <attr name="appBackgBackground" format="color|reference"></attr>
+        <attr name="appTextColor" format="color|reference"></attr>
+        <attr name="appLeftTextSize" format="dimension"></attr>
+        <attr name="appRightTextSize" format="dimension"></attr>
+        <attr name="appColumnWeight" format="dimension"></attr>
+    </declare-styleable>
+</resources>

@@ -72,7 +72,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,6 +84,20 @@
             android:text="工资"/>
 
     </LinearLayout>
+
+
+    <com.github.tifezh.kchartlib.chart.detail.HistogramView
+        android:id="@+id/histogrm_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/d10"
+        android:background="@color/c402A2D4F"
+
+        app:appColumnWeight="@dimen/f18"
+        app:appLeftTextSize="@dimen/f18"
+        app:appRightTextSize="@dimen/f10"
+        app:appTextColor="@color/c000000"
+        app:appBackgBackground="@color/cEFD521" />
 
 </LinearLayout>
 

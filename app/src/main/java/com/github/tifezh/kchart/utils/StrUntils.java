@@ -1,5 +1,8 @@
 package com.github.tifezh.kchart.utils;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 /**
@@ -67,8 +70,55 @@ public class StrUntils {
     }
 
 
+    public static boolean isEmpty(String str) {
+        return str == null || str.trim().length() == 0;
+    }
+
+    /**
+     * 字符串 千位符
+     *
+     * @param num
+     * @return
+     */
+    public static String num2Thousand(String num) {
+        String numStr = "";
+        if (isEmpty(num)) {
+            return numStr;
+        }
+        NumberFormat nf = NumberFormat.getInstance();
+        try {
+            DecimalFormat df = new DecimalFormat("#,###");
+            numStr = df.format(nf.parse(num));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return numStr;
+    }
+
+    /**
+     * 字符串 千位符  保留两位小数点后两位
+     *
+     * @param num
+     * @return
+     */
+    public static String num2Thousand00(String num) {
+        String numStr = "";
+        if (isEmpty(num)) {
+            return numStr;
+        }
+        NumberFormat nf = NumberFormat.getInstance();
+        try {
+            DecimalFormat df = new DecimalFormat("#,##0.00");
+            numStr = df.format(nf.parse(num));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return numStr;
+    }
+
+
     public static void main(String[] argc){
-        System.out.println(subZeroAndDot("-66.0"));
+        System.out.println(num2Thousand00("125245579690.2222123"));
     }
 
 }

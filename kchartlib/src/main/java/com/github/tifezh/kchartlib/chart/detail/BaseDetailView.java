@@ -15,13 +15,11 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 
 import com.github.tifezh.kchartlib.R;
-import com.github.tifezh.kchartlib.chart.comInterface.ILem;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static android.view.View.MeasureSpec.AT_MOST;
 
 /**
  * @Describe 明细试图基类

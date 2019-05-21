@@ -378,7 +378,6 @@ public class StrUtil {
         return aa;
     }
 
-
     public static void main(String[] argc) {
         System.out.println(StrUtil.getFaveMultipleMinimum((long) 7360.77));
 
