@@ -78,11 +78,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btn_shade:
-                intent.setClass(this, ScaleActivity.class);//缩放
+                intent.setClass(this, ScaleActivity.class);//下部阴影
                 break;
 
             case R.id.btn_details:
-                intent.setClass(this, RLDetailActivity.class);//缩放
+                intent.setClass(this, RLDetailActivity.class);//明细表
                 break;
         }
         startActivity(intent);

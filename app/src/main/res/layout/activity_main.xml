@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:onClick="onClick"
-                android:text="艳阳天明细图表" />
+                android:text="明细图表" />
 
 
         </LinearLayout>
