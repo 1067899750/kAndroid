@@ -280,6 +280,16 @@ public abstract class BaseDetailView extends View implements GestureDetector.OnG
         return textHeight;
     }
 
+    //释放内存
+    public void releaseMemory() {
+        if (mBitmapLogo != null) {
+            if (!mBitmapLogo.isRecycled()) {
+                mBitmapLogo.recycle();
+                mBitmapLogo = null;
+            }
+        }
+    }
+
     /*********************************************抽象方法用于实现继承类**************************************/
 
     protected abstract void notifyChanged();
