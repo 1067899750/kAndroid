@@ -140,7 +140,6 @@ public class HistogramView extends View {
         //绘制背景颜色
 //        canvas.drawColor(mBackgroundColor);
 
-
         drawNameText(canvas); //绘制Name
         drawColumn(canvas); //绘制柱子, 价格
 
