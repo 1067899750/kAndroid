@@ -64,7 +64,7 @@ public class RLDetailActivity extends AppCompatActivity {
 
         HistogramModel histogramModel1 = new HistogramModel();
         histogramModel1.setName("工资");
-        histogramModel1.setMoney(1000);
+        histogramModel1.setMoney(1901);
 
         HistogramModel histogramModel2 = new HistogramModel();
         histogramModel2.setName("分红");
@@ -72,11 +72,11 @@ public class RLDetailActivity extends AppCompatActivity {
 
         HistogramModel histogramModel3 = new HistogramModel();
         histogramModel3.setName("补助");
-        histogramModel3.setMoney(600);
+        histogramModel3.setMoney(604);
 
         HistogramModel histogramModel4 = new HistogramModel();
         histogramModel4.setName("家教费");
-        histogramModel4.setMoney(1200);
+        histogramModel4.setMoney(1213);
 
 
         HistogramModel histogramModel5 = new HistogramModel();
