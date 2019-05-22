@@ -4,15 +4,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.github.tifezh.kchart.R;
-import com.github.tifezh.kchart.adapter.RateAdapter;
 import com.github.tifezh.kchart.data.DataRequest;
 import com.github.tifezh.kchart.model.RateModel;
 import com.github.tifezh.kchart.model.TrendChartModel;
-import com.github.tifezh.kchartlib.chart.rate2.RateView;
+import com.github.tifezh.kchartlib.chart.rate.RateView;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 

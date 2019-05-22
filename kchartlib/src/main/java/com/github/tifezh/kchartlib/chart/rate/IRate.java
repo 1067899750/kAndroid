@@ -1,4 +1,4 @@
-package com.github.tifezh.kchartlib.chart.rate.base;
+package com.github.tifezh.kchartlib.chart.rate;
 
 import java.util.Date;
 

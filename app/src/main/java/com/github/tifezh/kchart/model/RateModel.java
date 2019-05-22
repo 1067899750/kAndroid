@@ -1,7 +1,8 @@
 package com.github.tifezh.kchart.model;
 
-import com.github.tifezh.kchartlib.chart.rate.base.IRate;
-import com.github.tifezh.kchartlib.chart.rate.base.IRateDraw;
+
+
+import com.github.tifezh.kchartlib.chart.rate.IRate;
 
 import java.util.Date;
 
