@@ -32,7 +32,6 @@ public class DetailView extends BaseDetailView {
     private float mCurveScaleY = 1; //Y轴单位量
     private float mVolumeScaleY = 1; //Y轴单位量
     private float mScaleX = 1; //x轴的单位量
-    private float mDataWidth;
     private int selectedIndex = 0;
 
     public DetailView(Context context) {
@@ -80,9 +79,8 @@ public class DetailView extends BaseDetailView {
         mVolumeScaleY = mBaseHeight / Math.abs(mValueMax - 0);
 
         //x轴的缩放值
-        mScaleX = mWidth / mPointCount;
+        mScaleX = mBaseWidth / (mPointCount - 1);
 
-        mDataWidth = mBaseWidth / getDataPointCount();
         invalidate();
 
     }
@@ -166,8 +164,10 @@ public class DetailView extends BaseDetailView {
         canvas.drawText(StrUtil.getPositiveNumber(mValueMax), mBasePaddingLeft - 5, baseLine + mTopPadding, mTextPaint);
 
         for (int i = 0; i < valueCount; i++) {
-            canvas.drawText(StrUtil.getPositiveNumber(50 * i), mBasePaddingLeft - 5,
-                    mHeight - mBottomPadding - textHeight + baseLine - rowSpace * i, mTextPaint);
+            canvas.drawText(StrUtil.getPositiveNumber(50 * i),
+                    mBasePaddingLeft - 5,
+                    mHeight - mBottomPadding - textHeight + baseLine - rowSpace * i,
+                    mTextPaint);
         }
 
 
@@ -179,12 +179,12 @@ public class DetailView extends BaseDetailView {
         canvas.drawText(StrUtil.getPositiveNumber(1), getX(0), y, mTextPaint); //起始时间
         int dataCount = (int) (mPointCount / 5);
         for (int i = 1; i < dataCount; i++) {
-            canvas.drawText(StrUtil.getPositiveNumber(mPoints.get(5 * i).getDate()),
-                    getX(5 * i) + dataWeight,
+            canvas.drawText(StrUtil.getPositiveNumber(mPoints.get(5 * i - 1).getDate()),
+                    getX(5 * i - 1),
                     y, mTextPaint); //中间起始时间
         }
         canvas.drawText(StrUtil.getPositiveNumber(mPoints.get((int) mPointCount - 1).getDate()),
-                mWidth - mBasePaddingRight - dataWeight,
+                mWidth - mBasePaddingRight - dataWeight/2,
                 y, mTextPaint);//结束时间
 
     }

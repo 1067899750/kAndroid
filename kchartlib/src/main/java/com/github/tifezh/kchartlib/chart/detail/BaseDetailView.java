@@ -48,14 +48,14 @@ public abstract class BaseDetailView extends View implements GestureDetector.OnG
 
     protected int mTopPadding = 1; //据顶部
     protected int mBottomPadding = 50;//距底部
-    protected int mBaseWidth;//折线图宽度
-    protected int mBaseHeight;//折线图高度
-    protected int mHeight; //试图高度
-    protected int mWidth;  //试图宽度
+    protected float mBaseWidth;//折线图宽度
+    protected float mBaseHeight;//折线图高度
+    protected float mHeight; //试图高度
+    protected float mWidth;  //试图宽度
 
     //左右padding,允许修改
     protected int mBasePaddingLeft = 80;
-    protected int mBasePaddingRight = 0;
+    protected int mBasePaddingRight = 5;
 
     protected int GridColumns = 1; //列数
     protected int mGridRows = 1; //行数
@@ -193,8 +193,8 @@ public abstract class BaseDetailView extends View implements GestureDetector.OnG
      */
     public void drawMainViewLogo(Canvas canvas) {
         if (mBitmapLogo != null) {
-            int mLeft = getWidth() / 2 - mBitmapLogo.getWidth() / 2;
-            int mTop = mBaseHeight / 2 - mBitmapLogo.getHeight() / 2 + mTopPadding;
+            float mLeft = getWidth() / 2 - mBitmapLogo.getWidth() / 2;
+            float mTop = mBaseHeight / 2 - mBitmapLogo.getHeight() / 2 + mTopPadding;
             canvas.drawBitmap(mBitmapLogo, mLeft, mTop, null);
         }
     }
