@@ -35,10 +35,11 @@ public class HistogramView extends View {
     private int mPadding = 30;
 
     private int mBackgroundColor;
-    private float mRightTextWeight = 0;
+    private float mRightTextWeight = Float.MIN_VALUE;  //右边字体最大宽度
     private float mMaxManey = 0;
     private float mColumnScaleY = 0;
     private float mColumnLeft;
+    private float mLeftMaxWeight = Float.MIN_VALUE;  //左边字体最大宽度
 
 
     private int mBackgroudColor;
@@ -97,9 +98,11 @@ public class HistogramView extends View {
 
         for (int i = 0; i < mPointCount; i++) {
             mMaxManey = Math.max(Math.abs(mPoints.get(i).getMoney()), mMaxManey);
+            mLeftMaxWeight = Math.max(Math.abs(mNameTextPaint.measureText(mPoints.get(i).getName())), mLeftMaxWeight);
         }
         mRightTextWeight = mMoneyTextPaint.measureText(mMaxManey + "元");
-        mColumnLeft = mBasePaddingLeft + mNameTextPaint.measureText(mPoints.get(0).getName()) + mPadding;
+        mColumnLeft = mBasePaddingLeft + mLeftMaxWeight + mPadding;
+
         requestLayout();
     }
 
@@ -141,10 +144,10 @@ public class HistogramView extends View {
     }
 
     private void drawNameText(Canvas canvas) {
-        mNameTextPaint.setTextAlign(Paint.Align.LEFT);
+        mNameTextPaint.setTextAlign(Paint.Align.CENTER);
         for (int i = 0; i < mPointCount; i++) {
             canvas.drawText(mPoints.get(i).getName(),
-                    mBasePaddingLeft,
+                    mBasePaddingLeft + mLeftMaxWeight/2,
                     mPadding * i + TextUntils.getFontHeight(mNameTextPaint) * (i + 1),
                     mNameTextPaint);
         }

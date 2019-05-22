@@ -74,15 +74,20 @@ public class RLDetailActivity extends AppCompatActivity {
         histogramModel3.setName("补助");
         histogramModel3.setMoney(600);
 
-
         HistogramModel histogramModel4 = new HistogramModel();
-        histogramModel4.setName("其他");
-        histogramModel4.setMoney(500);
+        histogramModel4.setName("家教费");
+        histogramModel4.setMoney(1200);
+
+
+        HistogramModel histogramModel5 = new HistogramModel();
+        histogramModel5.setName("其他");
+        histogramModel5.setMoney(500);
 
         mHistogramModels.add(histogramModel1);
         mHistogramModels.add(histogramModel2);
         mHistogramModels.add(histogramModel3);
         mHistogramModels.add(histogramModel4);
+        mHistogramModels.add(histogramModel5);
 
      }
 
