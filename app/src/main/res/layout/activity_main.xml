@@ -64,7 +64,8 @@
                 android:layout_marginTop="20dp"
                 android:onClick="onClick"
                 android:text="GroupMinuteView"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/btn_football"
