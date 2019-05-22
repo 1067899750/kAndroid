@@ -5,12 +5,11 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.github.tifezh.kchartlib.R;
+import com.github.tifezh.kchartlib.utils.TextUntils;
 
 import java.util.ArrayList;
 
@@ -110,14 +109,10 @@ public class HistogramView extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
-        float nameHeight = getFontHeight(mNameTextPaint);
+        float nameHeight = TextUntils.getRectHeight(mNameTextPaint);
         heightSpecSize = (int) (nameHeight * mPointCount + (mPadding * (mPointCount - 1)));
 
         setMeasuredDimension(widthSpecSize, heightSpecSize);
-        this.mWidth = getMeasuredWidth();
-        this.mHeight = getMeasuredHeight();
-        float columnMaxWeight = mWidth - mColumnLeft - mPadding - mRightTextWeight - mBasePaddingRight;
-        mColumnScaleY = columnMaxWeight / mMaxManey;
     }
 
     @Override
@@ -150,36 +145,34 @@ public class HistogramView extends View {
         for (int i = 0; i < mPointCount; i++) {
             canvas.drawText(mPoints.get(i).getName(),
                     mBasePaddingLeft,
-                    mPadding * i + getFontBaseLineHeight(mNameTextPaint) * (i + 1),
+                    mPadding * i + TextUntils.getFontHeight(mNameTextPaint) * (i + 1),
                     mNameTextPaint);
         }
     }
 
     //TODO 高度计算存在问题
     private void drawColumn(Canvas canvas) {
-        mColumnPaint.setStrokeWidth(getFontHeight(mNameTextPaint) / 2);
+        mColumnPaint.setStrokeWidth(TextUntils.getFontHeight(mNameTextPaint) / 2);
         mColumnPaint.setTextAlign(Paint.Align.CENTER);
         mMoneyTextPaint.setTextAlign(Paint.Align.LEFT);
-        float textNameHeight = getFontHeight(mNameTextPaint);
-        float pading = getFontBaseLineHeight(mNameTextPaint) - textNameHeight;
+
+        float textNameHeight = TextUntils.getRectHeight(mNameTextPaint);
+        float height = TextUntils.getFontHeight(mNameTextPaint);
+        float columnHeight = TextUntils.getFontHeight(mColumnPaint);
+        float lefttextheight = TextUntils.getFontHeight(mMoneyTextPaint);
 
         for (int i = 0; i < mPointCount; i++) {
-//            canvas.drawRect(new RectF(mColumnLeft,
-//                            mPadding * i + textNameHeight * i + textNameHeight * (i + 1) / 3,
-//                            mColumnLeft + mColumnScaleY * mPoints.get(i).getMoney(),
-//                            mPadding * i + textNameHeight * i + textNameHeight * 2 / 3),
-//                    mColumnPaint);
 
             canvas.drawLine(mColumnLeft,
-                    mPadding * i + textNameHeight / 2 + textNameHeight * i - 5 * i,
+                    mPadding * i + textNameHeight / 2 + height * i + columnHeight / 2,
                     mColumnLeft + mColumnScaleY * mPoints.get(i).getMoney(),
-                    mPadding * i + textNameHeight / 2 + textNameHeight * i - 5 * i,
+                    mPadding * i + textNameHeight / 2 + height * i + columnHeight / 2,
                     mColumnPaint);
 
 
             canvas.drawText(mPoints.get(i).getMoney() + "元",
                     mColumnLeft + mColumnScaleY * mPoints.get(i).getMoney() + mPadding,
-                    mPadding * i + textNameHeight / 2 + textNameHeight * i + getFontHeight(mMoneyTextPaint) / 2 - 5 * (i + 1),
+                    mPadding * i + textNameHeight / 2 + height * i + lefttextheight / 2,
                     mMoneyTextPaint);
 
         }
@@ -198,22 +191,6 @@ public class HistogramView extends View {
         final float fontScale = getContext().getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
-
-    //高度
-    private float getFontBaseLineHeight(Paint paint) {
-        Paint.FontMetrics fm = paint.getFontMetrics();
-        float textHeight = fm.descent - fm.ascent;
-        float baseLine = (textHeight - fm.bottom - fm.top) / 2;
-        return baseLine;
-    }
-
-    //文字的高度
-    private float getFontHeight(Paint paint) {
-        Paint.FontMetrics fm = paint.getFontMetrics();
-        float textHeight = fm.descent - fm.ascent;
-        return textHeight;
-    }
-
 
 }
 

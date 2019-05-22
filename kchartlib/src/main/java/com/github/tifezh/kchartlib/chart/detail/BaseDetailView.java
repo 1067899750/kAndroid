@@ -113,11 +113,6 @@ public abstract class BaseDetailView extends View implements GestureDetector.OnG
         int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
         setMeasuredDimension(widthSpecSize, heightSpecSize);
 
-        mWidth = getMeasuredWidth();
-        mBaseWidth = mWidth - mBasePaddingLeft - mBasePaddingRight;
-        mHeight = getMeasuredHeight();
-        mBaseHeight = mHeight - mTopPadding - mBottomPadding;
-        notifyChanged();
     }
 
     @Override
