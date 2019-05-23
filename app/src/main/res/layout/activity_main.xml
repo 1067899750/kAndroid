@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:onClick="onClick"
-                android:text="指示线研究" />
+                android:text="指示线点击和滑动区分" />
 
 
         </LinearLayout>
