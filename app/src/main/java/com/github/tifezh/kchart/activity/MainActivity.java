@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.github.tifezh.kchart.R;
+
 /**
  *
  *
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        startActivity(new Intent(MainActivity.this, ScaleActivity.class));
+        startActivity(new Intent(MainActivity.this, LineActivity.class));
 
     }
 
@@ -83,6 +84,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.btn_details:
                 intent.setClass(this, RLDetailActivity.class);//明细表
+                break;
+
+
+            case R.id.btn_line:
+                intent.setClass(this, LineActivity.class);//指示线研究
                 break;
         }
         startActivity(intent);

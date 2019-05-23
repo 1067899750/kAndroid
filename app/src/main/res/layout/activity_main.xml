@@ -92,6 +92,15 @@
                 android:text="明细图表" />
 
 
+            <Button
+                android:id="@+id/btn_line"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:onClick="onClick"
+                android:text="指示线研究" />
+
+
         </LinearLayout>
 
     </ScrollView>

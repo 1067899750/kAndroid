@@ -1,4 +1,4 @@
-package com.github.tifezh.kchartlib.chart.rate;
+package com.github.tifezh.kchartlib.chart.line;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -18,7 +18,6 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 
 import com.github.tifezh.kchartlib.R;
-
 import com.github.tifezh.kchartlib.utils.DensityUtil;
 
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ import static android.view.View.MeasureSpec.AT_MOST;
  * Date 2018-12-4 10:43
  */
 
-public abstract class BaseRateView extends ScrollAndScaleView {
+public abstract class BaseLineRateView extends LineScrollAndScaleView {
     protected float mTranslateX = Float.MIN_VALUE;
     protected float mMainScaleY = 1;
 
@@ -41,8 +40,13 @@ public abstract class BaseRateView extends ScrollAndScaleView {
 
     protected float downX;
     protected float downY;
+    protected float mPreaentMoveX; //指示线要滑动的距离
+    protected float mClickDownX; //点击的距离
+    protected float mClickMoveX; //移动的距离
+
     protected float mMainMaxValue; //最大值
     protected float mMainMinValue;//最小值
+
 
     protected float mPointWidth = 18; //点的宽度
 
@@ -67,7 +71,7 @@ public abstract class BaseRateView extends ScrollAndScaleView {
     protected int mMainWidth;//主视图高
 
     protected int mItemCount;//当前点的个数
-    protected List<IRate> mPoints;
+    protected List<ILineRate> mPoints;
 
     protected Paint mGridPaint = new Paint(Paint.ANTI_ALIAS_FLAG); //网格线画笔
     protected Paint mBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG); //背景
@@ -89,17 +93,17 @@ public abstract class BaseRateView extends ScrollAndScaleView {
     protected int mBottomPadding = DensityUtil.dp2px(20);//距底部距离
 
 
-    public BaseRateView(Context context) {
+    public BaseLineRateView(Context context) {
         super(context);
         initView();
     }
 
-    public BaseRateView(Context context, AttributeSet attrs) {
+    public BaseLineRateView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView();
     }
 
-    public BaseRateView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public BaseLineRateView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();
     }
@@ -137,25 +141,45 @@ public abstract class BaseRateView extends ScrollAndScaleView {
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
                 mClickTime = System.currentTimeMillis();
+                isClickPress = true;
+                mClickDownX = event.getX();
                 break;
             case MotionEvent.ACTION_MOVE:
                 //一个点的时候滑动
-                if (event.getPointerCount() == 1) {
-                    //长按之后移动
-                    if (isLongPress || !isClosePress) {
-                        calculateSelectedX(event.getX());
-                        invalidate();
+                if (isClickPress) {
+                    if (event.getPointerCount() == 1) {
+                        //点击之后移动
+                        if (!isClosePress) {
+                            mClickMoveX = event.getX();
+
+                            mPreaentMoveX = mPreaentMoveX + mClickMoveX - mClickDownX;
+                            mClickDownX = mClickMoveX;
+
+                            calculateSelectedX(mPreaentMoveX);
+                            invalidate();
+                        }
+                    }
+                } else {
+                    if (event.getPointerCount() == 1) {
+                        //长按之后移动
+                        if (isLongPress || !isClosePress) {
+                            mPreaentMoveX = event.getX();
+                            calculateSelectedX(mPreaentMoveX);
+                            invalidate();
+                        }
                     }
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 if (!isClosePress) {
+                    isClickPress = false;
                     isLongPress = false;
                 }
                 invalidate();
                 break;
             case MotionEvent.ACTION_CANCEL:
                 if (!isClosePress) {
+                    isClickPress = false;
                     isLongPress = false;
                 }
                 invalidate();
@@ -213,7 +237,9 @@ public abstract class BaseRateView extends ScrollAndScaleView {
         int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
         int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
+
         setMeasuredDimension(widthSpecSize, heightSpecSize);
+
     }
 
 
@@ -273,8 +299,16 @@ public abstract class BaseRateView extends ScrollAndScaleView {
 
 
     private void calculateSelectedX(float x) {
+        Log.e("---->", "" + mSelectedIndex + "/first:" + mStartIndex);
+//        if (isClickPress && !isLongPress) {
+//
+//        } else {
+//            mSelectedIndex = indexOfTranslateX(xToTranslateX(x));
+//        }
+
         mSelectedIndex = indexOfTranslateX(xToTranslateX(x));
-        Log.e("move mSelectedIndex:", "" + mSelectedIndex + "/mStartIndex:" + mStartIndex);
+
+        Log.e("---->", "" + mSelectedIndex + "/mStartIndex:" + mStartIndex);
         if (mSelectedIndex < mStartIndex) {
             mSelectedIndex = mStartIndex;
         }
@@ -288,7 +322,8 @@ public abstract class BaseRateView extends ScrollAndScaleView {
     public void onLongPress(MotionEvent e) {
         super.onLongPress(e);
         int lastIndex = mSelectedIndex;
-        calculateSelectedX(e.getX());
+        mPreaentMoveX = e.getX();
+        calculateSelectedX(mPreaentMoveX);
         if (lastIndex != mSelectedIndex) {
             onSelectedChanged(this, getItem(mSelectedIndex), mSelectedIndex);
         }
@@ -383,7 +418,7 @@ public abstract class BaseRateView extends ScrollAndScaleView {
     }
 
     //根据索引获取实体
-    public IRate getItem(int position) {
+    public ILineRate getItem(int position) {
         if (mPoints != null && mItemCount != 0) {
             return mPoints.get(position);
         } else {
@@ -496,7 +531,7 @@ public abstract class BaseRateView extends ScrollAndScaleView {
         this.mOnSelectedChangedListener = l;
     }
 
-    public void onSelectedChanged(BaseRateView view, Object point, int index) {
+    public void onSelectedChanged(BaseLineRateView view, Object point, int index) {
         if (this.mOnSelectedChangedListener != null) {
             mOnSelectedChangedListener.onSelectedChanged(view, point, index);
         }
@@ -533,7 +568,7 @@ public abstract class BaseRateView extends ScrollAndScaleView {
          * @param point 选中的点
          * @param index 选中点的索引
          */
-        void onSelectedChanged(BaseRateView view, Object point, int index);
+        void onSelectedChanged(BaseLineRateView view, Object point, int index);
     }
 
     public float getDimension(@DimenRes int resId) {

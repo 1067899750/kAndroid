@@ -9,7 +9,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".activity.LineActivity"></activity>
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -46,18 +46,16 @@
         <activity
             android:name=".activity.RateActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity android:name=".activity.FootBallActivity"
+        <activity
+            android:name=".activity.FootBallActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="standard"
-            android:screenOrientation="portrait"/>
-
-
-        <activity android:name=".activity.RLDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.RLDetailActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="standard"
-            android:screenOrientation="portrait"/>
-
-
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
