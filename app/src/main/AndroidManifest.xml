@@ -9,7 +9,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.LineActivity"></activity>
+
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -56,6 +56,16 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="standard"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".activity.SuspendBtnActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="standard"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.LineActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="standard"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

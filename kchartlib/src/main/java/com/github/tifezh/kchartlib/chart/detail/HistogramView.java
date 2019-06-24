@@ -30,15 +30,16 @@ public class HistogramView extends View {
 
     private int mHeight; //试图高度
     private int mWidth;  //试图宽度
-    private int mBasePaddingLeft = 20;
-    private int mBasePaddingRight = 0;
-    private int mPadding = 30;
+    private int mBasePaddingLeft = dp2px(16); // 名字据左边距离
+    private int mBasePaddingRight = dp2px(10);
+    private int mLeftPadding = dp2px(5); // 间距
+    private int mTopPadding = dp2px(19); // 间距
 
     private int mBackgroundColor;
     private float mRightTextWeight = Float.MIN_VALUE;  //右边字体最大宽度
     private float mMaxManey = 0;
-    private float mColumnScaleY = 0;
-    private float mColumnLeft;
+    private float mColumnScaleX = 0;
+    private float mColumnLeft; //柱子到左边的距离
     private float mLeftMaxWeight = Float.MIN_VALUE;  //左边字体最大宽度
 
 
@@ -72,7 +73,7 @@ public class HistogramView extends View {
         ta.recycle();
 
 
-        mBackgroundColor = Color.parseColor("#402A2D4F");
+        mBackgroundColor = Color.parseColor("#40FFFFFF");
 
         mPoints = new ArrayList<>();
 
@@ -100,8 +101,8 @@ public class HistogramView extends View {
             mMaxManey = Math.max(Math.abs(mPoints.get(i).getMoney()), mMaxManey);
             mLeftMaxWeight = Math.max(Math.abs(mNameTextPaint.measureText(mPoints.get(i).getName())), mLeftMaxWeight);
         }
-        mRightTextWeight = mMoneyTextPaint.measureText(mMaxManey + "元");
-        mColumnLeft = mBasePaddingLeft + mLeftMaxWeight + mPadding;
+        mRightTextWeight = mMoneyTextPaint.measureText(String.valueOf(mMaxManey) + "元");
+        mColumnLeft = mBasePaddingLeft + mLeftMaxWeight + mLeftPadding;
 
         requestLayout();
     }
@@ -113,7 +114,7 @@ public class HistogramView extends View {
         int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
         float nameHeight = TextUntils.getRectHeight(mNameTextPaint);
-        heightSpecSize = (int) (nameHeight * mPointCount + (mPadding * (mPointCount - 1)));
+        heightSpecSize = (int) (nameHeight * mPointCount + (mTopPadding * (mPointCount - 1)));
 
         setMeasuredDimension(widthSpecSize, heightSpecSize);
     }
@@ -128,8 +129,8 @@ public class HistogramView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         this.mWidth = getMeasuredWidth();
         this.mHeight = getMeasuredHeight();
-        float columnMaxWeight = mWidth - mColumnLeft - mPadding - mRightTextWeight - mBasePaddingRight;
-        mColumnScaleY = columnMaxWeight / mMaxManey;
+        float columnMaxWidth = mWidth - mColumnLeft - mLeftPadding - mRightTextWeight - mBasePaddingRight;
+        mColumnScaleX = columnMaxWidth / mMaxManey;
     }
 
     @Override
@@ -138,24 +139,23 @@ public class HistogramView extends View {
         //绘制背景颜色
 //        canvas.drawColor(mBackgroundColor);
 
-        drawNameText(canvas); //绘制Name
+        drawNameText(canvas); //绘制名字
         drawColumn(canvas); //绘制柱子, 价格
 
     }
 
     private void drawNameText(Canvas canvas) {
-        mNameTextPaint.setTextAlign(Paint.Align.CENTER);
+        mNameTextPaint.setTextAlign(Paint.Align.LEFT);
         for (int i = 0; i < mPointCount; i++) {
             canvas.drawText(mPoints.get(i).getName(),
-                    mBasePaddingLeft + mLeftMaxWeight/2,
-                    mPadding * i + TextUntils.getFontHeight(mNameTextPaint) * (i + 1),
+                    mBasePaddingLeft,
+                    mTopPadding * i + TextUntils.getFontHeight(mNameTextPaint) * (i + 1),
                     mNameTextPaint);
         }
     }
 
     //TODO 高度计算存在问题
     private void drawColumn(Canvas canvas) {
-        mColumnPaint.setStrokeWidth(TextUntils.getFontHeight(mNameTextPaint) / 2);
         mColumnPaint.setTextAlign(Paint.Align.CENTER);
         mMoneyTextPaint.setTextAlign(Paint.Align.LEFT);
 
@@ -167,15 +167,15 @@ public class HistogramView extends View {
         for (int i = 0; i < mPointCount; i++) {
 
             canvas.drawLine(mColumnLeft,
-                    mPadding * i + textNameHeight / 2 + height * i + columnHeight / 2,
-                    mColumnLeft + mColumnScaleY * mPoints.get(i).getMoney(),
-                    mPadding * i + textNameHeight / 2 + height * i + columnHeight / 2,
+                    mTopPadding * i + textNameHeight / 2 + height * i + columnHeight / 2,
+                    mColumnLeft + mColumnScaleX * mPoints.get(i).getMoney(),
+                    mTopPadding * i + textNameHeight / 2 + height * i + columnHeight / 2,
                     mColumnPaint);
 
 
-            canvas.drawText(mPoints.get(i).getMoney() + "元",
-                    mColumnLeft + mColumnScaleY * mPoints.get(i).getMoney() + mPadding,
-                    mPadding * i + textNameHeight / 2 + height * i + lefttextheight / 2,
+            canvas.drawText(String.valueOf(mPoints.get(i).getMoney()) + "元",
+                    mColumnLeft + mColumnScaleX * mPoints.get(i).getMoney() + mLeftPadding,
+                    mTopPadding * i + textNameHeight / 2 + height * i + lefttextheight / 2,
                     mMoneyTextPaint);
 
         }
@@ -194,6 +194,7 @@ public class HistogramView extends View {
         final float fontScale = getContext().getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
+
 
 }
 

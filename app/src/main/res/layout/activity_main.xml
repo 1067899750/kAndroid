@@ -101,6 +101,15 @@
                 android:text="指示线点击和滑动区分" />
 
 
+            <Button
+                android:id="@+id/btn_suspend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:onClick="onClick"
+                android:text="悬浮框" />
+
+
         </LinearLayout>
 
     </ScrollView>

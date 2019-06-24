@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        startActivity(new Intent(MainActivity.this, LineActivity.class));
+//        startActivity(new Intent(MainActivity.this, SuspendBtnActivity.class));
 
     }
 
@@ -89,6 +89,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.btn_line:
                 intent.setClass(this, LineActivity.class);//指示线研究
+                break;
+
+
+
+            case R.id.btn_suspend:
+                intent.setClass(this, SuspendBtnActivity.class);//悬浮框
                 break;
         }
         startActivity(intent);
