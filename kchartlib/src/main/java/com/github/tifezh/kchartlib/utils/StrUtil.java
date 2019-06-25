@@ -451,7 +451,7 @@ public class StrUtil {
     }
 
     public static void main(String[] argc) {
-        System.out.println(StrUtil.deleteEndSurplusZero("7360.00"));
+        System.out.println(StrUtil.deleteEndSurplusZero("7360.10"));
 
     }
 
