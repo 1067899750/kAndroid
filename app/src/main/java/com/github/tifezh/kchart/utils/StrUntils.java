@@ -39,7 +39,11 @@ public class StrUntils {
         }
     }
 
-    //匹配正负号
+    /**
+     *  匹配正负号
+     * @param str
+     * @return
+     */
     public static boolean matchAddSubMark(String str) {
         Pattern pattern = Pattern.compile("^[-\\+]?");
         Matcher isNum = pattern.matcher(str);
@@ -49,7 +53,11 @@ public class StrUntils {
         return true;
     }
 
-    //判断末尾是小数点
+    /**
+     *  判断末尾是小数点
+     * @param str
+     * @return
+     */
     public static boolean matchFinishPoint(String str) {
 
         Pattern pattern = Pattern.compile("^[+\\-]+([1-9][0-9]*)+(.[0-9]{1,})?\\.$");
@@ -60,7 +68,11 @@ public class StrUntils {
         return true;
     }
 
-    //去掉小数点后多余的0
+    /**
+     *  去掉小数点后多余的0
+     * @param s
+     * @return
+     */
     public static String subZeroAndDot(String s){
         if(s.indexOf(".") > 0){
             s = s.replaceAll("0+?$", "");//去掉多余的0

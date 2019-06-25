@@ -432,8 +432,26 @@ public class StrUtil {
         return aa;
     }
 
+
+    /**
+     * 删除小数点后多余的 0
+     *
+     * @param str
+     * @return
+     */
+    public static String deleteEndSurplusZero(String str) {
+        try {
+            Double d = Double.valueOf(str);
+            DecimalFormat decimalFormat = new DecimalFormat("###################.###########");
+            return decimalFormat.format(d);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static void main(String[] argc) {
-        System.out.println(StrUtil.getFaveMultipleMinimum((long) 7360.77));
+        System.out.println(StrUtil.deleteEndSurplusZero("7360.00"));
 
     }
 
