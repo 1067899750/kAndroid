@@ -117,7 +117,7 @@ public class StrUntils {
     }
 
     public static void main(String[] argc){
-        System.out.println(fmtMicrometer("125245579690"));
+        System.out.println(fmtMicrometer("45579690.12354"));
     }
 
 }

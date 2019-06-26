@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:autofit="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -108,6 +109,20 @@
                 android:layout_marginTop="20dp"
                 android:onClick="onClick"
                 android:text="悬浮框" />
+
+            <com.github.tifezh.kchart.utils.autoText.AutofitTextView
+                android:id="@+id/tvFutureName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:lines="1"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:textColor="#D8DDE3"
+                android:textSize="@dimen/f16"
+                autofit:minTextSize="@dimen/f8" />
 
 
         </LinearLayout>
