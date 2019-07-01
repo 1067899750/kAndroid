@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:autofit="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:orientation="vertical">
@@ -118,11 +119,29 @@
                 android:layout_weight="1"
                 android:gravity="center|left"
                 android:lines="1"
+                android:text="111111"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:textColor="#D8DDE3"
                 android:textSize="@dimen/f16"
                 autofit:minTextSize="@dimen/f8" />
+
+
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="right|center_vertical"
+                android:lines="1"
+                android:textColor="#000000"
+                android:textSize="@dimen/f16"
+                app:autoSizeMaxTextSize="@dimen/f16"
+                app:autoSizeMinTextSize="@dimen/f10"
+                app:autoSizeStepGranularity="1sp"
+                app:autoSizeTextType="uniform"/>
 
 
         </LinearLayout>
