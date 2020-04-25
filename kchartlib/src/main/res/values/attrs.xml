@@ -44,4 +44,20 @@
         <attr name="kc_tab_text_color" format="color"/>
         <attr name="kc_tab_indicator_color" format="color"/>
     </declare-styleable>
+
+
+    <!--扇形图-->
+    <declare-styleable name="MyPieChartView">
+        <attr name="piechartWidth" format="dimension"/>
+        <attr name="dataSize" format="dimension"/>
+        <attr name="dataColor" format="color"/>
+        <attr name="numSize" format="dimension"/>
+        <attr name="numColor" format="color"/>
+        <attr name="layoutType" format="reference"/>
+        <attr name="verticalMargin" format="dimension"/>
+        <attr name="horiMargin" format="dimension"/>
+        <attr name="animTime" format="dimension"/>
+        <attr name="pointingColor" format="color"/>
+        <attr name="pointingWidth" format="dimension"/>
+    </declare-styleable>
 </resources>

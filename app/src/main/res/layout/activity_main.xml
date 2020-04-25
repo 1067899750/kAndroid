@@ -22,7 +22,7 @@
                 android:id="@+id/btn_loadmore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:onClick="onClick"
                 android:text="k线图" />
 
@@ -30,7 +30,7 @@
                 android:id="@+id/btn_minute"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:onClick="onClick"
                 android:text="分时图" />
 
@@ -38,7 +38,7 @@
                 android:id="@+id/btn_tate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:onClick="onClick"
                 android:text="利率" />
 
@@ -46,7 +46,7 @@
                 android:id="@+id/btn_minute2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:onClick="onClick"
                 android:text="月间价差图" />
 
@@ -54,7 +54,7 @@
                 android:id="@+id/btn_group_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:onClick="onClick"
                 android:text="GroupView"
                 android:textAllCaps="false" />
@@ -63,17 +63,17 @@
                 android:id="@+id/btn_group_minute_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:onClick="onClick"
                 android:text="GroupMinuteView"
                 android:textAllCaps="false"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
             <Button
                 android:id="@+id/btn_football"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:onClick="onClick"
                 android:text="168体育" />
 
@@ -81,7 +81,7 @@
                 android:id="@+id/btn_shade"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:onClick="onClick"
                 android:text="下部阴影" />
 
@@ -89,7 +89,7 @@
                 android:id="@+id/btn_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:onClick="onClick"
                 android:text="明细图表" />
 
@@ -98,7 +98,7 @@
                 android:id="@+id/btn_line"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:onClick="onClick"
                 android:text="指示线点击和滑动区分" />
 
@@ -107,9 +107,9 @@
                 android:id="@+id/btn_suspend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:onClick="onClick"
-                android:text="悬浮框" />
+                android:text="饼图" />
 
             <com.github.tifezh.kchart.utils.autoText.AutofitTextView
                 android:id="@+id/tvFutureName"

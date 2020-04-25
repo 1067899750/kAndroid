@@ -91,10 +91,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.setClass(this, LineActivity.class);//指示线研究
                 break;
 
-
-
             case R.id.btn_suspend:
-                intent.setClass(this, SuspendBtnActivity.class);//悬浮框
+                intent.setClass(this, SuspendBtnActivity.class);//饼图
                 break;
         }
         startActivity(intent);
