@@ -48,16 +48,21 @@
 
     <!--扇形图-->
     <declare-styleable name="MyPieChartView">
-        <attr name="piechartWidth" format="dimension"/>
+        <attr name="pieChartWidth" format="dimension"/>
         <attr name="dataSize" format="dimension"/>
         <attr name="dataColor" format="color"/>
         <attr name="numSize" format="dimension"/>
         <attr name="numColor" format="color"/>
-        <attr name="layoutType" format="reference"/>
+        <attr name="layoutType" format="string"/>
         <attr name="verticalMargin" format="dimension"/>
         <attr name="horiMargin" format="dimension"/>
         <attr name="animTime" format="dimension"/>
         <attr name="pointingColor" format="color"/>
         <attr name="pointingWidth" format="dimension"/>
+        <attr name="isRing" format="boolean"/>
+        <attr name="ringWidth" format="dimension"/>
+        <attr name="ringBgColor" format="color"/>
     </declare-styleable>
+
+
 </resources>

@@ -1,4 +1,4 @@
-package com.github.tifezh.kchart.view;
+package com.github.tifezh.kchart.view.chart;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -116,7 +116,7 @@ public class MyPieChartView extends FrameLayout {
     private void initAttrs(AttributeSet attrs, Context context) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.MyPieChartView);
         mPieChartWidth = typedArray.getDimension(
-                R.styleable.MyPieChartView_piechartWidth,
+                R.styleable.MyPieChartView_pieChartWidth,
                 PieChartConstant.DEFAULT_PIECHART_WIDTH
         );
 
@@ -177,11 +177,11 @@ public class MyPieChartView extends FrameLayout {
             centerPosition.y = h / 2;
             //半径
             minWidth = Math.min(w - getPaddingLeft() - getPaddingRight(),
-                    h -getPaddingBottom() - getPaddingTop());
+                    h - getPaddingBottom() - getPaddingTop());
         }
 
-        if (mLayoutType == "pointingInstructions") {
-            raduis = (2 / minWidth) - 75;
+        if (mLayoutType.equals("pointingInstructions")) {
+            raduis = (minWidth / 2) - 75;
         } else {
             raduis = (minWidth / 2);
         }
@@ -223,7 +223,7 @@ public class MyPieChartView extends FrameLayout {
             //画圆
             canvas.drawArc(mRectF, mStartAngle, mSweepAngle, true, mPieChartPaint);
             mStartAngle = mStartAngle + mSweepAngle;
-            if (mLayoutType == "pointingInstructions") {
+            if (mLayoutType.equals("pointingInstructions")) {
                 //指向说明
                 pointData(canvas, i);
             } else {
@@ -253,7 +253,7 @@ public class MyPieChartView extends FrameLayout {
         canvas.drawLine(xP, yP, xEdP, yEdP, mPointingPaint);
         canvas.drawLine(xEdP, yEdP, xLast, yEdP, mPointingPaint);
         canvas.drawText(mData.get(i).getName(), xLast, yEdP, mDataPaint);
-        canvas.drawText(mData.get(i).getName() + mData.get(i).getUnit(),
+        canvas.drawText(mData.get(i).getNum() + mData.get(i).getUnit(),
                 xLast,
                 yEdP - mDataPaint.ascent() + 5,
                 mUnitPaint);
@@ -281,9 +281,8 @@ public class MyPieChartView extends FrameLayout {
                 break;
             case CONTENT_PERCENT:
                 canvas.drawText(mData.get(i).getName(), x, y, mDataPaint);
-                canvas.drawText(mData.get(i).getNum() + mData.get(i).getUnit(),
-                        x, y - mDataPaint.ascent() + 5,
-                        mUnitPaint);
+                canvas.drawText(mData.get(i).getNum() * 100 / mTotalNum + "%",
+                        x, y - mDataPaint.ascent() + 5, mUnitPaint);
                 break;
         }
     }

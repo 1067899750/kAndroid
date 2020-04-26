@@ -94,6 +94,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_suspend:
                 intent.setClass(this, SuspendBtnActivity.class);//饼图
                 break;
+
+            case R.id.btn_chart:
+                intent.setClass(this, BookChartMapActivity.class);//饼图
+                break;
         }
         startActivity(intent);
     }

@@ -1,11 +1,11 @@
-package com.github.tifezh.kchart.view;
+package com.github.tifezh.kchartlib.chart.pic;
 
 /**
  * @author puyantao
  * @description :
- * @date 2020/4/25
+ * @date 2020/4/26
  */
-public enum PieChartType {
+public enum  BookPieChartType {
     //数字
     NUM,
     //百分比

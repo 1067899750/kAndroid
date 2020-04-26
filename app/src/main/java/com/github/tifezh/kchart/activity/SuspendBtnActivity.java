@@ -5,10 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.github.tifezh.kchart.R;
-import com.github.tifezh.kchart.view.MyPieChartView;
+import com.github.tifezh.kchart.view.chart.MyPieChartView;
 
-import com.github.tifezh.kchart.view.PieChartData;
-import com.github.tifezh.kchart.view.PieChartType;
+import com.github.tifezh.kchart.view.chart.PieChartData;
+import com.github.tifezh.kchart.view.chart.PieChartType;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -109,7 +109,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:onClick="onClick"
-                android:text="饼图" />
+                android:text="饼图1" />
+
+            <Button
+                android:id="@+id/btn_chart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="onClick"
+                android:text="饼图2" />
 
             <com.github.tifezh.kchart.utils.autoText.AutofitTextView
                 android:id="@+id/tvFutureName"

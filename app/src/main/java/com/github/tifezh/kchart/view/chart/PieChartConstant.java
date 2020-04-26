@@ -1,4 +1,4 @@
-package com.github.tifezh.kchart.view;
+package com.github.tifezh.kchart.view.chart;
 
 /**
  * @author puyantao

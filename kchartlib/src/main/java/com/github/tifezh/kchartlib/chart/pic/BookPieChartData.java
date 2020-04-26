@@ -1,17 +1,29 @@
-package com.github.tifezh.kchart.view;
+package com.github.tifezh.kchartlib.chart.pic;
 
 /**
  * @author puyantao
  * @description :
- * @date 2020/4/25
+ * @date 2020/4/26
  */
-public class PieChartData {
+public class BookPieChartData {
+    /**
+     * 颜色
+     */
     private int color;
+    /**
+     * 名字
+     */
     private String name;
+    /**
+     * 个数
+     */
     private float num;
+    /**
+     * 单位
+     */
     private String unit;
 
-    public PieChartData(int color, String name, float num, String unit) {
+    public BookPieChartData(int color, String name, float num, String unit) {
         this.color = color;
         this.name = name;
         this.num = num;
@@ -50,5 +62,3 @@ public class PieChartData {
         this.unit = unit;
     }
 }
-
-

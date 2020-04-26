@@ -1,4 +1,4 @@
-package com.github.tifezh.kchart.view;
+package com.github.tifezh.kchart.view.chart;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".activity.SuspendBtnActivity">
 
-    <com.github.tifezh.kchart.view.MyPieChartView
+    <com.github.tifezh.kchart.view.chart.MyPieChartView
         android:id="@+id/pie_chart"
         android:layout_width="300dp"
         android:layout_height="300dp"
