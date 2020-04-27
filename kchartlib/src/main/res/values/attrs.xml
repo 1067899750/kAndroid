@@ -56,7 +56,7 @@
         <attr name="layoutType" format="string"/>
         <attr name="verticalMargin" format="dimension"/>
         <attr name="horiMargin" format="dimension"/>
-        <attr name="animTime" format="dimension"/>
+        <attr name="animTime" format="integer"/>
         <attr name="pointingColor" format="color"/>
         <attr name="pointingWidth" format="dimension"/>
         <attr name="isRing" format="boolean"/>
