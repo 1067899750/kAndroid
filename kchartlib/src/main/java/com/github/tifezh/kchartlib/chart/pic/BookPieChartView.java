@@ -159,7 +159,7 @@ public class BookPieChartView extends FrameLayout {
         mDataColor = typedArray.getColor(R.styleable.MyPieChartView_dataColor, Color.WHITE);
 
         mUnitColor = typedArray.getColor(R.styleable.MyPieChartView_numColor, Color.WHITE);
-        mUnitSize = typedArray.getFloat(R.styleable.MyPieChartView_numSize, 20F);
+        mUnitSize = typedArray.getDimension(R.styleable.MyPieChartView_numSize, 20F);
 
         mHorizontalMargin = typedArray.getDimension(R.styleable.MyPieChartView_horiMargin, 0F);
         mVerticalMargin = typedArray.getDimension(R.styleable.MyPieChartView_verticalMargin, 0F);
