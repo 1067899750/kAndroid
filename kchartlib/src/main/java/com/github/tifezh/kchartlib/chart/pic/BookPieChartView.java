@@ -83,8 +83,8 @@ public class BookPieChartView extends FrameLayout {
     private float mDataSize;
     private int mDataColor;
 
-    private float mRingWidth = 20f;
-    private float mPadding = 80f;
+    private float mRingWidth;
+    private float mPadding;
     private boolean isRing = false;
     /**
      * 内园颜色
@@ -176,6 +176,7 @@ public class BookPieChartView extends FrameLayout {
         mRingWidth = typedArray.getDimension(R.styleable.MyPieChartView_ringWidth, 25F);
         isRing = typedArray.getBoolean(R.styleable.MyPieChartView_isRing, false);
         mRingBgColor = typedArray.getColor(R.styleable.MyPieChartView_ringBgColor, Color.WHITE);
+        mPadding = typedArray.getDimension(R.styleable.MyPieChartView_padding, 50F);
         typedArray.recycle();
     }
 

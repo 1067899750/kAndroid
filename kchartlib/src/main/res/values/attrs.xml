@@ -62,6 +62,7 @@
         <attr name="isRing" format="boolean"/>
         <attr name="ringWidth" format="dimension"/>
         <attr name="ringBgColor" format="color"/>
+        <attr name="padding" format="dimension"/>
     </declare-styleable>
 
 
