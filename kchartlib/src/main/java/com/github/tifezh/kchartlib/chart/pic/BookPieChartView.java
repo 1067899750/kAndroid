@@ -15,6 +15,7 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import com.github.tifezh.kchartlib.R;
+import com.github.tifezh.kchartlib.utils.StrUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -302,6 +303,7 @@ public class BookPieChartView extends FrameLayout {
         mSweepAngle = 0f;
         for (int i = 0; i < mDataList.size(); i++) {
             mPieChartPaint.setColor(mDataList.get(i).getColor());
+            mPointingPaint.setColor(mDataList.get(i).getColor());
             mSweepAngle = (mDataList.get(i).getNum() / mTotalNum) * 360 * mAnimationPercent;
             //外圆
             canvas.drawArc(mRectF, mStartAngle, mSweepAngle, true, mPieChartPaint);
@@ -348,11 +350,31 @@ public class BookPieChartView extends FrameLayout {
         }
         canvas.drawLine(xP, yP, xEdP, yEdP, mPointingPaint);
         canvas.drawLine(xEdP, yEdP, xLast, yEdP, mPointingPaint);
-        canvas.drawText(mDataList.get(i).getName(), xLast, yEdP, mDataPaint);
-        canvas.drawText(mDataList.get(i).getNum() + mDataList.get(i).getUnit(),
-                xLast,
-                yEdP - mDataPaint.ascent() + 5,
-                mUnitPaint);
+        switch (mType) {
+            case NUM:
+                canvas.drawText(mDataList.get(i).getName(), xLast, yEdP, mDataPaint);
+                break;
+            case PERCENT:
+                canvas.drawText(StrUtil.floatToString(mDataList.get(i).getNum() * 100 / mTotalNum, 2) + "%",
+                        xLast,
+                        yEdP - mDataPaint.ascent() + 5,
+                        mUnitPaint);
+                break;
+            case CONTENT_NUM:
+                canvas.drawText(mDataList.get(i).getName(), xLast, yEdP, mDataPaint);
+                canvas.drawText(mDataList.get(i).getNum() + mDataList.get(i).getUnit(),
+                        xLast,
+                        yEdP - mDataPaint.ascent() + 5,
+                        mUnitPaint);
+                break;
+            case CONTENT_PERCENT:
+                canvas.drawText(mDataList.get(i).getName(), xLast, yEdP, mDataPaint);
+                canvas.drawText(StrUtil.floatToString(mDataList.get(i).getNum() * 100 / mTotalNum, 2) + "%",
+                        xLast,
+                        yEdP - mDataPaint.ascent() + 5,
+                        mUnitPaint);
+                break;
+        }
     }
 
     /**
@@ -373,7 +395,7 @@ public class BookPieChartView extends FrameLayout {
                         x, y, mUnitPaint);
                 break;
             case PERCENT:
-                canvas.drawText(mDataList.get(i).getNum() * 100 / mTotalNum + "%",
+                canvas.drawText(StrUtil.floatToString(mDataList.get(i).getNum() * 100 / mTotalNum, 2) + "%",
                         x, y, mUnitPaint);
                 break;
             case CONTENT_NUM:
@@ -383,7 +405,7 @@ public class BookPieChartView extends FrameLayout {
                 break;
             case CONTENT_PERCENT:
                 canvas.drawText(mDataList.get(i).getName(), x, y, mDataPaint);
-                canvas.drawText(mDataList.get(i).getNum() * 100 / mTotalNum + "%",
+                canvas.drawText(StrUtil.floatToString(mDataList.get(i).getNum() * 100 / mTotalNum, 2) + "%",
                         x, y - mDataPaint.ascent() + 5, mUnitPaint);
                 break;
         }

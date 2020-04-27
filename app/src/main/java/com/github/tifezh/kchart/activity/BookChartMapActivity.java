@@ -34,7 +34,7 @@ public class BookChartMapActivity extends AppCompatActivity {
         mDataList.add(new BookPieChartData(Color.parseColor("#7FFF00"), "哥哥", 6f, "人"));
         mDataList.add(new BookPieChartData(Color.parseColor("#D2691E"), "妹妹", 7f, "人"));
         mMyPieChartView.setDataList(mDataList);
-        mMyPieChartView.setType(BookPieChartType.CONTENT_NUM);
+        mMyPieChartView.setType(BookPieChartType.CONTENT_PERCENT);
     }
 }
 
