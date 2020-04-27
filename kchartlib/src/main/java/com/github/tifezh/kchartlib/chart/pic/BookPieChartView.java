@@ -176,7 +176,7 @@ public class BookPieChartView extends FrameLayout {
         mRingWidth = typedArray.getDimension(R.styleable.MyPieChartView_ringWidth, 25F);
         isRing = typedArray.getBoolean(R.styleable.MyPieChartView_isRing, false);
         mRingBgColor = typedArray.getColor(R.styleable.MyPieChartView_ringBgColor, Color.WHITE);
-        mPadding = typedArray.getDimension(R.styleable.MyPieChartView_padding, 50F);
+        mPadding = typedArray.getDimension(R.styleable.MyPieChartView_padding, 20);
         typedArray.recycle();
     }
 
@@ -345,35 +345,47 @@ public class BookPieChartView extends FrameLayout {
                 Math.cos(Math.toRadians((90 + mStartAngle - mSweepAngle / 2))));
         float xLast = 0f;
         if (mStartAngle - mSweepAngle / 2 >= 270 || mStartAngle - mSweepAngle / 2 <= 90) {
-            xLast = xEdP + 40;
+            xLast = xEdP + 130;
         } else {
-            xLast = xEdP - 40;
+            xLast = xEdP - 130;
         }
+        //小短线
         canvas.drawLine(xP, yP, xEdP, yEdP, mPointingPaint);
+        //长横线
         canvas.drawLine(xEdP, yEdP, xLast, yEdP, mPointingPaint);
+        if (mStartAngle - mSweepAngle / 2 >= 270 || mStartAngle - mSweepAngle / 2 <= 90) {
+            xLast = xLast - 20;
+        } else {
+            xLast = xLast + 20;
+        }
         switch (mType) {
             case NUM:
                 canvas.drawText(mDataList.get(i).getName(), xLast, yEdP, mDataPaint);
                 break;
             case PERCENT:
-                canvas.drawText(StrUtil.floatToString(mDataList.get(i).getNum() * 100 / mTotalNum, 2) + "%",
+                canvas.drawText(StrUtil.deleteEndSurplusZero(
+                        StrUtil.floatToString(mDataList.get(i).getNum() * 100 / mTotalNum, 2)) + "%",
                         xLast,
-                        yEdP - mDataPaint.ascent() + 5,
+                        yEdP,
                         mUnitPaint);
                 break;
             case CONTENT_NUM:
-                canvas.drawText(mDataList.get(i).getName(), xLast, yEdP, mDataPaint);
                 canvas.drawText(mDataList.get(i).getNum() + mDataList.get(i).getUnit(),
                         xLast,
-                        yEdP - mDataPaint.ascent() + 5,
+                        yEdP - 10,
                         mUnitPaint);
+                canvas.drawText(mDataList.get(i).getName(), xLast, yEdP - mUnitPaint.ascent() + 10, mDataPaint);
+
                 break;
             case CONTENT_PERCENT:
-                canvas.drawText(mDataList.get(i).getName(), xLast, yEdP, mDataPaint);
-                canvas.drawText(StrUtil.floatToString(mDataList.get(i).getNum() * 100 / mTotalNum, 2) + "%",
+
+                canvas.drawText(StrUtil.deleteEndSurplusZero(
+                        StrUtil.floatToString(mDataList.get(i).getNum() * 100 / mTotalNum, 2)) + "%",
                         xLast,
-                        yEdP - mDataPaint.ascent() + 5,
+                        yEdP - 10,
                         mUnitPaint);
+
+                canvas.drawText(mDataList.get(i).getName(), xLast, yEdP - mUnitPaint.ascent() + 10, mDataPaint);
                 break;
         }
     }
@@ -396,7 +408,8 @@ public class BookPieChartView extends FrameLayout {
                         x, y, mUnitPaint);
                 break;
             case PERCENT:
-                canvas.drawText(StrUtil.floatToString(mDataList.get(i).getNum() * 100 / mTotalNum, 2) + "%",
+                canvas.drawText(StrUtil.deleteEndSurplusZero(
+                        StrUtil.floatToString(mDataList.get(i).getNum() * 100 / mTotalNum, 2)) + "%",
                         x, y, mUnitPaint);
                 break;
             case CONTENT_NUM:
@@ -406,7 +419,8 @@ public class BookPieChartView extends FrameLayout {
                 break;
             case CONTENT_PERCENT:
                 canvas.drawText(mDataList.get(i).getName(), x, y, mDataPaint);
-                canvas.drawText(StrUtil.floatToString(mDataList.get(i).getNum() * 100 / mTotalNum, 2) + "%",
+                canvas.drawText(StrUtil.deleteEndSurplusZero(
+                        StrUtil.floatToString(mDataList.get(i).getNum() * 100 / mTotalNum, 2)) + "%",
                         x, y - mDataPaint.ascent() + 5, mUnitPaint);
                 break;
         }

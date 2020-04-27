@@ -4,25 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F5F7"
     tools:context=".activity.BookChartMapActivity">
 
 
     <com.github.tifezh.kchartlib.chart.pic.BookPieChartView
         android:id="@+id/pie_chart"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="208dp"
         android:layout_centerInParent="true"
-        android:background="#B8B0B0"
+        android:background="#FFFFFF"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
 
         app:isRing="true"
-        app:padding="50dp"
-        app:numSize="8sp"
+        app:padding="20dp"
+        app:numSize="10sp"
         app:numColor="#666666"
-        app:dataSize="10sp"
+        app:dataSize="8sp"
         app:dataColor="#999999"
         app:layoutType="pointingInstructions"
         app:ringBgColor="#FFFFFF"

@@ -26,13 +26,15 @@ public class BookChartMapActivity extends AppCompatActivity {
         setContentView(R.layout.activity_book_chart_map);
         mMyPieChartView = findViewById(R.id.pie_chart);
         mDataList = new ArrayList<>();
-        mDataList.add(new BookPieChartData(Color.parseColor("#0000FF"), "哈哈", 1f, "人"));
-        mDataList.add(new BookPieChartData(Color.parseColor("#8A2BE2"), "嘻嘻", 2f, "人"));
-        mDataList.add(new BookPieChartData(Color.parseColor("#A52A2A"), "呵呵", 3f, "人"));
-        mDataList.add(new BookPieChartData(Color.parseColor("#DEB887"), "啧啧", 4f, "人"));
-        mDataList.add(new BookPieChartData(Color.parseColor("#5F9EA0"), "弟弟", 5f, "人"));
-        mDataList.add(new BookPieChartData(Color.parseColor("#7FFF00"), "哥哥", 6f, "人"));
-        mDataList.add(new BookPieChartData(Color.parseColor("#D2691E"), "妹妹", 7f, "人"));
+//        mDataList.add(new BookPieChartData(Color.parseColor("#0000FF"), "哈哈", 1f, "人"));
+//        mDataList.add(new BookPieChartData(Color.parseColor("#8A2BE2"), "嘻嘻", 2f, "人"));
+//        mDataList.add(new BookPieChartData(Color.parseColor("#A52A2A"), "呵呵", 3f, "人"));
+//        mDataList.add(new BookPieChartData(Color.parseColor("#DEB887"), "啧啧", 4f, "人"));
+//        mDataList.add(new BookPieChartData(Color.parseColor("#5F9EA0"), "弟弟", 5f, "人"));
+//        mDataList.add(new BookPieChartData(Color.parseColor("#7FFF00"), "哥哥", 6f, "人"));
+//        mDataList.add(new BookPieChartData(Color.parseColor("#D2691E"), "妹妹", 7f, "人"));
+        mDataList.add(new BookPieChartData(Color.parseColor("#FFC107"), "贷款", 50f, "元"));
+        mDataList.add(new BookPieChartData(Color.parseColor("#2196F3"), "其他借款", 80f, "元"));
         mMyPieChartView.setDataList(mDataList);
         mMyPieChartView.setType(BookPieChartType.CONTENT_PERCENT);
     }
