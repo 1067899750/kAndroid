@@ -1,5 +1,6 @@
 package com.github.tifezh.kchartlib.chart.detail;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -33,6 +34,9 @@ public class DetailView extends BaseDetailView {
     private float mVolumeScaleY = 1; //Y轴单位量
     private float mScaleX = 1; //x轴的单位量
     private int selectedIndex = 0;
+
+    private ValueAnimator mAnimator;
+    private float mAnimationPercent;
 
     public DetailView(Context context) {
         super(context);
@@ -81,8 +85,7 @@ public class DetailView extends BaseDetailView {
         //x轴的缩放值
         mScaleX = mBaseWidth / (mPointCount - 1);
 
-        invalidate();
-
+        startAnim(3000);
     }
 
     @Override
@@ -130,7 +133,7 @@ public class DetailView extends BaseDetailView {
             mLinePaint.setColor(getResources().getColor(R.color.chart_FFFFFF));
             IDetailLine lastPoint = mPoints.get(0);
             float lastX = getX(0);
-            for (int i = 0; i < mPoints.size(); i++) {
+            for (int i = 0; i < mPoints.size() * mAnimationPercent; i++) {
                 IDetailLine curPoint = mPoints.get(i);
                 float curX = getX(i);
 
@@ -184,7 +187,7 @@ public class DetailView extends BaseDetailView {
                     y, mTextPaint); //中间起始时间
         }
         canvas.drawText(StrUtil.getPositiveNumber(mPoints.get((int) mPointCount - 1).getDate()),
-                mWidth - mBasePaddingRight - dataWeight/2,
+                mWidth - mBasePaddingRight - dataWeight / 2,
                 y, mTextPaint);//结束时间
 
     }
@@ -234,6 +237,23 @@ public class DetailView extends BaseDetailView {
         }
 
     }
+
+    /**
+     * 动画
+     */
+    private void startAnim(final int animTime) {
+        mAnimator = ValueAnimator.ofFloat(0f, 1f);
+        mAnimator.setDuration(animTime);
+        mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mAnimationPercent = (float) animation.getAnimatedValue();
+                postInvalidate();
+            }
+        });
+        mAnimator.start();
+    }
+
 
     /**
      * 获取最大能有多少个点

@@ -1,5 +1,6 @@
 package com.github.tifezh.kchartlib.chart.detail;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
