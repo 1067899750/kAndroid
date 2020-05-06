@@ -1,5 +1,6 @@
 package com.github.tifezh.kchartlib.chart.detail;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -49,6 +50,8 @@ public class HistogramView extends View {
     private int mRightTextSize;
     private int mColumnWeight; //柱子宽度
 
+    private ValueAnimator mAnimator;
+    private float mAnimationPercent;
 
     public HistogramView(Context context) {
         this(context, null);
@@ -105,6 +108,23 @@ public class HistogramView extends View {
         mColumnLeft = mBasePaddingLeft + mLeftMaxWeight + mLeftPadding;
 
         requestLayout();
+        startAnim(3000);
+    }
+
+    /**
+     * 动画
+     */
+    private void startAnim(final int animTime) {
+        mAnimator = ValueAnimator.ofFloat(0f, 1f);
+        mAnimator.setDuration(animTime);
+        mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mAnimationPercent = (float) animation.getAnimatedValue();
+                postInvalidate();
+            }
+        });
+        mAnimator.start();
     }
 
 
@@ -168,13 +188,13 @@ public class HistogramView extends View {
 
             canvas.drawLine(mColumnLeft,
                     mTopPadding * i + textNameHeight / 2 + height * i + columnHeight / 2,
-                    mColumnLeft + mColumnScaleX * mPoints.get(i).getMoney(),
+                    mColumnLeft + mColumnScaleX * mPoints.get(i).getMoney() * mAnimationPercent,
                     mTopPadding * i + textNameHeight / 2 + height * i + columnHeight / 2,
                     mColumnPaint);
 
 
             canvas.drawText(String.valueOf(mPoints.get(i).getMoney()) + "元",
-                    mColumnLeft + mColumnScaleX * mPoints.get(i).getMoney() + mLeftPadding,
+                    mColumnLeft + mColumnScaleX * mPoints.get(i).getMoney()  * mAnimationPercent + mLeftPadding,
                     mTopPadding * i + textNameHeight / 2 + height * i + lefttextheight / 2,
                     mMoneyTextPaint);
 
