@@ -8,7 +8,7 @@
     tools:context=".activity.BookChartMapActivity">
 
 
-    <com.github.tifezh.kchartlib.chart.pic.BookPieChartView
+    <com.github.tifezh.kchartlib.chart.pic.BookAssetsPieChartView
         android:id="@+id/pie_chart"
         android:layout_width="match_parent"
         android:layout_height="208dp"
@@ -22,10 +22,6 @@
         app:layout_constraintTop_toTopOf="parent"
 
         app:isRing="true"
-        app:padding="20dp"
-        app:numSize="10sp"
-        app:numColor="#666666"
-        app:dataSize="8sp"
         app:dataColor="#999999"
         app:layoutType="pointingInstructions"
         app:ringBgColor="#FFFFFF"

@@ -20,12 +20,13 @@ import com.github.tifezh.kchartlib.utils.StrUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * @author puyantao
  * @description :
  * @date 2020/4/26
  */
-public class BookPieChartView extends FrameLayout {
+public class BookAssetsPieChartView extends FrameLayout {
     /**
      * 画笔
      */
@@ -39,7 +40,6 @@ public class BookPieChartView extends FrameLayout {
      * 半径
      */
     private float raduis;
-    private float dataRaduis;
     /**
      * 声明外圆边界矩形
      */
@@ -80,7 +80,7 @@ public class BookPieChartView extends FrameLayout {
      * 字体
      */
     private TextPaint mDataPaint;
-    private float mDataSize;
+    private float mDataSize = 8;
     private int mDataColor;
 
     private float mRingWidth;
@@ -90,21 +90,7 @@ public class BookPieChartView extends FrameLayout {
      * 内园颜色
      */
     private int mRingBgColor;
-    /**
-     * 单位
-     */
-    private TextPaint mUnitPaint;
-    private float mUnitSize;
-    private int mUnitColor;
-    /**
-     * 样式选择
-     */
-    private BookPieChartType mType = BookPieChartType.CONTENT_PERCENT;
-    /**
-     * 布局样式
-     * default 普通样式  vertical 竖向布局  horizontal 横向布局  pointingInstructions 指向说明
-     */
-    private String mLayoutType;
+
     /**
      * 横向间距
      */
@@ -122,15 +108,15 @@ public class BookPieChartView extends FrameLayout {
     private Context mContext;
 
 
-    public BookPieChartView(@NonNull Context context) {
+    public BookAssetsPieChartView(@NonNull Context context) {
         this(context, null);
     }
 
-    public BookPieChartView(Context context, @Nullable AttributeSet attrs) {
+    public BookAssetsPieChartView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public BookPieChartView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public BookAssetsPieChartView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
         initView(attrs);
@@ -149,17 +135,14 @@ public class BookPieChartView extends FrameLayout {
         initAttrs(attrs, mContext);
         //初始化画笔
         initPaint();
+        mPadding = dip2px(mContext, 50);
     }
 
     private void initAttrs(AttributeSet attrs, Context context) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.MyPieChartView);
         mPieChartWidth = typedArray.getDimension(R.styleable.MyPieChartView_pieChartWidth, 20F);
 
-        mDataSize = typedArray.getDimension(R.styleable.MyPieChartView_dataSize, 20F);
         mDataColor = typedArray.getColor(R.styleable.MyPieChartView_dataColor, Color.WHITE);
-
-        mUnitColor = typedArray.getColor(R.styleable.MyPieChartView_numColor, Color.WHITE);
-        mUnitSize = typedArray.getDimension(R.styleable.MyPieChartView_numSize, 20F);
 
         mHorizontalMargin = typedArray.getDimension(R.styleable.MyPieChartView_horiMargin, 0F);
         mVerticalMargin = typedArray.getDimension(R.styleable.MyPieChartView_verticalMargin, 0F);
@@ -169,14 +152,9 @@ public class BookPieChartView extends FrameLayout {
         mPointingColor = typedArray.getColor(R.styleable.MyPieChartView_pointingColor, Color.GRAY);
         mPointingWidth = typedArray.getDimension(R.styleable.MyPieChartView_pointingWidth, 2F);
 
-        mLayoutType = typedArray.getString(R.styleable.MyPieChartView_layoutType);
-        if (mLayoutType == null) {
-            mLayoutType = "default";
-        }
         mRingWidth = typedArray.getDimension(R.styleable.MyPieChartView_ringWidth, 25F);
         isRing = typedArray.getBoolean(R.styleable.MyPieChartView_isRing, false);
         mRingBgColor = typedArray.getColor(R.styleable.MyPieChartView_ringBgColor, Color.WHITE);
-        mPadding = typedArray.getDimension(R.styleable.MyPieChartView_padding, 20);
         typedArray.recycle();
     }
 
@@ -201,19 +179,8 @@ public class BookPieChartView extends FrameLayout {
         mDataPaint = new TextPaint();
         mDataPaint.setDither(true);
         mDataPaint.setAntiAlias(true);
-        mDataPaint.setTextSize(mDataSize);
+        mDataPaint.setTextSize(sp2px(mContext, mDataSize));
         mDataPaint.setColor(mDataColor);
-        //从中间向两边绘制，不需要再次计算文字
-        mDataPaint.setTextAlign(Paint.Align.CENTER);
-
-        //单位
-        mUnitPaint = new TextPaint();
-        mUnitPaint.setDither(true);
-        mUnitPaint.setAntiAlias(true);
-        mUnitPaint.setTextSize(mUnitSize);
-        mUnitPaint.setColor(mUnitColor);
-        //从中间向两边绘制，不需要再次计算文字
-        mUnitPaint.setTextAlign(Paint.Align.CENTER);
 
         mPointingPaint = new Paint();
         mPointingPaint.setDither(true);
@@ -232,36 +199,13 @@ public class BookPieChartView extends FrameLayout {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        int minWidth = 0;
-        if (mLayoutType.equals("horizontal")) {
-            //圆心位置
-            centerPosition.x = (int) (w / 2 - mHorizontalMargin);
-            centerPosition.y = h / 2;
-            //半径
-            minWidth = (int) Math.min(w - getPaddingLeft() - getPaddingRight() - mHorizontalMargin * 2,
-                    h - getPaddingBottom() - getPaddingTop());
-        } else if (mLayoutType.equals("vertical")) {
-            //圆心位置
-            centerPosition.x = w / 2;
-            centerPosition.y = (int) (h / 2 - mVerticalMargin);
-            //半径
-            minWidth = (int) Math.min(w - getPaddingLeft() - getPaddingRight(),
-                    h - getPaddingBottom() - getPaddingTop() - mVerticalMargin * 2);
-        } else {
-            //圆心位置
-            centerPosition.x = w / 2;
-            centerPosition.y = h / 2;
-            //半径
-            minWidth = Math.min(w - getPaddingLeft() - getPaddingRight(),
-                    h - getPaddingBottom() - getPaddingTop());
-        }
-
-        if (mLayoutType.equals("pointingInstructions")) {
-            raduis = (minWidth / 2) - mPadding;
-        } else {
-            raduis = (minWidth / 2);
-        }
-        dataRaduis = raduis * 3 / 4;
+        //圆心位置
+        centerPosition.x = w / 2;
+        centerPosition.y = h / 2;
+        //半径
+        int minWidth = Math.min(w - getPaddingLeft() - getPaddingRight(),
+                h - getPaddingBottom() - getPaddingTop());
+        raduis = (minWidth / 2) - mPadding;
         //外园矩形坐标
         mRectF.left = centerPosition.x - raduis;
         mRectF.top = centerPosition.y - raduis;
@@ -314,15 +258,7 @@ public class BookPieChartView extends FrameLayout {
                 canvas.drawArc(mInRectF, mStartAngle - 1, mSweepAngle + 1, true, mPieChartPaint);
             }
             mStartAngle = mStartAngle + mSweepAngle;
-
-            //画数据
-            if (mLayoutType.equals("pointingInstructions")) {
-                //指向说明
-                pointData(canvas, i);
-            } else {
-                //画数据
-                drawData(canvas, i);
-            }
+            pointData(canvas, i);
         }
         canvas.restore();
     }
@@ -339,93 +275,68 @@ public class BookPieChartView extends FrameLayout {
                 Math.sin(Math.toRadians((90 + mStartAngle - mSweepAngle / 2))));
         float yP = (float) (centerPosition.y - raduis *
                 Math.cos(Math.toRadians((90 + mStartAngle - mSweepAngle / 2))));
-        float xEdP = (float) (centerPosition.x + (raduis + 20) *
+
+        float xEdP = (float) (centerPosition.x + (raduis + dip2px(mContext, 25)) *
                 Math.sin(Math.toRadians((90 + mStartAngle - mSweepAngle / 2))));
-        float yEdP = (float) (centerPosition.y - (raduis + 20) *
+        float yEdP = (float) (centerPosition.y - (raduis + dip2px(mContext, 25)) *
                 Math.cos(Math.toRadians((90 + mStartAngle - mSweepAngle / 2))));
-        float xLast = 0f;
-        if (mStartAngle - mSweepAngle / 2 >= 270 || mStartAngle - mSweepAngle / 2 <= 90) {
-            xLast = xEdP + 130;
-        } else {
-            xLast = xEdP - 130;
-        }
-        //小短线
-        canvas.drawLine(xP, yP, xEdP, yEdP, mPointingPaint);
+
+
         //长横线
-        canvas.drawLine(xEdP, yEdP, xLast, yEdP, mPointingPaint);
-        if (mStartAngle - mSweepAngle / 2 >= 270 || mStartAngle - mSweepAngle / 2 <= 90) {
-            xLast = xLast - 20;
-        } else {
-            xLast = xLast + 20;
-        }
-        switch (mType) {
-            case NUM:
-                canvas.drawText(mDataList.get(i).getName(), xLast, yEdP, mDataPaint);
-                break;
-            case PERCENT:
-                canvas.drawText(StrUtil.deleteEndSurplusZero(
-                        StrUtil.floatToString(mDataList.get(i).getNum() * 100 / mTotalNum, 2)) + "%",
-                        xLast,
-                        yEdP,
-                        mUnitPaint);
-                break;
-            case CONTENT_NUM:
-                canvas.drawText(mDataList.get(i).getNum() + mDataList.get(i).getUnit(),
-                        xLast,
-                        yEdP - 10,
-                        mUnitPaint);
-                canvas.drawText(mDataList.get(i).getName(), xLast, yEdP - mUnitPaint.ascent() + 10, mDataPaint);
+        canvas.drawLine(xP, yP, xEdP, yEdP, mPointingPaint);
+        String nameStr = mDataList.get(i).getName() + StrUtil.deleteEndSurplusZero(
+                StrUtil.floatToString(mDataList.get(i).getNum() * 100 / mTotalNum, 2)) + "%";
+        float baseLine = getFontBaseLineHeight(mDataPaint);
+        float textHeight = getFontHeight(mDataPaint);
 
-                break;
-            case CONTENT_PERCENT:
 
-                canvas.drawText(StrUtil.deleteEndSurplusZero(
-                        StrUtil.floatToString(mDataList.get(i).getNum() * 100 / mTotalNum, 2)) + "%",
-                        xLast,
-                        yEdP - 10,
-                        mUnitPaint);
+        if (mStartAngle - mSweepAngle / 2 >= 315 || mStartAngle - mSweepAngle / 2 <= 45) {
+            mDataPaint.setTextAlign(Paint.Align.LEFT);
+            canvas.drawText(nameStr,
+                    xP + dip2px(mContext, 30),
+                    yEdP + dip2px(mContext, 3),
+                    mDataPaint);
 
-                canvas.drawText(mDataList.get(i).getName(), xLast, yEdP - mUnitPaint.ascent() + 10, mDataPaint);
-                break;
-        }
-    }
+        } else if (mStartAngle - mSweepAngle / 2 >= 45 && mStartAngle - mSweepAngle / 2 <= 90) {
+            mDataPaint.setTextAlign(Paint.Align.CENTER);
+//            canvas.drawText(nameStr, 0, 1, xEdP + dip2px(mContext, 5), yEdP, mDataPaint);
+            canvas.drawText(nameStr,
+                    xP + getCharacterWidth(nameStr, sp2px(mContext, mDataSize)) / 2,
+                    yEdP + dip2px(mContext, 10),
+                    mDataPaint);
 
-    /**
-     * 内部数据
-     *
-     * @param canvas
-     * @param i
-     */
-    private void drawData(Canvas canvas, int i) {
-        float x = (float) (centerPosition.x + dataRaduis *
-                Math.sin(Math.toRadians((90 + mStartAngle - mSweepAngle / 2))));
-        float y = (float) (centerPosition.y - dataRaduis *
-                Math.cos(Math.toRadians((90 + mStartAngle - mSweepAngle / 2))));
+        } else if (mStartAngle - mSweepAngle / 2 >= 90 && mStartAngle - mSweepAngle / 2 <= 135) {
+            mDataPaint.setTextAlign(Paint.Align.CENTER);
+//            canvas.drawText(nameStr, 0, 1, xEdP + dip2px(mContext, 5), yEdP, mDataPaint);
+            canvas.drawText(nameStr,
+                    xP - getCharacterWidth(nameStr, sp2px(mContext, mDataSize)) / 2,
+                    yEdP + dip2px(mContext, 10),
+                    mDataPaint);
 
-        switch (mType) {
-            case NUM:
-                canvas.drawText(mDataList.get(i).getNum() + mDataList.get(i).getUnit(),
-                        x, y, mUnitPaint);
-                break;
-            case PERCENT:
-                canvas.drawText(StrUtil.deleteEndSurplusZero(
-                        StrUtil.floatToString(mDataList.get(i).getNum() * 100 / mTotalNum, 2)) + "%",
-                        x, y, mUnitPaint);
-                break;
-            case CONTENT_NUM:
-                canvas.drawText(mDataList.get(i).getName(), x, y, mDataPaint);
-                canvas.drawText(mDataList.get(i).getNum() + mDataList.get(i).getUnit(),
-                        x, y - mDataPaint.ascent() + 5, mUnitPaint);
-                break;
-            case CONTENT_PERCENT:
-                canvas.drawText(mDataList.get(i).getName(), x, y, mDataPaint);
-                canvas.drawText(StrUtil.deleteEndSurplusZero(
-                        StrUtil.floatToString(mDataList.get(i).getNum() * 100 / mTotalNum, 2)) + "%",
-                        x, y - mDataPaint.ascent() + 5, mUnitPaint);
-                break;
+        } else if (mStartAngle - mSweepAngle / 2 >= 135 && mStartAngle - mSweepAngle / 2 <= 225) {
+            mDataPaint.setTextAlign(Paint.Align.LEFT);
+            canvas.drawText(nameStr,
+                    xP - dip2px(mContext, 30) - getCharacterWidth(nameStr, sp2px(mContext, mDataSize)),
+                    yEdP + dip2px(mContext, 3),
+                    mDataPaint);
+
+        } else if (mStartAngle - mSweepAngle / 2 >= 225 && mStartAngle - mSweepAngle / 2 <= 270) {
+            mDataPaint.setTextAlign(Paint.Align.RIGHT);
+//            canvas.drawText(nameStr, 0, 1, xEdP - dip2px(mContext, 5), yEdP, mDataPaint);
+            canvas.drawText(nameStr,
+                    xP,
+                    yEdP - dip2px(mContext, 3),
+                    mDataPaint);
+
+        } else if (mStartAngle - mSweepAngle / 2 >= 270 && mStartAngle - mSweepAngle / 2 <= 315) {
+            mDataPaint.setTextAlign(Paint.Align.CENTER);
+//            canvas.drawText(nameStr, 0, 1, xEdP - dip2px(mContext, 5), yEdP, mDataPaint);
+            canvas.drawText(nameStr,
+                    xP + getCharacterWidth(nameStr, sp2px(mContext, mDataSize)) / 2,
+                    yEdP - dip2px(mContext, 3),
+                    mDataPaint);
         }
     }
-
 
     /**
      * 动画
@@ -446,7 +357,7 @@ public class BookPieChartView extends FrameLayout {
     /**
      * 设置数据
      */
-    public BookPieChartView setDataList(List<BookPieChartData> dataList) {
+    public BookAssetsPieChartView setDataList(List<BookPieChartData> dataList) {
         mTotalNum = 0.0f;
         mDataList.clear();
         if (dataList.size() > 0) {
@@ -461,13 +372,50 @@ public class BookPieChartView extends FrameLayout {
     }
 
 
+    public int dip2px(Context context, float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
+    }
+
+    public int sp2px(Context context, float spValue) {
+        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (spValue * fontScale + 0.5f);
+    }
+
+    //高度
+    public float getFontBaseLineHeight(Paint paint) {
+        Paint.FontMetrics fm = paint.getFontMetrics();
+        float textHeight = fm.descent - fm.ascent;
+        float baseLine = (textHeight - fm.bottom - fm.top) / 2;
+        return baseLine;
+    }
+
+    //文字的高度
+    public float getFontHeight(Paint paint) {
+        Paint.FontMetrics fm = paint.getFontMetrics();
+        float textHeight = fm.descent - fm.ascent;
+        return textHeight;
+    }
+
+
     /**
-     * 设置显示类型
+     * 获取文字的长度
+     *
+     * @param text
+     * @param size
+     * @return
      */
-    public BookPieChartView setType(BookPieChartType type) {
-        this.mType = type;
-        invalidate();
-        return this;
+    public int getCharacterWidth(String text, float size) {
+        if (null == text || "".equals(text)) {
+            return 0;
+
+        }
+
+        Paint paint = new Paint();
+        paint.setTextSize(size);
+        int text_width = (int) paint.measureText(text);// 得到总体长度
+        // int width = text_width/text.length();//每一个字符的长度
+        return text_width;
     }
 
 
