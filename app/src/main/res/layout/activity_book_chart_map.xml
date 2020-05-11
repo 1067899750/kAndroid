@@ -16,7 +16,7 @@
         android:background="#FFFFFF"
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/d20"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -25,6 +25,29 @@
         app:dataColor="#999999"
         app:layoutType="pointingInstructions"
         app:ringBgColor="#FFFFFF"
+        app:ringWidth="20dp"  />
+
+
+
+    <com.github.tifezh.kchartlib.chart.pic.BookPieChartView
+        android:id="@+id/pie_chart2"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        android:background="#FFFFFF"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="@dimen/d20"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pie_chart"
+
+        app:isRing="true"
+        app:dataColor="#999999"
+        app:numColor="#F10909"
+        app:layoutType="pointingInstructions"
+        app:ringBgColor="#FFFFFF"
+        app:padding="@dimen/d30"
         app:ringWidth="20dp"  />
 
 </android.support.constraint.ConstraintLayout>

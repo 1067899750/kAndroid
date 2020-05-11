@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:onClick="onClick"
-                android:text="GroupMinuteView"
+                android:text="柱状图"
                 android:textAllCaps="false"
                 android:visibility="visible"/>
 

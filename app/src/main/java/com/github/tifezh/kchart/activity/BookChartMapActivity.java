@@ -19,6 +19,7 @@ import java.util.List;
   */
 public class BookChartMapActivity extends AppCompatActivity {
     private BookAssetsPieChartView mMyPieChartView;
+    private BookPieChartView mBookPieChartView;
     private List<BookPieChartData> mDataList;
 
     @Override
@@ -26,6 +27,8 @@ public class BookChartMapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_chart_map);
         mMyPieChartView = findViewById(R.id.pie_chart);
+        mBookPieChartView = findViewById(R.id.pie_chart2);
+
         mDataList = new ArrayList<>();
         mDataList.add(new BookPieChartData(Color.parseColor("#0000FF"), "哈哈", 1f, "人"));
         mDataList.add(new BookPieChartData(Color.parseColor("#8A2BE2"), "嘻嘻", 2f, "人"));
@@ -41,8 +44,11 @@ public class BookChartMapActivity extends AppCompatActivity {
         mDataList.add(new BookPieChartData(Color.parseColor("#5F9EA0"), "弟弟", 5f, "人"));
         mDataList.add(new BookPieChartData(Color.parseColor("#7FFF00"), "哥哥", 6f, "人"));
         mDataList.add(new BookPieChartData(Color.parseColor("#D2691E"), "妹妹", 7f, "人"));
+
         mMyPieChartView.setDataList(mDataList);
 
+        mBookPieChartView.setType(BookPieChartType.CONTENT_PERCENT);
+        mBookPieChartView.setDataList(mDataList);
     }
 }
 

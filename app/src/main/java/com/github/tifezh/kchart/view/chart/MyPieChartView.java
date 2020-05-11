@@ -83,7 +83,11 @@ public class MyPieChartView extends FrameLayout {
     private float mPointingWidth;
     private int mPointingColor;
     private Context mContext;
+    private float mPadding;
+    private float mTopPadding;
 
+    private int mBaseWidth;
+    private int mBaseHeight;
 
     public MyPieChartView(@NonNull Context context) {
         this(context, null);
@@ -144,6 +148,8 @@ public class MyPieChartView extends FrameLayout {
         if (mLayoutType == null) {
             mLayoutType = "default";
         }
+        mPadding = typedArray.getDimension(com.github.tifezh.kchartlib.R.styleable.MyPieChartView_padding, 20);
+        mTopPadding = mPadding - 10;
         typedArray.recycle();
     }
 
@@ -159,7 +165,7 @@ public class MyPieChartView extends FrameLayout {
         int minWidth = 0;
         if (mLayoutType.equals("horizontal")) {
             //圆心位置
-            centerPosition.x = (int) (w / 2 - mHoriMargin);
+            centerPosition.x = (int) (w / 2 - mHoriMargin - mTopPadding);
             centerPosition.y = h / 2;
             //半径
             minWidth = (int) Math.min(w - getPaddingLeft() - getPaddingRight() - mHoriMargin * 2,
@@ -167,23 +173,23 @@ public class MyPieChartView extends FrameLayout {
         } else if (mLayoutType.equals("vertical")) {
             //圆心位置
             centerPosition.x = w / 2;
-            centerPosition.y = (int) (h / 2 - mVerticalMargin);
+            centerPosition.y = (int) (h / 2 - mVerticalMargin - mTopPadding);
             //半径
             minWidth = (int) Math.min(w - getPaddingLeft() - getPaddingRight(),
                     h - getPaddingBottom() - getPaddingTop() - mVerticalMargin * 2);
         } else {
             //圆心位置
             centerPosition.x = w / 2;
-            centerPosition.y = h / 2;
+            centerPosition.y = (int) (h / 2 - mTopPadding);
             //半径
             minWidth = Math.min(w - getPaddingLeft() - getPaddingRight(),
                     h - getPaddingBottom() - getPaddingTop());
         }
 
         if (mLayoutType.equals("pointingInstructions")) {
-            raduis = (minWidth / 2) - 75;
+            raduis = (minWidth / 2) - mPadding;
         } else {
-            raduis = (minWidth / 2);
+            raduis = (minWidth / 2) - mPadding;
         }
         dataRaduis = raduis * 3 / 4;
         //矩形坐标
@@ -350,15 +356,17 @@ public class MyPieChartView extends FrameLayout {
         }
 
         RelativeLayout relativeLayout = new RelativeLayout(mContext);
+
         LayoutParams params = new LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
+
         params.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
         relativeLayout.setLayoutParams(params);
 
         RelativeLayout.LayoutParams p2 = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+                (int) (mBaseHeight - 2 * raduis - 20));
         relativeLayout.addView(mRecyclerView, p2);
         addView(relativeLayout);
     }
@@ -379,12 +387,11 @@ public class MyPieChartView extends FrameLayout {
         LayoutParams params = new LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-
         params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         relativeLayout.setLayoutParams(params);
         RelativeLayout.LayoutParams p2 = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+                (int) (mBaseHeight - 2 * raduis - 20));
         relativeLayout.addView(mRecyclerView, p2);
         addView(relativeLayout);
     }

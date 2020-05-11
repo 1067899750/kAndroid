@@ -9,10 +9,12 @@
 
     <com.github.tifezh.kchart.view.chart.MyPieChartView
         android:id="@+id/pie_chart"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d300"
+        android:background="#40AEA9A9"
         android:layout_centerInParent="true"
-   />
+
+        app:padding="@dimen/d50"/>
 
 
 
