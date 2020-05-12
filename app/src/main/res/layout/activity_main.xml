@@ -7,9 +7,20 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <com.github.tifezh.kchartlib.view.MeiTextPathView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d50"
+        android:layout_marginTop="@dimen/d10"
+        app:duration="12000"
+        app:text="欢迎来到 MEI_S"
+        app:textColor="#999999"
+        app:cycle="true"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/d10"
+        android:scrollbars="none"
         android:paddingLeft="50dp"
         android:paddingRight="50dp">
 

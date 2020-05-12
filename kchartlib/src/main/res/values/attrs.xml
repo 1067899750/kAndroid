@@ -65,5 +65,22 @@
         <attr name="padding" format="dimension"/>
     </declare-styleable>
 
+    <!--文字路径控件-->
+    <declare-styleable name="MeiTextPathView">
+        <attr name="text" format="string" />
+        <attr name="textSize" format="dimension" />
+        <attr name="textColor" format="color" />
+        <attr name="duration" format="integer" />
+        <attr name="strokeWidth" format="dimension" />
+        <attr name="cycle" format="boolean" />
+        <attr name="autoStart" format="boolean" />
+    </declare-styleable>
 
 </resources>
+
+
+
+
+
+
+
