@@ -103,6 +103,12 @@ public class BookAssetsPieChartView extends FrameLayout {
      * 指向说明线
      */
     private Paint mPointingPaint;
+    private float mBaseHeight;
+    private float mBaseWidth;
+    private float mHeightMessageLeft;
+    private int mLeftDataCount = 0;
+    private float mHeightMessageRight;
+    private int mRightDataCount = 0;
     private float mPointingWidth;
     private int mPointingColor;
     private Context mContext;
@@ -135,7 +141,7 @@ public class BookAssetsPieChartView extends FrameLayout {
         initAttrs(attrs, mContext);
         //初始化画笔
         initPaint();
-        mPadding = dip2px(mContext, 50);
+        mPadding = dip2px(mContext, 40);
     }
 
     private void initAttrs(AttributeSet attrs, Context context) {
@@ -147,10 +153,10 @@ public class BookAssetsPieChartView extends FrameLayout {
         mHorizontalMargin = typedArray.getDimension(R.styleable.MyPieChartView_horiMargin, 0F);
         mVerticalMargin = typedArray.getDimension(R.styleable.MyPieChartView_verticalMargin, 0F);
 
-        mAnimTime = typedArray.getInt(R.styleable.MyPieChartView_animTime, 3000);
+        mAnimTime = typedArray.getInt(R.styleable.MyPieChartView_animTime, 0);
 
         mPointingColor = typedArray.getColor(R.styleable.MyPieChartView_pointingColor, Color.GRAY);
-        mPointingWidth = typedArray.getDimension(R.styleable.MyPieChartView_pointingWidth, 2F);
+        mPointingWidth = typedArray.getDimension(R.styleable.MyPieChartView_pointingWidth, 1F);
 
         mRingWidth = typedArray.getDimension(R.styleable.MyPieChartView_ringWidth, 25F);
         isRing = typedArray.getBoolean(R.styleable.MyPieChartView_isRing, false);
@@ -199,6 +205,8 @@ public class BookAssetsPieChartView extends FrameLayout {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        mBaseHeight = h;
+        mBaseWidth = w;
         //圆心位置
         centerPosition.x = w / 2;
         centerPosition.y = h / 2;
@@ -216,7 +224,6 @@ public class BookAssetsPieChartView extends FrameLayout {
         mInRectF.top = mRectF.top + mRingWidth;
         mInRectF.right = mRectF.right - mRingWidth;
         mInRectF.bottom = mRectF.bottom - mRingWidth;
-
     }
 
     @Override
@@ -244,8 +251,55 @@ public class BookAssetsPieChartView extends FrameLayout {
 
     private void drawPieChart(Canvas canvas) {
         canvas.save();
-        mStartAngle = 0f;
+        mStartAngle = -90f;
         mSweepAngle = 0f;
+        mLeftDataCount = 0;
+        mRightDataCount = 0;
+        for (int i = 0; i < mDataList.size(); i++) {
+            mStartAngle = mStartAngle + mSweepAngle;
+            mSweepAngle = (mDataList.get(i).getNum() / mTotalNum) * 360 * mAnimationPercent;
+            if (mStartAngle + mSweepAngle / 2 >= 270 || mStartAngle + mSweepAngle / 2 <= 90) {
+                mRightDataCount++;
+            } else if (mStartAngle + mSweepAngle / 2 >= 90 && mStartAngle + mSweepAngle / 2 <= 270) {
+                mLeftDataCount++;
+            }
+        }
+
+        mHeightMessageRight = (mBaseHeight - mPadding * 2) / mRightDataCount;
+        mHeightMessageLeft = (mBaseHeight - mPadding * 2) / mLeftDataCount;
+
+        mStartAngle = -90f;
+        mSweepAngle = 0f;
+        mLeftDataCount = 0;
+        mRightDataCount = 0;
+        //绘制数字
+        for (int i = 0; i < mDataList.size(); i++) {
+            String nameStr = mDataList.get(i).getName() + StrUtil.deleteEndSurplusZero(
+                    StrUtil.floatToString(mDataList.get(i).getNum() * 100 / mTotalNum, 2)) + "%";
+            mStartAngle = mStartAngle + mSweepAngle;
+            mSweepAngle = (mDataList.get(i).getNum() / mTotalNum) * 360 * mAnimationPercent;
+            if (mStartAngle + mSweepAngle / 2 >= 270 || mStartAngle + mSweepAngle / 2 <= 90) {
+                mDataPaint.setTextAlign(Paint.Align.LEFT);
+                canvas.drawText(nameStr,
+                        mRectF.right + dip2px(mContext, 25),
+                        (float) (mPadding + mHeightMessageRight * (mRightDataCount + 0.5) - getFontHeight(mDataPaint) / 2),
+                        mDataPaint);
+
+                mRightDataCount++;
+            } else if (mStartAngle + mSweepAngle / 2 >= 90 && mStartAngle + mSweepAngle / 2 <= 270) {
+                mDataPaint.setTextAlign(Paint.Align.RIGHT);
+                canvas.drawText(nameStr,
+                        mRectF.left - dip2px(mContext, 25),
+                        mBaseHeight - mPadding - mHeightMessageLeft * mLeftDataCount - getFontHeight(mDataPaint) / 2,
+                        mDataPaint);
+                mLeftDataCount++;
+            }
+        }
+
+        mStartAngle = -90f;
+        mSweepAngle = 0f;
+        mLeftDataCount = 0;
+        mRightDataCount = 0;
         for (int i = 0; i < mDataList.size(); i++) {
             mPieChartPaint.setColor(mDataList.get(i).getColor());
             mPointingPaint.setColor(mDataList.get(i).getColor());
@@ -258,7 +312,7 @@ public class BookAssetsPieChartView extends FrameLayout {
                 canvas.drawArc(mInRectF, mStartAngle - 1, mSweepAngle + 1, true, mPieChartPaint);
             }
             mStartAngle = mStartAngle + mSweepAngle;
-            pointData(canvas, i);
+            pointLine(canvas, i);
         }
         canvas.restore();
     }
@@ -270,7 +324,7 @@ public class BookAssetsPieChartView extends FrameLayout {
      * @param canvas
      * @param i
      */
-    private void pointData(Canvas canvas, int i) {
+    private void pointLine(Canvas canvas, int i) {
         float xP = (float) (centerPosition.x + raduis *
                 Math.sin(Math.toRadians((90 + mStartAngle - mSweepAngle / 2))));
         float yP = (float) (centerPosition.y - raduis *
@@ -282,60 +336,52 @@ public class BookAssetsPieChartView extends FrameLayout {
                 Math.cos(Math.toRadians((90 + mStartAngle - mSweepAngle / 2))));
 
 
-        //长横线
-        canvas.drawLine(xP, yP, xEdP, yEdP, mPointingPaint);
-        String nameStr = mDataList.get(i).getName() + StrUtil.deleteEndSurplusZero(
-                StrUtil.floatToString(mDataList.get(i).getNum() * 100 / mTotalNum, 2)) + "%";
-        float baseLine = getFontBaseLineHeight(mDataPaint);
-        float textHeight = getFontHeight(mDataPaint);
+        int len1 = dip2px(mContext, 5);
+        int len2 = dip2px(mContext, 22);
+        if (mStartAngle - mSweepAngle / 2 >= 270 || mStartAngle - mSweepAngle / 2 <= 90) {
+            //长横线
+            canvas.drawLine(xP,
+                    yP,
+                    mRectF.right + len1 + mRightDataCount * 2,
+                    yP,
+                    mPointingPaint);
 
+            canvas.drawLine(mRectF.right + len1 + mRightDataCount * 2,
+                    yP,
+                    mRectF.right + len1 + mRightDataCount * 2,
+                    (float) (mPadding + mHeightMessageRight * (mRightDataCount + 0.5) - getFontHeight(mDataPaint)),
+                    mPointingPaint);
 
-        if (mStartAngle - mSweepAngle / 2 >= 315 || mStartAngle - mSweepAngle / 2 <= 45) {
-            mDataPaint.setTextAlign(Paint.Align.LEFT);
-            canvas.drawText(nameStr,
-                    xP + dip2px(mContext, 30),
-                    yEdP + dip2px(mContext, 3),
-                    mDataPaint);
+            canvas.drawLine(mRectF.right + len1 + mRightDataCount * 2,
+                    (float) (mPadding + mHeightMessageRight * (mRightDataCount + 0.5) - getFontHeight(mDataPaint)),
+                    mRectF.right + len2 + mRightDataCount * 2,
+                    (float) (mPadding + mHeightMessageRight * (mRightDataCount + 0.5) - getFontHeight(mDataPaint)),
+                    mPointingPaint);
 
-        } else if (mStartAngle - mSweepAngle / 2 >= 45 && mStartAngle - mSweepAngle / 2 <= 90) {
-            mDataPaint.setTextAlign(Paint.Align.CENTER);
-//            canvas.drawText(nameStr, 0, 1, xEdP + dip2px(mContext, 5), yEdP, mDataPaint);
-            canvas.drawText(nameStr,
-                    xP + getCharacterWidth(nameStr, sp2px(mContext, mDataSize)) / 2,
-                    yEdP + dip2px(mContext, 10),
-                    mDataPaint);
+            mRightDataCount++;
+        } else if (mStartAngle - mSweepAngle / 2 >= 90 && mStartAngle - mSweepAngle / 2 <= 270) {
+            //长横线
+            canvas.drawLine(xP,
+                    yP,
+                    mRectF.left - len1 - mLeftDataCount * 2,
+                    yP,
+                    mPointingPaint);
 
-        } else if (mStartAngle - mSweepAngle / 2 >= 90 && mStartAngle - mSweepAngle / 2 <= 135) {
-            mDataPaint.setTextAlign(Paint.Align.CENTER);
-//            canvas.drawText(nameStr, 0, 1, xEdP + dip2px(mContext, 5), yEdP, mDataPaint);
-            canvas.drawText(nameStr,
-                    xP - getCharacterWidth(nameStr, sp2px(mContext, mDataSize)) / 2,
-                    yEdP + dip2px(mContext, 10),
-                    mDataPaint);
+            canvas.drawLine(mRectF.left - len1 - mLeftDataCount * 2,
+                    yP,
+                    mRectF.left - len1 - mLeftDataCount * 2,
+                    mBaseHeight - mPadding - mHeightMessageLeft * mLeftDataCount - getFontHeight(mDataPaint),
+                    mPointingPaint);
 
-        } else if (mStartAngle - mSweepAngle / 2 >= 135 && mStartAngle - mSweepAngle / 2 <= 225) {
-            mDataPaint.setTextAlign(Paint.Align.LEFT);
-            canvas.drawText(nameStr,
-                    xP - dip2px(mContext, 30) - getCharacterWidth(nameStr, sp2px(mContext, mDataSize)),
-                    yEdP + dip2px(mContext, 3),
-                    mDataPaint);
+            canvas.drawLine(mRectF.left - len1 - mLeftDataCount * 2,
+                    mBaseHeight - mPadding - mHeightMessageLeft * mLeftDataCount - getFontHeight(mDataPaint),
+                    mRectF.left - len2 - mLeftDataCount * 2,
+                    mBaseHeight - mPadding - mHeightMessageLeft * mLeftDataCount - getFontHeight(mDataPaint),
+                    mPointingPaint);
 
-        } else if (mStartAngle - mSweepAngle / 2 >= 225 && mStartAngle - mSweepAngle / 2 <= 270) {
-            mDataPaint.setTextAlign(Paint.Align.RIGHT);
-//            canvas.drawText(nameStr, 0, 1, xEdP - dip2px(mContext, 5), yEdP, mDataPaint);
-            canvas.drawText(nameStr,
-                    xP,
-                    yEdP - dip2px(mContext, 3),
-                    mDataPaint);
-
-        } else if (mStartAngle - mSweepAngle / 2 >= 270 && mStartAngle - mSweepAngle / 2 <= 315) {
-            mDataPaint.setTextAlign(Paint.Align.CENTER);
-//            canvas.drawText(nameStr, 0, 1, xEdP - dip2px(mContext, 5), yEdP, mDataPaint);
-            canvas.drawText(nameStr,
-                    xP + getCharacterWidth(nameStr, sp2px(mContext, mDataSize)) / 2,
-                    yEdP - dip2px(mContext, 3),
-                    mDataPaint);
+            mLeftDataCount++;
         }
+
     }
 
     /**

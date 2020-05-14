@@ -11,7 +11,7 @@
     <com.github.tifezh.kchartlib.chart.pic.BookAssetsPieChartView
         android:id="@+id/pie_chart"
         android:layout_width="match_parent"
-        android:layout_height="208dp"
+        android:layout_height="300dp"
         android:layout_centerInParent="true"
         android:background="#FFFFFF"
         android:layout_marginRight="8dp"

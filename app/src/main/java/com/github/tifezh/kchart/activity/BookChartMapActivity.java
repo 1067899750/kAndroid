@@ -30,20 +30,20 @@ public class BookChartMapActivity extends AppCompatActivity {
         mBookPieChartView = findViewById(R.id.pie_chart2);
 
         mDataList = new ArrayList<>();
-        mDataList.add(new BookPieChartData(Color.parseColor("#0000FF"), "哈哈", 1f, "人"));
+        mDataList.add(new BookPieChartData(Color.parseColor("#0000FF"), "哈哈", 10f, "人"));
         mDataList.add(new BookPieChartData(Color.parseColor("#8A2BE2"), "嘻嘻", 2f, "人"));
-        mDataList.add(new BookPieChartData(Color.parseColor("#A52A2A"), "呵呵", 3f, "人"));
+        mDataList.add(new BookPieChartData(Color.parseColor("#A52A2A"), "呵呵", 300f, "人"));
         mDataList.add(new BookPieChartData(Color.parseColor("#DEB887"), "啧啧", 4f, "人"));
+        mDataList.add(new BookPieChartData(Color.parseColor("#5F9EA0"), "弟弟", 500f, "人"));
+        mDataList.add(new BookPieChartData(Color.parseColor("#7FFF00"), "哥哥", 60f, "人"));
+        mDataList.add(new BookPieChartData(Color.parseColor("#D2691E"), "妹妹", 200f, "人"));
+        mDataList.add(new BookPieChartData(Color.parseColor("#0000FF"), "哈哈", 1f, "人"));
+        mDataList.add(new BookPieChartData(Color.parseColor("#8A2BE2"), "嘻嘻", 20f, "人"));
+        mDataList.add(new BookPieChartData(Color.parseColor("#A52A2A"), "呵呵", 3f, "人"));
+        mDataList.add(new BookPieChartData(Color.parseColor("#DEB887"), "啧啧", 600f, "人"));
         mDataList.add(new BookPieChartData(Color.parseColor("#5F9EA0"), "弟弟", 5f, "人"));
         mDataList.add(new BookPieChartData(Color.parseColor("#7FFF00"), "哥哥", 6f, "人"));
-        mDataList.add(new BookPieChartData(Color.parseColor("#D2691E"), "妹妹", 7f, "人"));
-        mDataList.add(new BookPieChartData(Color.parseColor("#0000FF"), "哈哈", 1f, "人"));
-        mDataList.add(new BookPieChartData(Color.parseColor("#8A2BE2"), "嘻嘻", 2f, "人"));
-        mDataList.add(new BookPieChartData(Color.parseColor("#A52A2A"), "呵呵", 3f, "人"));
-        mDataList.add(new BookPieChartData(Color.parseColor("#DEB887"), "啧啧", 4f, "人"));
-        mDataList.add(new BookPieChartData(Color.parseColor("#5F9EA0"), "弟弟", 5f, "人"));
-        mDataList.add(new BookPieChartData(Color.parseColor("#7FFF00"), "哥哥", 6f, "人"));
-        mDataList.add(new BookPieChartData(Color.parseColor("#D2691E"), "妹妹", 7f, "人"));
+        mDataList.add(new BookPieChartData(Color.parseColor("#D2691E"), "妹妹", 999f,"人"));
 
         mMyPieChartView.setDataList(mDataList);
 
