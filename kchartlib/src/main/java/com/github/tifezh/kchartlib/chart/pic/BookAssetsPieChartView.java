@@ -443,25 +443,15 @@ public class BookAssetsPieChartView extends FrameLayout {
         return textHeight;
     }
 
-
     /**
-     * 获取文字的长度
+     * 文字宽度
      *
+     * @param paint
      * @param text
-     * @param size
      * @return
      */
-    public int getCharacterWidth(String text, float size) {
-        if (null == text || "".equals(text)) {
-            return 0;
-
-        }
-
-        Paint paint = new Paint();
-        paint.setTextSize(size);
-        int text_width = (int) paint.measureText(text);// 得到总体长度
-        // int width = text_width/text.length();//每一个字符的长度
-        return text_width;
+    public float getFontWidth(Paint paint, String text) {
+        return paint.measureText(text);
     }
 
 
