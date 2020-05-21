@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        startActivity(new Intent(MainActivity.this, BookChartMapActivity.class));
 
     }
 
@@ -51,19 +50,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent();
         switch (v.getId()) {
             case R.id.btn_loadmore:
-                intent.setClass(this, KlineActivity.class);//k线图，支持加载更多
+                //k线图，支持加载更多
+                intent.setClass(this, KlineActivity.class);
                 break;
 
             case R.id.btn_minute:
-                intent.setClass(this, TimeMainActivity.class);//分时图
+                //分时图
+                intent.setClass(this, TimeMainActivity.class);
                 break;
 
             case R.id.btn_tate:
-                intent.setClass(this, RateActivity.class);//利率图
+                //利率图
+                intent.setClass(this, RateActivity.class);
                 break;
 
             case R.id.btn_minute2:
-                intent.setClass(this, LmeActivity.class);//月间价差图
+                //月间价差图
+                intent.setClass(this, LmeActivity.class);
                 break;
 
             case R.id.btn_group_view:
@@ -75,30 +78,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btn_football:
-                intent.setClass(this, FootBallActivity.class);//缩放
+                //缩放
+                intent.setClass(this, FootBallActivity.class);
                 break;
 
             case R.id.btn_shade:
-                intent.setClass(this, ScaleActivity.class);//下部阴影
+                //下部阴影
+                intent.setClass(this, ScaleActivity.class);
                 break;
 
             case R.id.btn_details:
-                intent.setClass(this, RLDetailActivity.class);//明细表
+                //明细表
+                intent.setClass(this, RLDetailActivity.class);
                 break;
 
 
             case R.id.btn_line:
-                intent.setClass(this, LineActivity.class);//指示线研究
+                //指示线研究
+                intent.setClass(this, LineActivity.class);
                 break;
 
             case R.id.btn_suspend:
-                intent.setClass(this, SuspendBtnActivity.class);//饼图
+                //饼图
+                intent.setClass(this, SuspendBtnActivity.class);
                 break;
 
             case R.id.btn_chart:
-                intent.setClass(this, BookChartMapActivity.class);//饼图
+                //饼图
+                intent.setClass(this, BookChartMapActivity.class);
+                break;
+
+            case R.id.btn_direct:
+                //直播间送爱心
+                intent.setClass(this, DirectActivity.class);
                 break;
         }
         startActivity(intent);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
