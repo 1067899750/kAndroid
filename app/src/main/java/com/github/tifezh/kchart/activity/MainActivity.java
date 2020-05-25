@@ -9,34 +9,31 @@ import android.view.View;
 import com.github.tifezh.kchart.R;
 
 /**
- *
- *
- *   Description
- *   Author puyantao
- *   Email 1067899750@qq.com
- *   Date 2018-10-26 17:42
- *
- *
- *                        .::::.
- *                     .::::::::.
- *                    :::::::::::
- *                 ..:::::::::::'
- *               '::::::::::::'
- *                 .::::::::::
- *            '::::::::::::::..
- *               ..::::::::::::.
- *             ``::::::::::::::::  <- touch me
- *               ::::``:::::::::'        .:::.
- *             ::::'   ':::::'       .::::::::.
- *           .::::'      ::::     .:::::::'::::.
- *            .:::'       :::::  .:::::::::' ':::::.
- *          .::'        :::::.:::::::::'      ':::::.
- *         .::'         ::::::::::::::'         ``::::.
- *      ...:::           ::::::::::::'              ``::.
- *     ```` ':.          ':::::::::'                  ::::..
- *                        '.:::::'                    ':'````..
- *
-*/
+ * Description
+ * Author puyantao
+ * Email 1067899750@qq.com
+ * Date 2018-10-26 17:42
+ * <p>
+ * <p>
+ * .::::.
+ * .::::::::.
+ * :::::::::::
+ * ..:::::::::::'
+ * '::::::::::::'
+ * .::::::::::
+ * '::::::::::::::..
+ * ..::::::::::::.
+ * ``::::::::::::::::  <- touch me
+ * ::::``:::::::::'        .:::.
+ * ::::'   ':::::'       .::::::::.
+ * .::::'      ::::     .:::::::'::::.
+ * .:::'       :::::  .:::::::::' ':::::.
+ * .::'        :::::.:::::::::'      ':::::.
+ * .::'         ::::::::::::::'         ``::::.
+ * ...:::           ::::::::::::'              ``::.
+ * ```` ':.          ':::::::::'                  ::::..
+ * '.:::::'                    ':'````..
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,6 +108,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_direct:
                 //直播间送爱心
                 intent.setClass(this, DirectActivity.class);
+                break;
+            case R.id.btn_praise:
+                intent.setClass(this, PraiseActivity.class);
                 break;
         }
         startActivity(intent);

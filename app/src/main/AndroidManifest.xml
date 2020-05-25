@@ -21,6 +21,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activity.PraiseActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
             android:name=".activity.KlineActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
