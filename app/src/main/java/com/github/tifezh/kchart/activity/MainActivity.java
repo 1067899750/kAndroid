@@ -112,6 +112,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_praise:
                 intent.setClass(this, PraiseActivity.class);
                 break;
+            case R.id.cv_firefly:
+                intent.setClass(this, MeiFireflyActivity.class);
+                break;
+            case R.id.cv_rose:
+                intent.setClass(this, RoseActivity.class);
+                break;
         }
         startActivity(intent);
     }

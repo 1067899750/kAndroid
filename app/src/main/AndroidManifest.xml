@@ -21,6 +21,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activity.RoseActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity android:name=".activity.MeiFireflyActivity" />
+        <activity
             android:name=".activity.PraiseActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
