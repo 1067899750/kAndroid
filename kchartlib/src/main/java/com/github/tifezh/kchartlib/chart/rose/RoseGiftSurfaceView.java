@@ -32,34 +32,30 @@ import java.util.Random;
  */
 public class RoseGiftSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
-    //不使用时回收c层内存
+    /**
+     * 不使用时回收c层内存
+     */
     private Bitmap bitmap;
-
-    //画布
     private Canvas canvas;
-
-    //画笔
     private Paint paint;
-
-    //随机数
     private Random random;
-
-    //起点集合
+    /**
+     * 起点集合
+     */
     private Point[] startPoint;
-
-    //终点集合
+    /**
+     * 终点集合
+     */
     private Point[] endPoint;
-
-    //动画期间点集合
+    /**
+     * 动画期间点集合
+     */
     private Point[] currentPoint;
-
-    //点集合
+    /**
+     * 点集合
+     */
     private List<Point> points = new ArrayList<>();
-
-    //控件宽度
     private float width;
-
-    //控件高度
     private float height;
 
     /**
@@ -71,16 +67,12 @@ public class RoseGiftSurfaceView extends SurfaceView implements SurfaceHolder.Ca
      * 偏移（非随机情况下有效）
      */
     private int offsetX;
-
-    //y轴偏移量
     private int offsetY;
-
-    //属性动画
     private ValueAnimator animator;
 
     private int duration = 3000;
 
-    private static final String ASSET_LOVE = "assets/json/love.json";
+    private static final String ASSET_LOVE = "assets/love.json";
 
     public RoseGiftSurfaceView(Context context) {
         this(context, null);
@@ -95,7 +87,9 @@ public class RoseGiftSurfaceView extends SurfaceView implements SurfaceHolder.Ca
         initData();
     }
 
-    //初始化数据
+    /**
+     * 初始化数据
+     */
     private void initData() {
         paint = new Paint();
         //paint抗锯齿
