@@ -1,12 +1,14 @@
 package com.github.tifezh.kchart.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.github.tifezh.kchart.R;
+import com.github.tifezh.kchart.view.TimerTextView;
 
 /**
  * Description
@@ -39,6 +41,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TimerTextView timerTextView = findViewById(R.id.timer_text_view);
+        timerTextView.diffTime("2020-07-8 16:49:39", "2020-07-10 16:49:39");
+        timerTextView.start();
+        timerTextView.setTimerColor(Color.parseColor("#E05454"));
+        timerTextView.setTimerSize(12);
+        timerTextView.setTimerBackgroundColor(Color.parseColor("#FFFFFF"));
+        timerTextView.setRefreshCallBack(new TimerTextView.RefreshCallBack() {
+            @Override
+            public void showCallBack(boolean flag) {
+
+            }
+        });
 
     }
 

@@ -16,6 +16,13 @@
         app:textColor="#999999"
         app:cycle="true"/>
 
+    <com.github.tifezh.kchart.view.TimerTextView
+        android:id="@+id/timer_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/d100"
+        android:layout_marginRight="@dimen/d100"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
