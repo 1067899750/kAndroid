@@ -12,8 +12,11 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.view.animation.AnticipateInterpolator;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.github.tifezh.kchartlib.R;
 
@@ -57,6 +60,7 @@ public class BezierPraiseAnimator {
     private int mPraiseIconWidth = 50;
     private int mPraiseIconHeight = 50;
     private int mAnimatorDuration = 1000;
+    private int mMarketDuration = 500;
 
     public BezierPraiseAnimator(Context context) {
         mContext = context;
@@ -97,6 +101,46 @@ public class BezierPraiseAnimator {
         mTargetY = loc[1] + viewHeight / 2 - mPraiseIconHeight / 2;
         // 播放点赞动画
         startPraiseAnimation();
+
+        //添加提示语
+        TextView marketTv = new TextView(mContext);
+        marketTv.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        marketTv.setText("14鼓励");
+        if (mTargetX < mRootView.getWidth() / 2) {
+            marketTv.setX(loc[0] + viewWidth / 2);
+            marketTv.setY(loc[1] - viewHeight / 2);
+        } else {
+            marketTv.setX(loc[0] - viewWidth / 2);
+            marketTv.setY(loc[1] - viewHeight / 2);
+        }
+        mRootView.addView(marketTv);
+        addMarketAnimation(marketTv);
+    }
+
+    /**
+     * 添加提示语动画
+     */
+    private void addMarketAnimation(final TextView marketTv) {
+        AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
+        alphaAnimation.setDuration(mMarketDuration);
+        alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mRootView.removeView(marketTv);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        marketTv.setAnimation(alphaAnimation);
     }
 
 
