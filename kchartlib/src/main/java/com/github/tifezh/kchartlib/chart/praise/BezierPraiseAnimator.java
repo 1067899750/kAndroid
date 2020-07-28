@@ -203,7 +203,7 @@ public class BezierPraiseAnimator {
         float controlX;
         final float controlY;
 
-        controlY = startY - mRandom.nextInt(500) - 100;
+        controlY = startY - mRandom.nextInt(500) - 200;
         // 左右两边
         if (random % 2 == 0) {
             endX = mTargetX - random * 8;
