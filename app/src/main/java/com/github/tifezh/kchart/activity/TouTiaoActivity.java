@@ -35,15 +35,15 @@ public class TouTiaoActivity extends AppCompatActivity {
         findViewById(R.id.iv_praise).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(System.currentTimeMillis() - lastClickTime > duration){ // 防抖
-                    v.setSelected(!v.isSelected());
-                }
+//                if(System.currentTimeMillis() - lastClickTime > duration){ // 防抖
+//                    v.setSelected(!v.isSelected());
+//                }
                 lastClickTime = System.currentTimeMillis();
-                if(v.isSelected()){
+//                if(v.isSelected()){
                     int x = (int)(v.getX() + v.getWidth() / 2);
                     int y = (int)(v.getY() + v.getHeight() / 2);
                     superLikeLayout.launch(x, y);
-                }
+//                }
             }
         });
     }

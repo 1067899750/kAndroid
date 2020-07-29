@@ -22,6 +22,7 @@ public class BitmapProviderFactory {
                 .setNumberDrawableArray(new int[]{R.drawable.multi_digg_num_0, R.drawable.multi_digg_num_1, R.drawable.multi_digg_num_2, R.drawable.multi_digg_num_3,
                         R.drawable.multi_digg_num_4, R.drawable.multi_digg_num_5, R.drawable.multi_digg_num_6, R.drawable.multi_digg_num_7,
                         R.drawable.multi_digg_num_8, R.drawable.multi_digg_num_9})
+
                 .setLevelDrawableArray(new int[]{R.drawable.multi_digg_word_level_1, R.drawable.multi_digg_word_level_2, R.drawable.multi_digg_word_level_3})
                 .build();
     }

@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @author puyantao
- * @description
+ * @description 图片动画
  * @date 2020/7/29 16:21
  */
 public class EruptionAnimationFrame extends BaseAnimationFrame {

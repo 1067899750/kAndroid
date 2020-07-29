@@ -57,6 +57,11 @@ public abstract class BaseAnimationFrame implements AnimationFrame {
 
     protected abstract List<Element> generatedElements(int x, int y, BitmapProvider.Provider bitmapProvider);
 
+    /**
+     * 设置起始点
+     * @param x
+     * @param y
+     */
     protected void setStartPoint(int x, int y) {
         this.x = x;
         this.y = y;

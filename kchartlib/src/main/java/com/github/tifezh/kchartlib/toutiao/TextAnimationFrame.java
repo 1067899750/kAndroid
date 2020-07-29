@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @author puyantao
- * @description
+ * @description  文字动画
  * @date 2020/7/29 16:21
  */
 
@@ -50,7 +50,7 @@ public class TextAnimationFrame extends BaseAnimationFrame {
     }
 
     /**
-     * 生成N个Element
+     * 生成N个 Element
      */
     @Override
     protected List<Element> generatedElements(int x, int y, BitmapProvider.Provider bitmapProvider) {

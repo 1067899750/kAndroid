@@ -21,5 +21,6 @@
         android:id="@+id/super_like_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:eruption_element_amount="5"
         app:show_text="true"/>
 </RelativeLayout>

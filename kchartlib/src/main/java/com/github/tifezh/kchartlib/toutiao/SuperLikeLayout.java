@@ -28,12 +28,21 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
 
     private static final long INTERVAL = 40;
     private static final int MAX_FRAME_SIZE = 16;
+    /**
+     * 默认图片个数
+     */
     private static final int ERUPTION_ELEMENT_AMOUNT = 4;
     private AnimationFramePool animationFramePool;
 
     private AnimationHandler animationHandler;
     private BitmapProvider.Provider provider;
+    /**
+     * 是否显示喷射图标
+     */
     private boolean hasEruptionAnimation;
+    /**
+     * 是否显示文字
+     */
     private boolean hasTextAnimation;
 
 
@@ -51,10 +60,9 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
     }
 
     private void init(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-
         animationHandler = new AnimationHandler(this);
-
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SuperLikeLayout, defStyleAttr, 0);
+        //设置图片个数
         int elementAmount = a.getInteger(R.styleable.SuperLikeLayout_eruption_element_amount, ERUPTION_ELEMENT_AMOUNT);
         int maxFrameSize = a.getInteger(R.styleable.SuperLikeLayout_max_eruption_total, MAX_FRAME_SIZE);
         hasEruptionAnimation = a.getBoolean(R.styleable.SuperLikeLayout_show_emoji, true);
@@ -77,13 +85,18 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
             AnimationFrame animationFrame = runningFrameList.get(i);
             List<Element> elementList = animationFrame.nextFrame(INTERVAL);
             for (Element element : elementList) {
+                //绘制图片
                 canvas.drawBitmap(element.getBitmap(), element.getX(), element.getY(), null);
             }
         }
 
     }
 
-
+    /**
+     * 启动动画
+     * @param x 点击试图的 X 坐标
+     * @param y 点击试图的 y 坐标
+     */
     public void launch(int x, int y) {
         if (!hasEruptionAnimation && !hasTextAnimation) {
             return;

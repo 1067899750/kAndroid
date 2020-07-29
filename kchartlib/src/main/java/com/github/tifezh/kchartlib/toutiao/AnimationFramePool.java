@@ -9,8 +9,13 @@ import java.util.List;
  * @date 2020/7/29 16:21
  */
 public class AnimationFramePool {
-
+    /**
+     * 延时时间, 1s
+     */
     private static final int DURATION = 1000;
+    /**
+     * 连点次数缓存数组
+     */
     private List<AnimationFrame> runningFrameList;
     private List<AnimationFrame> idleFrameList;
 
@@ -31,11 +36,11 @@ public class AnimationFramePool {
     }
 
     AnimationFrame obtain(int type) {
-
         // RunningAnimationFrame 存在onlyOne直接复用
         AnimationFrame animationFrame = getRunningFrameListByOnlyOneAndType(type);
-        if (animationFrame != null)
+        if (animationFrame != null) {
             return animationFrame;
+        }
 
         // 有空闲AnimationFrame直接使用, 加入runningFrame队列中
         animationFrame = removeIdleFrameListDownByType(type);
@@ -50,15 +55,15 @@ public class AnimationFramePool {
         if (animationFrame != null) {
             runningFrameList.add(animationFrame);
         }
-
         return animationFrame;
     }
 
     private AnimationFrame getRunningFrameListByOnlyOneAndType(int type) {
         for (int i = runningFrameList.size() - 1; i >= 0; i--) {
             AnimationFrame animationFrame = runningFrameList.get(i);
-            if (type == animationFrame.getType() && animationFrame.onlyOne())
+            if (type == animationFrame.getType() && animationFrame.onlyOne()) {
                 return animationFrame;
+            }
         }
         return null;
     }

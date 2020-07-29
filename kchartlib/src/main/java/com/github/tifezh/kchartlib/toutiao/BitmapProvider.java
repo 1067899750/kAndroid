@@ -12,9 +12,11 @@ import android.util.LruCache;
 
 import com.github.tifezh.kchartlib.R;
 
+import java.security.Provider;
+
 /**
  * @author puyantao
- * @description
+ * @description 试图集合
  * @date 2020/7/29 16:21
  */
 
@@ -25,10 +27,19 @@ public class BitmapProvider {
         private LruCache<Integer, Bitmap> bitmapLruCache;
         private int NUMBER_PREFIX = 0x70000000;
         private int LEVEL_PREFIX = 0x80000000;
+        /**
+         * 图片
+         */
         private @DrawableRes
         int[] drawableArray;
+        /**
+         * 数字
+         */
         private @DrawableRes
         int[] numberDrawableArray;
+        /**
+         * 提示文字
+         */
         private @DrawableRes
         int[] levelDrawableArray;
         private String[] levelStringArray;
@@ -46,6 +57,11 @@ public class BitmapProvider {
             this.textSize = textSize;
         }
 
+        /**
+         * 获取文字
+         * @param number
+         * @return
+         */
         @NonNull
         @Override
         public Bitmap getNumberBitmap(int number) {
@@ -67,6 +83,11 @@ public class BitmapProvider {
             return bitmap;
         }
 
+        /**
+         * 提示文字
+         * @param level
+         * @return
+         */
         @NonNull
         @Override
         public Bitmap getLevelBitmap(int level) {
@@ -89,6 +110,10 @@ public class BitmapProvider {
             return bitmap;
         }
 
+        /**
+         * 获取随机图片
+         * @return
+         */
         @Override
         public Bitmap getRandomBitmap() {
             int index = (int) (Math.random() * drawableArray.length);
@@ -129,6 +154,11 @@ public class BitmapProvider {
             this.context = context;
         }
 
+        /**
+         * 设置缓存大小
+         * @param cacheSize
+         * @return
+         */
         public Builder setCacheSize(int cacheSize) {
             this.cacheSize = cacheSize;
             return this;
@@ -184,12 +214,25 @@ public class BitmapProvider {
 
 
     public interface Provider {
-
+        /**
+         * 获取随机图片
+         * @return
+         */
         Bitmap getRandomBitmap();
 
+        /**
+         * 获取文字
+         * @param number
+         * @return
+         */
         @NonNull
         Bitmap getNumberBitmap(int number);
 
+        /**
+         * 提示文字
+         * @param level
+         * @return
+         */
         @NonNull
         Bitmap getLevelBitmap(int level);
     }
