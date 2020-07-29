@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.TouTiaoActivity">
+
+    <ImageView
+        android:id="@+id/iv_praise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/d100"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_praise" />
+
+
+    <com.github.tifezh.kchartlib.toutiao.SuperLikeLayout
+        android:id="@+id/super_like_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:show_text="true"/>
+</RelativeLayout>

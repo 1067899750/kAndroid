@@ -32,6 +32,13 @@ public class PraiseActivity extends AppCompatActivity {
                 mPraiseAnimator.startAnimation(mIvPraise);
             }
         });
+        mIvPraise.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mPraiseAnimator.startAnimation(mIvPraise);
+                return false;
+            }
+        });
 
     }
 }
