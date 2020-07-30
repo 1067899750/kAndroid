@@ -112,14 +112,10 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
             List<Element> elementList = animationFrame.nextFrame(INTERVAL);
             for (Element element : elementList) {
                 //绘制图片
-                if (animationFrame.getType() == 1) {
-                    Paint paint = new Paint();
-                    //设置透明程度
-                    paint.setAlpha(element.getAlpha());
-                    canvas.drawBitmap(element.getBitmap(), element.getX(), element.getY(), paint);
-                } else {
-                    canvas.drawBitmap(element.getBitmap(), element.getX(), element.getY(), null);
-                }
+                Paint paint = new Paint();
+                //设置透明程度
+                paint.setAlpha(element.getAlpha());
+                canvas.drawBitmap(element.getBitmap(), element.getX(), element.getY(), paint);
             }
         }
 
