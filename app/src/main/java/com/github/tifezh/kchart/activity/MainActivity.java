@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
-        TouTiaoActivity.StartTouTiaoActivity(this);
+        PraiseActivity.startPraiseActivity(this);
     }
 
     @Override

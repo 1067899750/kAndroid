@@ -20,7 +20,7 @@ public class TouTiaoActivity extends AppCompatActivity {
     private SuperLikeLayout superLikeLayout;
     private PraiseRelativeLayout relativeLayout;
 
-    public static void StartTouTiaoActivity(Activity activity) {
+    public static void startTouTiaoActivity(Activity activity) {
         Intent intent = new Intent(activity, TouTiaoActivity.class);
         activity.startActivity(intent);
     }
