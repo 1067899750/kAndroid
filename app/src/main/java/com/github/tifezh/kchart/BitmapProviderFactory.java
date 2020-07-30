@@ -24,6 +24,7 @@ public class BitmapProviderFactory {
                         R.drawable.multi_digg_num_8, R.drawable.multi_digg_num_9})
 
                 .setLevelDrawableArray(new int[]{R.drawable.multi_digg_word_level_1, R.drawable.multi_digg_word_level_2, R.drawable.multi_digg_word_level_3})
+                .setTextSize(40)
                 .build();
     }
 

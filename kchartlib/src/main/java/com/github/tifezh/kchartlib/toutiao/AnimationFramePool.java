@@ -10,9 +10,9 @@ import java.util.List;
  */
 public class AnimationFramePool {
     /**
-     * 延时时间, 1s
+     * 延时时间
      */
-    private static final int DURATION = 1000;
+    private static final int DURATION = 800;
     /**
      * 连点次数缓存数组
      */

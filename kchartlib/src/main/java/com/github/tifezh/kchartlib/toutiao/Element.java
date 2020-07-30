@@ -9,6 +9,11 @@ import android.graphics.Bitmap;
  */
 
 public interface Element {
+    /**
+     * 获取透明度
+     * @return
+     */
+    int getAlpha();
 
     int getX();
 

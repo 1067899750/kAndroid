@@ -119,6 +119,11 @@ public class TextAnimationFrame extends BaseAnimationFrame {
         }
 
         @Override
+        public int getAlpha() {
+            return 1;
+        }
+
+        @Override
         public int getX() {
             return x;
         }

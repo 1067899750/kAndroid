@@ -41,18 +41,20 @@ public class EruptionAnimationFrame extends BaseAnimationFrame {
             //起始角度
             double startAngle = Math.random() * 45 + (i * 30);
             //运动速率
-            double speed = 1000 + Math.random() * 200;
+            double speed = 1500 + Math.random() * 200;
             Element element = new EruptionElement(startAngle, speed, bitmapProvider.getRandomBitmap());
             elements.add(element);
         }
         return elements;
     }
 
+
     public static class EruptionElement implements Element {
         private int x;
         private int y;
         private double angle;
         private double speed;
+        private int alpha;
         /**
          * 重力加速度px/s
          */
@@ -63,6 +65,11 @@ public class EruptionAnimationFrame extends BaseAnimationFrame {
             this.angle = angle;
             this.speed = speed;
             this.bitmap = bitmap;
+        }
+
+        @Override
+        public int getAlpha() {
+            return alpha;
         }
 
         @Override
@@ -87,6 +94,7 @@ public class EruptionAnimationFrame extends BaseAnimationFrame {
             double y_speed = -speed * Math.sin(angle * Math.PI / 180);
             x = (int) (start_x + (x_speed * time) - (bitmap.getWidth() / 2));
             y = (int) (start_y + (y_speed * time) + (GRAVITY * time * time) / 2 - (bitmap.getHeight() / 2));
+            alpha = (int) (255 - 255 * time);
         }
     }
 }

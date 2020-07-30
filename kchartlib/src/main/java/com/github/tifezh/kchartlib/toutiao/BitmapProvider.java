@@ -28,20 +28,23 @@ public class BitmapProvider {
         private int NUMBER_PREFIX = 0x70000000;
         private int LEVEL_PREFIX = 0x80000000;
         /**
-         * 图片
+         * 喷射动画图片
          */
         private @DrawableRes
         int[] drawableArray;
         /**
-         * 数字
+         * 点击次数数字
          */
         private @DrawableRes
         int[] numberDrawableArray;
         /**
-         * 提示文字
+         * 点击次数修饰
          */
         private @DrawableRes
         int[] levelDrawableArray;
+        /**
+         * 当{@link #numberDrawableArray == null} 时，用此数组
+         */
         private String[] levelStringArray;
         private Context context;
         private float textSize;
@@ -59,6 +62,7 @@ public class BitmapProvider {
 
         /**
          * 获取文字
+         *
          * @param number
          * @return
          */
@@ -85,6 +89,7 @@ public class BitmapProvider {
 
         /**
          * 提示文字
+         *
          * @param level
          * @return
          */
@@ -112,6 +117,7 @@ public class BitmapProvider {
 
         /**
          * 获取随机图片
+         *
          * @return
          */
         @Override
@@ -156,6 +162,7 @@ public class BitmapProvider {
 
         /**
          * 设置缓存大小
+         *
          * @param cacheSize
          * @return
          */
@@ -216,12 +223,14 @@ public class BitmapProvider {
     public interface Provider {
         /**
          * 获取随机图片
+         *
          * @return
          */
         Bitmap getRandomBitmap();
 
         /**
          * 获取文字
+         *
          * @param number
          * @return
          */
@@ -230,6 +239,7 @@ public class BitmapProvider {
 
         /**
          * 获取文字修饰
+         *
          * @param level
          * @return
          */

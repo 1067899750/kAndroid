@@ -27,7 +27,13 @@ import java.util.List;
 public class SuperLikeLayout extends View implements AnimationEndListener {
     private long totalTime = 60 * 1000;
     private static final String TAG = "SuperLikeLayout";
-    private static final long INTERVAL = 50;
+    /**
+     * 移动时间间隔
+     */
+    private static final long INTERVAL = 40;
+    /**
+     * 默认默认缓存数组的个数
+     */
     private static final int MAX_FRAME_SIZE = 16;
     /**
      * 默认图片个数
@@ -81,9 +87,11 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SuperLikeLayout, defStyleAttr, 0);
         //设置图片个数
         int elementAmount = a.getInteger(R.styleable.SuperLikeLayout_eruption_element_amount, ERUPTION_ELEMENT_AMOUNT);
-        //默认数组的个数
+        //默认缓存数组的个数
         int maxFrameSize = a.getInteger(R.styleable.SuperLikeLayout_max_eruption_total, MAX_FRAME_SIZE);
+        //是否显示喷射图标
         hasEruptionAnimation = a.getBoolean(R.styleable.SuperLikeLayout_show_emoji, true);
+        //是否显示文字
         hasTextAnimation = a.getBoolean(R.styleable.SuperLikeLayout_show_text, true);
         a.recycle();
 
@@ -104,7 +112,14 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
             List<Element> elementList = animationFrame.nextFrame(INTERVAL);
             for (Element element : elementList) {
                 //绘制图片
-                canvas.drawBitmap(element.getBitmap(), element.getX(), element.getY(), null);
+                if (animationFrame.getType() == 1) {
+                    Paint paint = new Paint();
+                    //设置透明程度
+                    paint.setAlpha(element.getAlpha());
+                    canvas.drawBitmap(element.getBitmap(), element.getX(), element.getY(), paint);
+                } else {
+                    canvas.drawBitmap(element.getBitmap(), element.getX(), element.getY(), null);
+                }
             }
         }
 

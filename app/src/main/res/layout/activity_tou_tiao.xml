@@ -27,5 +27,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:eruption_element_amount="5"
+        app:max_eruption_total="16"
+        app:show_emoji="true"
         app:show_text="true"/>
 </RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
