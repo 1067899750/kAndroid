@@ -11,6 +11,8 @@ import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ import com.github.tifezh.kchartlib.R;
 import com.github.tifezh.kchartlib.toutiao.BitmapProvider;
 import com.github.tifezh.kchartlib.toutiao.Element;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -74,6 +77,8 @@ public class BezierPraiseAnimator {
      * 连续点击次数
      */
     private int likeCount;
+    private NumberHandler mNumberHandler;
+    private static final int STOP_ANIMATION = 10000;
     private long lastClickTimeMillis;
     private int mPraiseIconHeight = 70;
     private int mAnimatorDuration = 800;
@@ -123,6 +128,7 @@ public class BezierPraiseAnimator {
     private void initData() {
         mRandom = new Random();
         mAnimatorList = new ArrayList<>();
+        mNumberHandler = new NumberHandler(this);
     }
 
 
@@ -399,6 +405,8 @@ public class BezierPraiseAnimator {
         this.mPraiseView = view;
         isLongClick = false;
         startAnimation(view);
+        mNumberHandler.removeMessages(STOP_ANIMATION);
+        mNumberHandler.sendEmptyMessageAtTime(STOP_ANIMATION, 500);
     }
 
 
@@ -434,6 +442,22 @@ public class BezierPraiseAnimator {
             }
         });
         mNumberViewGroup.setAnimation(alphaAnimation);
+    }
+
+    public static final class NumberHandler extends Handler{
+        private WeakReference<BezierPraiseAnimator> mWeakReference;
+        public NumberHandler(BezierPraiseAnimator bezierPraiseAnimator) {
+            mWeakReference = new WeakReference<>(bezierPraiseAnimator);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == STOP_ANIMATION){
+                mWeakReference.get().stopNumAnimation();
+            }
+        }
+
     }
 }
 
