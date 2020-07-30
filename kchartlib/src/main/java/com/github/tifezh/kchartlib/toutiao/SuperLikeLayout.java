@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -24,6 +25,7 @@ import java.util.List;
  */
 
 public class SuperLikeLayout extends View implements AnimationEndListener {
+    private long totalTime = 60 * 1000;
     private static final String TAG = "SuperLikeLayout";
     private static final long INTERVAL = 50;
     private static final int MAX_FRAME_SIZE = 16;
@@ -43,7 +45,23 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
      * 是否显示文字
      */
     private boolean hasTextAnimation;
+    private View mView;
+    private boolean isLongClick;
 
+    private CountDownTimer countDownTimer = new CountDownTimer(totalTime, 200) {
+        @Override
+        public void onTick(long millisUntilFinished) {
+            //执行任务
+            launch(mView);
+        }
+
+        @Override
+        public void onFinish() {
+            if (countDownTimer != null) {
+                countDownTimer.start();
+            }
+        }
+    };
 
     public SuperLikeLayout(@NonNull Context context) {
         this(context, null);
@@ -95,9 +113,9 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
     /**
      * 启动动画
      *
-     * @param v 点击试图
+     * @param v 单次点击试图
      */
-    public void launch(View v) {
+    private void launch(View v) {
         int width = v.getWidth();
         int height = v.getHeight();
         int x = (int) (v.getX() + width / 2);
@@ -118,6 +136,7 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
         if (hasTextAnimation) {
             AnimationFrame textAnimationFrame = animationFramePool.obtain(TextAnimationFrame.TYPE);
             if (textAnimationFrame != null) {
+                textAnimationFrame.setLongClick(isLongClick);
                 textAnimationFrame.setAnimationEndListener(this);
                 textAnimationFrame.prepare(width, height, x, y, getProvider());
             }
@@ -125,6 +144,38 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
         animationHandler.removeMessages(AnimationHandler.MESSAGE_CODE_REFRESH_ANIMATION);
         animationHandler.sendEmptyMessageDelayed(AnimationHandler.MESSAGE_CODE_REFRESH_ANIMATION, INTERVAL);
 
+    }
+
+    /**
+     * 长按试图
+     *
+     * @param view
+     */
+    public void longClickView(View view) {
+        this.mView = view;
+        stop();
+        isLongClick = true;
+        //主线程中调用：
+        countDownTimer.start();
+    }
+
+    /**
+     * 单点试图
+     *
+     * @param view
+     */
+    public void clickView(View view) {
+        this.mView = view;
+        isLongClick = false;
+        launch(view);
+    }
+
+
+    /**
+     * 结束计时
+     */
+    public void stop() {
+        countDownTimer.cancel();
     }
 
     public boolean hasAnimation() {

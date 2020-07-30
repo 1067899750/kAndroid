@@ -31,7 +31,17 @@ public interface AnimationFrame {
      */
     List<Element> nextFrame(long interval);
 
+    /**
+     * 是否可以复用
+     * @return
+     */
     boolean onlyOne();
+
+    /**
+     * 是否长按
+     * @param b
+     */
+    void setLongClick(boolean b);
 
     /**
      * 动画结束监听器

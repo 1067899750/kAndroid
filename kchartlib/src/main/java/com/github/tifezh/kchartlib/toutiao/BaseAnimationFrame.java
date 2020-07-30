@@ -91,4 +91,21 @@ public abstract class BaseAnimationFrame implements AnimationFrame {
     public boolean onlyOne() {
         return false;
     }
+
+    @Override
+    public void setLongClick(boolean b) {
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+

@@ -9,19 +9,18 @@ import android.view.View;
 import com.github.tifezh.kchart.BitmapProviderFactory;
 import com.github.tifezh.kchart.R;
 import com.github.tifezh.kchartlib.toutiao.SuperLikeLayout;
+import com.github.tifezh.kchartlib.toutiao.PraiseRelativeLayout;
 
 /**
- *
- * @description 模仿今日头条
  * @author puyantao
+ * @description 模仿今日头条
  * @date 2020/7/29 16:25
  */
 public class TouTiaoActivity extends AppCompatActivity {
     private SuperLikeLayout superLikeLayout;
-    private long duration = 200;
-    private long lastClickTime;
+    private PraiseRelativeLayout relativeLayout;
 
-    public static void StartTouTiaoActivity(Activity activity){
+    public static void StartTouTiaoActivity(Activity activity) {
         Intent intent = new Intent(activity, TouTiaoActivity.class);
         activity.startActivity(intent);
     }
@@ -32,16 +31,21 @@ public class TouTiaoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tou_tiao);
         superLikeLayout = findViewById(R.id.super_like_layout);
         superLikeLayout.setProvider(BitmapProviderFactory.getHDProvider(this));
-        findViewById(R.id.iv_praise).setOnClickListener(new View.OnClickListener() {
+        relativeLayout = findViewById(R.id.praise_rl);
+        relativeLayout.setOnPraiseClickListener(new PraiseRelativeLayout.OnPraiseClickListener() {
             @Override
             public void onClick(View v) {
-//                if(System.currentTimeMillis() - lastClickTime > duration){ // 防抖
-//                    v.setSelected(!v.isSelected());
-//                }
-                lastClickTime = System.currentTimeMillis();
-//                if(v.isSelected()){
-                    superLikeLayout.launch(v);
-//                }
+                superLikeLayout.clickView(v);
+            }
+
+            @Override
+            public void onLongClick(View v) {
+                superLikeLayout.longClickView(v);
+            }
+
+            @Override
+            public void onCancelClick(View v) {
+                superLikeLayout.stop();
             }
         });
     }

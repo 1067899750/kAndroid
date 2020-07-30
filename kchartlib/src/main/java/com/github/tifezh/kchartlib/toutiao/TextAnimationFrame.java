@@ -15,6 +15,10 @@ public class TextAnimationFrame extends BaseAnimationFrame {
     public static final int TYPE = 2;
     private long lastClickTimeMillis;
     /**
+     * 是否长按
+     */
+    private boolean isLongClick;
+    /**
      * 连续点击次数
      */
     private int likeCount;
@@ -36,10 +40,14 @@ public class TextAnimationFrame extends BaseAnimationFrame {
      */
     private void calculateCombo() {
         //连续点击事件小于 1s 加 1, 否着重置
-        if (System.currentTimeMillis() - lastClickTimeMillis < duration) {
+        if (isLongClick) {
             likeCount++;
         } else {
-            likeCount = 1;
+            if (System.currentTimeMillis() - lastClickTimeMillis < duration) {
+                likeCount++;
+            } else {
+                likeCount = 1;
+            }
         }
         lastClickTimeMillis = System.currentTimeMillis();
     }
@@ -47,6 +55,11 @@ public class TextAnimationFrame extends BaseAnimationFrame {
     @Override
     public int getType() {
         return TYPE;
+    }
+
+    @Override
+    public void setLongClick(boolean b) {
+        this.isLongClick = b;
     }
 
 
@@ -73,9 +86,23 @@ public class TextAnimationFrame extends BaseAnimationFrame {
             count = count / 10;
         }
 
-        int level = likeCount / 10;
-        if (level > 2) {
-            level = 2;
+        //判断是 鼓励、加油、太棒了
+        int level = 0;
+        if (isLongClick) {
+            //长按情况
+            if (likeCount < 21) {
+                level = 0;
+            } else if (likeCount < 46) {
+                level = 1;
+            } else {
+                level = 2;
+            }
+        } else {
+            //单点情况
+            level = likeCount / 10;
+            if (level > 2) {
+                level = 2;
+            }
         }
         elements.add(new TextElement(bitmapProvider.getLevelBitmap(level), x - width));
         return elements;
