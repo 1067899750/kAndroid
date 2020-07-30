@@ -7,6 +7,10 @@ package com.github.tifezh.kchartlib.toutiao;
  */
 public interface AnimationEndListener {
 
+    /**
+     * 动画结束
+     * @param animationFrame
+     */
     void onAnimationEnd(AnimationFrame animationFrame);
 
 }

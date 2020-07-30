@@ -229,7 +229,7 @@ public class BitmapProvider {
         Bitmap getNumberBitmap(int number);
 
         /**
-         * 提示文字
+         * 获取文字修饰
          * @param level
          * @return
          */

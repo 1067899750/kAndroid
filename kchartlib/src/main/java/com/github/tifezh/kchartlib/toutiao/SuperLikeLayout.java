@@ -3,6 +3,7 @@ package com.github.tifezh.kchartlib.toutiao;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -23,10 +24,8 @@ import java.util.List;
  */
 
 public class SuperLikeLayout extends View implements AnimationEndListener {
-
     private static final String TAG = "SuperLikeLayout";
-
-    private static final long INTERVAL = 40;
+    private static final long INTERVAL = 50;
     private static final int MAX_FRAME_SIZE = 16;
     /**
      * 默认图片个数
@@ -64,6 +63,7 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SuperLikeLayout, defStyleAttr, 0);
         //设置图片个数
         int elementAmount = a.getInteger(R.styleable.SuperLikeLayout_eruption_element_amount, ERUPTION_ELEMENT_AMOUNT);
+        //默认数组的个数
         int maxFrameSize = a.getInteger(R.styleable.SuperLikeLayout_max_eruption_total, MAX_FRAME_SIZE);
         hasEruptionAnimation = a.getBoolean(R.styleable.SuperLikeLayout_show_emoji, true);
         hasTextAnimation = a.getBoolean(R.styleable.SuperLikeLayout_show_text, true);
@@ -94,10 +94,15 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
 
     /**
      * 启动动画
-     * @param x 点击试图的 X 坐标
-     * @param y 点击试图的 y 坐标
+     *
+     * @param v 点击试图
      */
-    public void launch(int x, int y) {
+    public void launch(View v) {
+        int width = v.getWidth();
+        int height = v.getHeight();
+        int x = (int) (v.getX() + width / 2);
+        int y = (int) (v.getY() + height / 2);
+
         if (!hasEruptionAnimation && !hasTextAnimation) {
             return;
         }
@@ -106,7 +111,7 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
             AnimationFrame eruptionAnimationFrame = animationFramePool.obtain(EruptionAnimationFrame.TYPE);
             if (eruptionAnimationFrame != null && !eruptionAnimationFrame.isRunning()) {
                 eruptionAnimationFrame.setAnimationEndListener(this);
-                eruptionAnimationFrame.prepare(x, y, getProvider());
+                eruptionAnimationFrame.prepare(width, height, x, y, getProvider());
             }
         }
         // combo动画
@@ -114,7 +119,7 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
             AnimationFrame textAnimationFrame = animationFramePool.obtain(TextAnimationFrame.TYPE);
             if (textAnimationFrame != null) {
                 textAnimationFrame.setAnimationEndListener(this);
-                textAnimationFrame.prepare(x, y, getProvider());
+                textAnimationFrame.prepare(width, height, x, y, getProvider());
             }
         }
         animationHandler.removeMessages(AnimationHandler.MESSAGE_CODE_REFRESH_ANIMATION);
@@ -126,6 +131,11 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
         return animationFramePool.hasRunningAnimation();
     }
 
+    /**
+     * 设置数据对象
+     *
+     * @param provider
+     */
     public void setProvider(BitmapProvider.Provider provider) {
         this.provider = provider;
     }
@@ -160,6 +170,11 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
         animationHandler.removeMessages(AnimationHandler.MESSAGE_CODE_REFRESH_ANIMATION);
     }
 
+    /**
+     * 动画结束
+     *
+     * @param animationFrame
+     */
     @Override
     public void onAnimationEnd(AnimationFrame animationFrame) {
         onRecycle(animationFrame);

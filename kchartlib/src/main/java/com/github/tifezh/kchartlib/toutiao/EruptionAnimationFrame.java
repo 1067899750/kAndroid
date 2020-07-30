@@ -25,21 +25,23 @@ public class EruptionAnimationFrame extends BaseAnimationFrame {
     }
 
     @Override
-    public void prepare(int x, int y, BitmapProvider.Provider bitmapProvider) {
+    public void prepare(int width, int height, int x, int y, BitmapProvider.Provider bitmapProvider) {
         reset();
-        setStartPoint(x, y);
-        elements = generatedElements(x, y, bitmapProvider);
+        setStartPoint(width, height, x, y);
+        elements = generatedElements(width, height, x, y, bitmapProvider);
     }
 
     /**
      * 生成N个Element
      */
     @Override
-    protected List<Element> generatedElements(int x, int y, BitmapProvider.Provider bitmapProvider) {
+    protected List<Element> generatedElements(int width, int height, int x, int y, BitmapProvider.Provider bitmapProvider) {
         List<Element> elements = new ArrayList<>(elementSize);
         for (int i = 0; i < elementSize; i++) {
+            //起始角度
             double startAngle = Math.random() * 45 + (i * 30);
-            double speed = 500 + Math.random() * 200;
+            //运动速率
+            double speed = 1000 + Math.random() * 200;
             Element element = new EruptionElement(startAngle, speed, bitmapProvider.getRandomBitmap());
             elements.add(element);
         }
@@ -79,7 +81,7 @@ public class EruptionAnimationFrame extends BaseAnimationFrame {
         }
 
         @Override
-        public void evaluate(int start_x, int start_y, double time) {
+        public void evaluate(int width, int height, int start_x, int start_y, double time) {
             time = time / 1000;
             double x_speed = speed * Math.cos(angle * Math.PI / 180);
             double y_speed = -speed * Math.sin(angle * Math.PI / 180);

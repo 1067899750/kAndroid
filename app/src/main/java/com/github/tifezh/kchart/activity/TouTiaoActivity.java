@@ -40,9 +40,7 @@ public class TouTiaoActivity extends AppCompatActivity {
 //                }
                 lastClickTime = System.currentTimeMillis();
 //                if(v.isSelected()){
-                    int x = (int)(v.getX() + v.getWidth() / 2);
-                    int y = (int)(v.getY() + v.getHeight() / 2);
-                    superLikeLayout.launch(x, y);
+                    superLikeLayout.launch(v);
 //                }
             }
         });

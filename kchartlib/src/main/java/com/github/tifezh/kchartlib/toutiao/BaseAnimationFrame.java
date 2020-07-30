@@ -8,9 +8,16 @@ import java.util.List;
  * @date 2020/7/29 16:21
  */
 public abstract class BaseAnimationFrame implements AnimationFrame {
-
+    /**
+     * 起始点
+     */
     private int x;
     private int y;
+    /**
+     * 点击试图的宽、高
+     */
+    private int width;
+    private int height;
     private double currentTime;
     private boolean isRunnable;
     List<Element> elements;
@@ -36,7 +43,7 @@ public abstract class BaseAnimationFrame implements AnimationFrame {
             }
         } else {
             for (Element element : elements) {
-                element.evaluate(x, y, currentTime);
+                element.evaluate(width, height, x, y, currentTime);
             }
         }
         return elements;
@@ -55,14 +62,27 @@ public abstract class BaseAnimationFrame implements AnimationFrame {
         }
     }
 
-    protected abstract List<Element> generatedElements(int x, int y, BitmapProvider.Provider bitmapProvider);
+    /**
+     * 生成图标对象
+     *
+     * @param width
+     * @param height
+     * @param x
+     * @param y
+     * @param bitmapProvider
+     * @return
+     */
+    protected abstract List<Element> generatedElements(int width, int height, int x, int y, BitmapProvider.Provider bitmapProvider);
 
     /**
      * 设置起始点
+     *
      * @param x
      * @param y
      */
-    protected void setStartPoint(int x, int y) {
+    protected void setStartPoint(int width, int height, int x, int y) {
+        this.width = width;
+        this.height = height;
         this.x = x;
         this.y = y;
     }
