@@ -56,6 +56,12 @@ public class PraiseActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPraiseAnimator.onDestroy();
+    }
 }
 
 

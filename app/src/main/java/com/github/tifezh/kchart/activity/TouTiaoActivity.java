@@ -49,6 +49,12 @@ public class TouTiaoActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        superLikeLayout.onDestroy();
+    }
 }
 
 

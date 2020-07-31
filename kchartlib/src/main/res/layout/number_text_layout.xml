@@ -15,7 +15,6 @@
         android:id="@+id/number_two"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="3dp"
         android:src="@drawable/multi_digg_num_1"
         android:layout_gravity="center_vertical"/>
 
@@ -23,7 +22,6 @@
         android:id="@+id/number_three"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="3dp"
         android:src="@drawable/multi_digg_num_1"
         android:layout_gravity="center_vertical"/>
 
@@ -31,7 +29,6 @@
         android:id="@+id/number_four"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
         android:src="@drawable/multi_digg_word_level_1"
         android:layout_gravity="center_vertical"/>
 

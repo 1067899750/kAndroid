@@ -88,6 +88,10 @@ public class BezierPraiseAnimator {
      */
     private int mRandomBitmapSize = 5;
     private View mNumberViewGroup;
+    /**
+     * 是否移除提示语， 默认移除
+     */
+    private boolean isMoveNumberView = true;
     private ImageView numberOne;
     private ImageView numberTwo;
     private ImageView numberThree;
@@ -176,15 +180,17 @@ public class BezierPraiseAnimator {
             numberThree = mNumberViewGroup.findViewById(R.id.number_three);
             numberFour = mNumberViewGroup.findViewById(R.id.number_four);
             if (mTargetX < mRootView.getWidth() / 2) {
-                mNumberViewGroup.setX(loc[0] + viewWidth);
+                mNumberViewGroup.setX(loc[0] + viewWidth * 1.5f);
                 mNumberViewGroup.setY(loc[1] - viewHeight);
             } else {
-                mNumberViewGroup.setX(loc[0] - viewWidth);
+                mNumberViewGroup.setX(loc[0] - viewWidth * 1.5f);
                 mNumberViewGroup.setY(loc[1] - viewHeight);
             }
-            mRootView.addView(mNumberViewGroup);
         }
-        mNumberViewGroup.setVisibility(View.VISIBLE);
+        if (isMoveNumberView) {
+            mRootView.addView(mNumberViewGroup);
+            isMoveNumberView = false;
+        }
         //记录点击次数
         calculateCombo();
         addTextView();
@@ -353,7 +359,7 @@ public class BezierPraiseAnimator {
         float controlX;
         final float controlY;
 
-        controlY = startY - mRandom.nextInt(500) - 300;
+        controlY = startY - mRandom.nextInt(mPraiseIconWidth) * 8 - 300;
         // 左右两边
         if (random % 2 == 0) {
             endX = mTargetX - random * 16;
@@ -415,7 +421,7 @@ public class BezierPraiseAnimator {
      */
     public void stop() {
         countDownTimer.cancel();
-        stopNumAnimation();
+        mNumberHandler.sendEmptyMessage(STOP_ANIMATION);
     }
 
 
@@ -433,7 +439,8 @@ public class BezierPraiseAnimator {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mNumberViewGroup.setVisibility(View.GONE);
+                mRootView.removeView(mNumberViewGroup);
+                isMoveNumberView = true;
             }
 
             @Override
@@ -444,8 +451,9 @@ public class BezierPraiseAnimator {
         mNumberViewGroup.setAnimation(alphaAnimation);
     }
 
-    public static final class NumberHandler extends Handler{
+    public static final class NumberHandler extends Handler {
         private WeakReference<BezierPraiseAnimator> mWeakReference;
+
         public NumberHandler(BezierPraiseAnimator bezierPraiseAnimator) {
             mWeakReference = new WeakReference<>(bezierPraiseAnimator);
         }
@@ -453,11 +461,15 @@ public class BezierPraiseAnimator {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (msg.what == STOP_ANIMATION){
+            if (msg.what == STOP_ANIMATION) {
                 mWeakReference.get().stopNumAnimation();
             }
         }
 
+    }
+
+    public void onDestroy() {
+        mNumberHandler.removeCallbacksAndMessages(null);
     }
 }
 

@@ -41,7 +41,7 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
     private static final int ERUPTION_ELEMENT_AMOUNT = 4;
     private AnimationFramePool animationFramePool;
 
-    private AnimationHandler animationHandler;
+    private AnimationHandler mAnimationHandler;
     private BitmapProvider.Provider provider;
     /**
      * 是否显示喷射图标
@@ -83,7 +83,7 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
     }
 
     private void init(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        animationHandler = new AnimationHandler(this);
+        mAnimationHandler = new AnimationHandler(this);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SuperLikeLayout, defStyleAttr, 0);
         //设置图片个数
         int elementAmount = a.getInteger(R.styleable.SuperLikeLayout_eruption_element_amount, ERUPTION_ELEMENT_AMOUNT);
@@ -152,8 +152,8 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
                 textAnimationFrame.prepare(width, height, x, y, getProvider());
             }
         }
-        animationHandler.removeMessages(AnimationHandler.MESSAGE_CODE_REFRESH_ANIMATION);
-        animationHandler.sendEmptyMessageDelayed(AnimationHandler.MESSAGE_CODE_REFRESH_ANIMATION, INTERVAL);
+        mAnimationHandler.removeMessages(AnimationHandler.MESSAGE_CODE_REFRESH_ANIMATION);
+        mAnimationHandler.sendEmptyMessageDelayed(AnimationHandler.MESSAGE_CODE_REFRESH_ANIMATION, INTERVAL);
 
     }
 
@@ -228,8 +228,7 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
         }
         // 回收所有动画 并暂停动画
         animationFramePool.recycleAll();
-
-        animationHandler.removeMessages(AnimationHandler.MESSAGE_CODE_REFRESH_ANIMATION);
+        mAnimationHandler.removeMessages(AnimationHandler.MESSAGE_CODE_REFRESH_ANIMATION);
     }
 
     /**
@@ -263,6 +262,11 @@ public class SuperLikeLayout extends View implements AnimationEndListener {
             }
 
         }
+    }
+
+
+    public void onDestroy(){
+        mAnimationHandler.removeCallbacksAndMessages(null);
     }
 
 }
