@@ -180,10 +180,10 @@ public class BezierPraiseAnimator {
             numberThree = mNumberViewGroup.findViewById(R.id.number_three);
             numberFour = mNumberViewGroup.findViewById(R.id.number_four);
             if (mTargetX < mRootView.getWidth() / 2) {
-                mNumberViewGroup.setX(loc[0] + viewWidth * 1.5f);
+                mNumberViewGroup.setX(targetView.getRight() + viewWidth * 1.5f);
                 mNumberViewGroup.setY(loc[1] - viewHeight);
             } else {
-                mNumberViewGroup.setX(loc[0] - viewWidth * 1.5f);
+                mNumberViewGroup.setX(targetView.getLeft() - viewWidth * 1.5f);
                 mNumberViewGroup.setY(loc[1] - viewHeight);
             }
         }
