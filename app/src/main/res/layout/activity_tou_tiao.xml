@@ -6,6 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".activity.TouTiaoActivity">
 
+
+    <com.github.tifezh.kchart.widget.StarBar
+        android:id="@+id/starBar1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        app:starCount="5"
+        app:starDistance="10dp"
+        app:starEmpty="@drawable/starlevel_gray"
+        app:starFill="@drawable/starlevel_orange"
+        app:starSize="11dp" />
+
+    <com.github.tifezh.kchart.widget.YStarView
+        android:id="@+id/starBar4"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+       android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp" />
+
     <com.github.tifezh.kchartlib.toutiao.PraiseRelativeLayout
         android:id="@+id/praise_rl"
         android:layout_width="50dp"
@@ -29,7 +49,7 @@
         app:eruption_element_amount="5"
         app:max_eruption_total="16"
         app:show_emoji="true"
-        app:show_text="true"/>
+        app:show_text="true" />
 </RelativeLayout>
 
 
