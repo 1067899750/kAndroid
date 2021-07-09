@@ -7,17 +7,29 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.view.animation.AnticipateInterpolator;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.github.tifezh.kchartlib.R;
+import com.github.tifezh.kchartlib.toutiao.BitmapProvider;
+import com.github.tifezh.kchartlib.toutiao.Element;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -27,6 +39,12 @@ import java.util.Random;
  */
 public class BezierPraiseAnimator {
     private Context mContext;
+    private long totalTime = 60 * 1000;
+    private BitmapProvider.Provider provider;
+    /**
+     * 点击试图
+     */
+    private View mPraiseView;
     /**
      * 控件树的顶层视图
      */
@@ -40,10 +58,6 @@ public class BezierPraiseAnimator {
      */
     private ArrayList<Animator> mAnimatorList;
     /**
-     * 点赞的小图标资源
-     */
-    private Drawable[] mDrawables;
-    /**
      * 目标控件在窗口中的X坐标
      */
     private int mTargetX;
@@ -54,9 +68,49 @@ public class BezierPraiseAnimator {
     /**
      * 点赞小图标的宽高
      */
-    private int mPraiseIconWidth = 50;
-    private int mPraiseIconHeight = 50;
-    private int mAnimatorDuration = 1000;
+    private int mPraiseIconWidth = 70;
+    /**
+     * 是否长按
+     */
+    private boolean isLongClick;
+    /**
+     * 连续点击次数
+     */
+    private int likeCount;
+    private NumberHandler mNumberHandler;
+    private static final int STOP_ANIMATION = 10000;
+    private long lastClickTimeMillis;
+    private int mPraiseIconHeight = 70;
+    private int mAnimatorDuration = 800;
+    private int mMarketDuration = 500;
+    /**
+     * 喷射图片的个数
+     */
+    private int mRandomBitmapSize = 5;
+    private View mNumberViewGroup;
+    /**
+     * 是否移除提示语， 默认移除
+     */
+    private boolean isMoveNumberView = true;
+    private ImageView numberOne;
+    private ImageView numberTwo;
+    private ImageView numberThree;
+    private ImageView numberFour;
+
+    private CountDownTimer countDownTimer = new CountDownTimer(totalTime, 200) {
+        @Override
+        public void onTick(long millisUntilFinished) {
+            //执行任务
+            startAnimation(mPraiseView);
+        }
+
+        @Override
+        public void onFinish() {
+            if (countDownTimer != null) {
+                countDownTimer.start();
+            }
+        }
+    };
 
     public BezierPraiseAnimator(Context context) {
         mContext = context;
@@ -78,8 +132,27 @@ public class BezierPraiseAnimator {
     private void initData() {
         mRandom = new Random();
         mAnimatorList = new ArrayList<>();
-        initIcons();
+        mNumberHandler = new NumberHandler(this);
     }
+
+
+    /**
+     * 设置数据对象
+     *
+     * @param provider
+     */
+    public void setProvider(BitmapProvider.Provider provider) {
+        this.provider = provider;
+    }
+
+    public BitmapProvider.Provider getProvider() {
+        if (provider == null) {
+            provider = new BitmapProvider.Builder(mContext)
+                    .build();
+        }
+        return provider;
+    }
+
 
     /**
      * 获取当前targetView在屏幕中的位置
@@ -97,6 +170,90 @@ public class BezierPraiseAnimator {
         mTargetY = loc[1] + viewHeight / 2 - mPraiseIconHeight / 2;
         // 播放点赞动画
         startPraiseAnimation();
+
+        if (mNumberViewGroup == null) {
+            mNumberViewGroup = LayoutInflater.from(mContext).inflate(R.layout.number_text_layout, null);
+            mNumberViewGroup.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            numberOne = mNumberViewGroup.findViewById(R.id.number_one);
+            numberTwo = mNumberViewGroup.findViewById(R.id.number_two);
+            numberThree = mNumberViewGroup.findViewById(R.id.number_three);
+            numberFour = mNumberViewGroup.findViewById(R.id.number_four);
+            if (mTargetX < mRootView.getWidth() / 2) {
+                mNumberViewGroup.setX(targetView.getRight() + viewWidth * 1.5f);
+                mNumberViewGroup.setY(loc[1] - viewHeight);
+            } else {
+                mNumberViewGroup.setX(targetView.getLeft() - viewWidth * 1.5f);
+                mNumberViewGroup.setY(loc[1] - viewHeight);
+            }
+        }
+        if (isMoveNumberView) {
+            mRootView.addView(mNumberViewGroup);
+            isMoveNumberView = false;
+        }
+        //记录点击次数
+        calculateCombo();
+        addTextView();
+    }
+
+
+    /**
+     * 判断数字是重置还是加 1
+     */
+    private void calculateCombo() {
+        //连续点击事件小于 1s 加 1, 否着重置
+        if (isLongClick) {
+            likeCount++;
+        } else {
+            if (System.currentTimeMillis() - lastClickTimeMillis < 800) {
+                likeCount++;
+            } else {
+                likeCount = 1;
+            }
+        }
+        lastClickTimeMillis = System.currentTimeMillis();
+    }
+
+    /**
+     * 添加文字
+     */
+    private void addTextView() {
+        if (likeCount >= 100) {
+            numberTwo.setVisibility(View.VISIBLE);
+            numberThree.setVisibility(View.VISIBLE);
+            numberOne.setImageBitmap(getProvider().getNumberBitmap(likeCount / 100));
+            numberTwo.setImageBitmap(getProvider().getNumberBitmap((likeCount % 100) / 10));
+            numberThree.setImageBitmap(getProvider().getNumberBitmap((likeCount % 100) % 10));
+        } else if (likeCount >= 10) {
+            numberTwo.setVisibility(View.VISIBLE);
+            numberThree.setVisibility(View.GONE);
+            numberOne.setImageBitmap(getProvider().getNumberBitmap(likeCount / 10));
+            numberTwo.setImageBitmap(getProvider().getNumberBitmap(likeCount % 10));
+        } else {
+            numberTwo.setVisibility(View.GONE);
+            numberThree.setVisibility(View.GONE);
+            numberOne.setImageBitmap(getProvider().getNumberBitmap(likeCount));
+        }
+
+        //判断是 鼓励、加油、太棒了
+        int level = 0;
+        if (isLongClick) {
+            //长按情况
+            if (likeCount < 21) {
+                level = 0;
+            } else if (likeCount < 46) {
+                level = 1;
+            } else {
+                level = 2;
+            }
+        } else {
+            //单点情况
+            level = likeCount / 10;
+            if (level > 2) {
+                level = 2;
+            }
+        }
+        numberFour.setImageBitmap(getProvider().getLevelBitmap(level));
     }
 
 
@@ -130,12 +287,11 @@ public class BezierPraiseAnimator {
      * 播放点赞动画
      */
     private void startPraiseAnimation() {
-        int size = mRandom.nextInt(4) + (mDrawables.length - 4);
         mAnimatorList.clear();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < mRandomBitmapSize; i++) {
             // 动态添加点赞小图标
             final ImageView praiseIv = new ImageView(mContext);
-            praiseIv.setImageDrawable(mDrawables[mRandom.nextInt(mDrawables.length)]);
+            praiseIv.setImageBitmap(getProvider().getRandomBitmap());
             praiseIv.setLayoutParams(new ViewGroup.LayoutParams(mPraiseIconWidth, mPraiseIconHeight));
             mRootView.addView(praiseIv);
             // 设置点赞小图标的动画并播放
@@ -203,14 +359,14 @@ public class BezierPraiseAnimator {
         float controlX;
         final float controlY;
 
-        controlY = startY - mRandom.nextInt(500) - 100;
+        controlY = startY - mRandom.nextInt(mPraiseIconWidth) * 8 - 300;
         // 左右两边
         if (random % 2 == 0) {
-            endX = mTargetX - random * 8;
-            controlX = mTargetX - random * 2;
+            endX = mTargetX - random * 16;
+            controlX = mTargetX - random * 8;
         } else {
-            endX = mTargetX + random * 8;
-            controlX = mTargetX + random * 2;
+            endX = mTargetX + random * 16;
+            controlX = mTargetX + random * 8;
         }
         endY = mTargetY + random + 400;
 
@@ -233,26 +389,87 @@ public class BezierPraiseAnimator {
         return animator;
     }
 
+    /**
+     * 长按试图
+     *
+     * @param view
+     */
+    public void longClickView(View view) {
+        this.mPraiseView = view;
+        countDownTimer.cancel();
+        isLongClick = true;
+        //主线程中调用
+        countDownTimer.start();
+    }
 
     /**
-     * 初始化点赞小图标
+     * 单点试图
+     *
+     * @param view
      */
-    private void initIcons() {
-        mDrawables = new Drawable[14];
-        mDrawables[0] = mContext.getResources().getDrawable(R.drawable.mei_ic_praise_1);
-        mDrawables[1] = mContext.getResources().getDrawable(R.drawable.mei_ic_praise_2);
-        mDrawables[2] = mContext.getResources().getDrawable(R.drawable.mei_ic_praise_3);
-        mDrawables[3] = mContext.getResources().getDrawable(R.drawable.mei_ic_praise_4);
-        mDrawables[4] = mContext.getResources().getDrawable(R.drawable.mei_ic_praise_5);
-        mDrawables[5] = mContext.getResources().getDrawable(R.drawable.mei_ic_praise_6);
-        mDrawables[6] = mContext.getResources().getDrawable(R.drawable.mei_ic_praise_7);
-        mDrawables[7] = mContext.getResources().getDrawable(R.drawable.mei_ic_praise_8);
-        mDrawables[8] = mContext.getResources().getDrawable(R.drawable.mei_ic_praise_9);
-        mDrawables[9] = mContext.getResources().getDrawable(R.drawable.mei_ic_praise_10);
-        mDrawables[10] = mContext.getResources().getDrawable(R.drawable.mei_ic_praise_11);
-        mDrawables[11] = mContext.getResources().getDrawable(R.drawable.mei_ic_praise_12);
-        mDrawables[12] = mContext.getResources().getDrawable(R.drawable.mei_ic_praise_13);
-        mDrawables[13] = mContext.getResources().getDrawable(R.drawable.mei_ic_praise_14);
+    public void clickView(View view) {
+        this.mPraiseView = view;
+        isLongClick = false;
+        startAnimation(view);
+        mNumberHandler.removeMessages(STOP_ANIMATION);
+        mNumberHandler.sendEmptyMessageAtTime(STOP_ANIMATION, 500);
+    }
+
+
+    /**
+     * 结束计时
+     */
+    public void stop() {
+        countDownTimer.cancel();
+        mNumberHandler.sendEmptyMessage(STOP_ANIMATION);
+    }
+
+
+    /**
+     * 隐藏数字动画
+     */
+    public void stopNumAnimation() {
+        AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
+        alphaAnimation.setDuration(mMarketDuration);
+        alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mRootView.removeView(mNumberViewGroup);
+                isMoveNumberView = true;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        mNumberViewGroup.setAnimation(alphaAnimation);
+    }
+
+    public static final class NumberHandler extends Handler {
+        private WeakReference<BezierPraiseAnimator> mWeakReference;
+
+        public NumberHandler(BezierPraiseAnimator bezierPraiseAnimator) {
+            mWeakReference = new WeakReference<>(bezierPraiseAnimator);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == STOP_ANIMATION) {
+                mWeakReference.get().stopNumAnimation();
+            }
+        }
+
+    }
+
+    public void onDestroy() {
+        mNumberHandler.removeCallbacksAndMessages(null);
     }
 }
 

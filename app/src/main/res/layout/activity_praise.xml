@@ -1,28 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.PraiseActivity">
 
-    <ImageView
-        android:id="@+id/iv_praise"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
-        android:layout_marginLeft="48dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/ic_praise"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+    <com.github.tifezh.kchartlib.toutiao.PraiseRelativeLayout
+        android:id="@+id/praise_rl"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/d100"
+        android:layout_marginRight="@dimen/d50">
 
-    <com.github.tifezh.kchartlib.chart.praise.BezierPraiseView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        <ImageView
+            android:id="@+id/praise_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/dismiss_praise" />
 
-    </com.github.tifezh.kchartlib.chart.praise.BezierPraiseView>
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/praise_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/praise_iv"
+            android:layout_marginLeft="@dimen/d3"
+            android:layout_centerVertical="true"
+            android:text="赞"
+            android:textColor="#979797"
+            android:textSize="14sp" />
+    </com.github.tifezh.kchartlib.toutiao.PraiseRelativeLayout>
+
+</RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+
