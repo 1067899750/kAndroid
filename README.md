@@ -14,11 +14,6 @@
 </div>
 
 * 其他样式
-* 样式一
-
-<div class='row'>
-        <img src='https://github.com/1067899750/kAndroid/blob/master/img/image2.jpg' width="300px"/>
-</div>
 
 * 样式二
 
